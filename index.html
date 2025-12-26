@@ -240,10 +240,10 @@
                             </tr>
                         </thead>
                         <tbody id="matches-body" class="font-mono text-lg">
-    <tr class="border-b border-white/5">
-        <td colspan="4" class="p-6 text-center text-gray-500">Ładowanie terminarza...</td>
-    </tr>
-</tbody>
+                            <tr class="border-b border-white/5">
+                                <td colspan="4" class="p-6 text-center text-gray-500">Ładowanie terminarza...</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -340,14 +340,10 @@
         </div>
     </footer>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
-  <script type="module">
-        // Importy Firebase z CDN (działające w przeglądarce)
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Konfiguracja Twojego projektu
         const firebaseConfig = {
             apiKey: "AIzaSyC3-xVHKLCmPhF6PUfE-9ZTUxGzVU2czoA",
             authDomain: "gliwickie-orly.firebaseapp.com",
@@ -357,7 +353,6 @@
             appId: "1:278448854634:web:0b4481155d915df56b9c13"
         };
 
-        // Inicjalizacja
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
@@ -366,11 +361,10 @@
             if (!matchesBody) return;
 
             try {
-                // Pobierz mecze posortowane po dacie
                 const q = query(collection(db, "matches"), orderBy("date", "asc"));
                 const querySnapshot = await getDocs(q);
 
-                matchesBody.innerHTML = ''; // Wyczyść "Ładowanie..."
+                matchesBody.innerHTML = '';
 
                 if (querySnapshot.empty) {
                     matchesBody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-gray-500">Brak zaplanowanych spotkań.</td></tr>';
@@ -379,17 +373,12 @@
 
                 querySnapshot.forEach((doc) => {
                     const match = doc.data();
-                    
-                    // Formatowanie daty (np. 2025-12-26 -> 26.12.2025)
                     const dateParts = match.date.split('-');
                     const formattedDate = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
                     
-                    // Logika stylów
                     const isFinished = match.status === 'Zakończony';
                     const rowOpacity = isFinished ? 'opacity-70' : 'bg-white/5';
-                    const badgeStyle = isFinished 
-                        ? 'border border-gray-600 text-gray-400' 
-                        : 'bg-white text-black font-bold';
+                    const badgeStyle = isFinished ? 'border border-gray-600 text-gray-400' : 'bg-white text-black font-bold';
                     
                     let scoreHtml = '';
                     if (isFinished && match.score) {
@@ -421,19 +410,16 @@
                     `;
                     matchesBody.innerHTML += html;
                 });
-
                 updateCountdown(querySnapshot);
-
             } catch (error) {
-                console.error("Błąd pobierania meczów:", error);
-                matchesBody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-red-500">Nie udało się pobrać terminarza. Sprawdź konsolę (F12).<br>Błąd: ${error.message}</td></tr>`;
+                console.error(error);
+                matchesBody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-red-500">Błąd ładowania danych. Sprawdź konsolę.</td></tr>';
             }
         }
 
         function updateCountdown(snapshot) {
             const now = new Date();
             let nextMatchDate = null;
-
             snapshot.forEach(doc => {
                 const m = doc.data();
                 const mDate = new Date(`${m.date}T${m.time}:00`);
@@ -457,13 +443,10 @@
             setInterval(() => {
                 const now = new Date().getTime();
                 const distance = targetDate.getTime() - now;
-
                 if (distance < 0) return;
-
                 const d = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
                 const dEl = document.getElementById('days');
                 if(dEl) {
                     dEl.innerText = d < 10 ? '0'+d : d;
@@ -475,9 +458,57 @@
 
         document.addEventListener('DOMContentLoaded', loadMatches);
     </script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, duration: 800, easing: 'ease-out-cubic' });
+        
+        let isAnimating = false;
+        let currentPageId = 'home-page';
+
+        function changePage(targetId) {
+            if (isAnimating || targetId === currentPageId) return;
+            const currentSection = document.getElementById(currentPageId);
+            const targetSection = document.getElementById(targetId);
+            if (!currentSection || !targetSection) return;
+
+            isAnimating = true;
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('btn-' + targetId);
+            if(activeBtn) activeBtn.classList.add('active');
+
+            currentSection.classList.add('page-exit');
+            setTimeout(() => {
+                currentSection.classList.add('page-hidden');
+                currentSection.classList.remove('page-exit', 'relative'); 
+                currentSection.classList.add('absolute');
+                targetSection.classList.remove('page-hidden');
+                targetSection.classList.add('page-enter'); 
+                void targetSection.offsetWidth;
+                targetSection.classList.remove('page-enter');
+                
+                if(targetId === 'home-page') {
+                } else {
+                    targetSection.classList.remove('absolute');
+                    targetSection.classList.add('relative');
+                }
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setTimeout(() => {
+                    AOS.refresh();
+                    isAnimating = false;
+                    currentPageId = targetId;
+                }, 400);
+            }, 400);
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+             document.getElementById('home-page').classList.remove('page-hidden');
+        });
+    </script>
 </body>
-
 </html>
-
-
-
