@@ -22,8 +22,8 @@
 <body class="font-sans antialiased min-h-screen flex flex-col items-center justify-center p-4 relative">
 
     <div id="login-screen" class="absolute bottom-5 left-0 w-full text-center opacity-30 hover:opacity-100 transition-opacity duration-500">
-        <button onclick="loginWithGoogle()" class="text-gray-500 hover:text-white text-sm font-mono tracking-widest uppercase cursor-pointer px-4 py-2 border border-transparent hover:border-white/10 rounded">
-            <i class="fas fa-lock text-xs mr-2"></i> Admin Access
+        <button onclick="loginWithGoogle()" class="text-gray-600 hover:text-white text-xs font-mono tracking-widest uppercase cursor-pointer px-4 py-2 border border-transparent hover:border-white/10 rounded transition-all">
+            <i class="fas fa-lock text-[10px] mr-2"></i> Admin Access
         </button>
         <p id="error-msg" class="text-red-500 mt-2 font-mono text-xs hidden"></p>
     </div>
@@ -81,19 +81,19 @@
     </div>
 
     <script type="module">
-        // Używamy tylko importów z CDN, żeby działało w przeglądarce bez instalowania Node.js
+        // Poprawione importy - używamy tylko wersji URL (dla przeglądarki)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Konfiguracja Firebase (skopiowana z Twojego pliku)
+        // Twoja konfiguracja Firebase
         const firebaseConfig = {
-          apiKey: "AIzaSyC3-xVHKLCmPhF6PUfE-9ZTUxGzVU2czoA",
-          authDomain: "gliwickie-orly.firebaseapp.com",
-          projectId: "gliwickie-orly",
-          storageBucket: "gliwickie-orly.firebasestorage.app",
-          messagingSenderId: "278448854634",
-          appId: "1:278448854634:web:0b4481155d915df56b9c13"
+            apiKey: "AIzaSyC3-xVHKLCmPhF6PUfE-9ZTUxGzVU2czoA",
+            authDomain: "gliwickie-orly.firebaseapp.com",
+            projectId: "gliwickie-orly",
+            storageBucket: "gliwickie-orly.firebasestorage.app",
+            messagingSenderId: "278448854634",
+            appId: "1:278448854634:web:0b4481155d915df56b9c13"
         };
 
         // Inicjalizacja
@@ -105,31 +105,32 @@
         const loginScreen = document.getElementById('login-screen');
         const dashboard = document.getElementById('dashboard');
 
-        // Funkcje globalne (przypisujemy do window, żeby HTML je widział)
+        // Funkcja logowania przypisana do window
         window.loginWithGoogle = () => {
             signInWithPopup(auth, provider).catch((error) => {
-                console.error(error);
+                console.error("Błąd logowania:", error);
                 document.getElementById('error-msg').innerText = "Błąd: " + error.message;
                 document.getElementById('error-msg').classList.remove('hidden');
             });
         };
 
+        // Funkcja wylogowania
         window.logout = () => signOut(auth);
 
         // Nasłuchiwanie stanu zalogowania
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Zalogowany: ukryj przycisk logowania, pokaż panel
+                // Ukryj przycisk logowania, pokaż panel
                 loginScreen.classList.add('hidden');
                 dashboard.classList.remove('hidden');
             } else {
-                // Wylogowany: pokaż mały przycisk na dole
+                // Pokaż dyskretny przycisk na dole
                 loginScreen.classList.remove('hidden');
                 dashboard.classList.add('hidden');
             }
         });
 
-        // Obsługa formularza
+        // Obsługa dodawania meczu
         document.getElementById('add-match-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -148,9 +149,12 @@
                 const msg = document.getElementById('success-msg');
                 msg.classList.remove('hidden');
                 document.getElementById('add-match-form').reset();
+                
+                // Ukryj komunikat sukcesu po 3 sekundach
                 setTimeout(() => msg.classList.add('hidden'), 3000);
             } catch (error) {
                 alert("Błąd zapisu: " + error.message);
+                console.error("Szczegóły błędu:", error);
             }
         });
     </script>
