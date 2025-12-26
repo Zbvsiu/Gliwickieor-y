@@ -342,22 +342,22 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
-   <script type="module">
-    // Importy Firebase
+   <script type="module">se
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // ==========================================
-    // WKLEJ TĘ SAMĄ KONFIGURACJĘ CO W ADMIN.HTML
-    // ==========================================
-    const firebaseConfig = {
-        apiKey: "TU_WKLEJ_API_KEY",
-        authDomain: "TU_WKLEJ_AUTH_DOMAIN",
-        projectId: "TU_WKLEJ_PROJECT_ID",
-        storageBucket: "TU_WKLEJ_STORAGE_BUCKET",
-        messagingSenderId: "TU_WKLEJ_SENDER_ID",
-        appId: "TU_WKLEJ_APP_ID"
-    };
+import { initializeApp } from "firebase/app";
+const firebaseConfig = {
+  apiKey: "AIzaSyC3-xVHKLCmPhF6PUfE-9ZTUxGzVU2czoA",
+  authDomain: "gliwickie-orly.firebaseapp.com",
+  projectId: "gliwickie-orly",
+  storageBucket: "gliwickie-orly.firebasestorage.app",
+  messagingSenderId: "278448854634",
+  appId: "1:278448854634:web:0b4481155d915df56b9c13"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
@@ -528,3 +528,4 @@
 </body>
 
 </html>
+
