@@ -239,42 +239,11 @@
                                 <th class="p-6 font-normal text-right">Status</th>
                             </tr>
                         </thead>
-                        <tbody class="font-mono text-lg">
-                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer group bg-white/5">
-                                <td class="p-6">
-                                    <span class="block text-white font-bold text-xl">26.12.2025</span>
-                                    <span class="text-sm text-gray-400">16:00</span>
-                                </td>
-                                <td class="p-6">
-                                    <div class="flex items-center justify-center gap-4 md:gap-8">
-                                        <span class="font-display text-2xl md:text-3xl font-bold text-white text-right flex-1">GLIWICKIE ORŁY</span>
-                                        <span class="text-xs text-mono-light bg-black px-2 py-1 border border-white/20">VS</span>
-                                        <span class="font-display text-2xl md:text-3xl text-gray-400 flex-1">KS HUTNICY</span>
-                                    </div>
-                                </td>
-                                <td class="p-6 text-right text-gray-400 hidden md:table-cell">ul. Jasna 31, Gliwice</td>
-                                <td class="p-6 text-right"><span class="text-xs font-bold bg-white text-black px-2 py-1 uppercase">Nadchodzący</span></td>
-                            </tr>
-                            
-                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer group opacity-90">
-                                <td class="p-6">
-                                    <span class="block text-gray-400 font-bold text-xl">21.12.2025</span>
-                                    <span class="text-sm text-gray-500">15:00</span>
-                                </td>
-                                <td class="p-6 text-center">
-                                    <div class="flex items-center justify-center gap-4 md:gap-8 mb-2">
-                                        <span class="font-display text-2xl md:text-3xl font-bold text-gray-400 text-right flex-1">GLIWICKIE ORŁY</span>
-                                        <span class="text-xs text-mono-light bg-black px-2 py-1 border border-white/20">VS</span>
-                                        <span class="font-display text-2xl md:text-3xl text-gray-400 flex-1">GÓRNIK ZABRZE</span>
-                                    </div>
-                                    <div class="inline-block border border-white/20 bg-white/5 px-6 py-1">
-                                        <span class="font-display text-3xl font-bold text-white tracking-widest">3 : 0</span>
-                                    </div>
-                                </td>
-                                <td class="p-6 text-right text-gray-500 hidden md:table-cell">ul. Jasna 31, Gliwice</td>
-                                <td class="p-6 text-right"><span class="text-xs border border-gray-600 text-gray-400 px-2 py-1 uppercase">Zakończony</span></td>
-                            </tr>
-                        </tbody>
+                        <tbody id="matches-body" class="font-mono text-lg">
+    <tr class="border-b border-white/5">
+        <td colspan="4" class="p-6 text-center text-gray-500">Ładowanie terminarza...</td>
+    </tr>
+</tbody>
                     </table>
                 </div>
             </div>
@@ -373,83 +342,189 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
-    <script>
-        AOS.init({ once: true, duration: 800, easing: 'ease-out-cubic' });
+   <script type="module">
+    // Importy Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        let isAnimating = false;
-        let currentPageId = 'home-page';
+    // ==========================================
+    // WKLEJ TĘ SAMĄ KONFIGURACJĘ CO W ADMIN.HTML
+    // ==========================================
+    const firebaseConfig = {
+        apiKey: "TU_WKLEJ_API_KEY",
+        authDomain: "TU_WKLEJ_AUTH_DOMAIN",
+        projectId: "TU_WKLEJ_PROJECT_ID",
+        storageBucket: "TU_WKLEJ_STORAGE_BUCKET",
+        messagingSenderId: "TU_WKLEJ_SENDER_ID",
+        appId: "TU_WKLEJ_APP_ID"
+    };
 
-        function changePage(targetId) {
-            if (isAnimating || targetId === currentPageId) return;
-            const currentSection = document.getElementById(currentPageId);
-            const targetSection = document.getElementById(targetId);
-            if (!currentSection || !targetSection) return;
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-            isAnimating = true;
-            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.getElementById('btn-' + targetId);
-            if(activeBtn) activeBtn.classList.add('active');
+    async function loadMatches() {
+        const matchesBody = document.getElementById('matches-body');
+        if (!matchesBody) return;
 
-            currentSection.classList.add('page-exit');
-            setTimeout(() => {
-                currentSection.classList.add('page-hidden');
-                currentSection.classList.remove('page-exit', 'relative'); 
-                currentSection.classList.add('absolute');
-                targetSection.classList.remove('page-hidden');
-                targetSection.classList.add('page-enter'); 
-                void targetSection.offsetWidth;
-                targetSection.classList.remove('page-enter');
-                
-                if(targetId === 'home-page') {
-                } else {
-                    targetSection.classList.remove('absolute');
-                    targetSection.classList.add('relative');
-                }
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                setTimeout(() => {
-                    AOS.refresh();
-                    isAnimating = false;
-                    currentPageId = targetId;
-                }, 400);
-            }, 400);
+        // Pobierz mecze posortowane po dacie
+        const q = query(collection(db, "matches"), orderBy("date", "asc"));
+        const querySnapshot = await getDocs(q);
+
+        matchesBody.innerHTML = ''; // Wyczyść "Ładowanie..."
+
+        if (querySnapshot.empty) {
+            matchesBody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-gray-500">Brak zaplanowanych spotkań.</td></tr>';
+            return;
         }
 
-        function toggleMobileMenu() {
-            document.getElementById('mobile-menu').classList.add('hidden');
-        }
-
-        function startTimer() {
-            const daysEl = document.getElementById('days');
-            if(!daysEl) return;
+        querySnapshot.forEach((doc) => {
+            const match = doc.data();
             
-            const matchDate = new Date("2025-12-26T16:00:00").getTime();
+            // Formatowanie daty (np. 2025-12-26 -> 26.12.2025)
+            const dateParts = match.date.split('-');
+            const formattedDate = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
+            
+            // Logika stylów (czy zakończony czy nadchodzący)
+            const isFinished = match.status === 'Zakończony';
+            const rowOpacity = isFinished ? 'opacity-70' : 'bg-white/5';
+            const badgeStyle = isFinished 
+                ? 'border border-gray-600 text-gray-400' 
+                : 'bg-white text-black font-bold';
+            
+            // Wynik lub VS
+            let scoreHtml = '';
+            if (isFinished && match.score) {
+                 scoreHtml = `
+                    <div class="inline-block border border-white/20 bg-white/5 px-6 py-1 mt-2">
+                        <span class="font-display text-3xl font-bold text-white tracking-widest">${match.score}</span>
+                    </div>`;
+            }
 
-            setInterval(() => {
-                const now = new Date().getTime();
-                const distance = matchDate - now;
+            const html = `
+            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer group ${rowOpacity}">
+                <td class="p-6">
+                    <span class="block text-white font-bold text-xl">${formattedDate}</span>
+                    <span class="text-sm text-gray-400">${match.time}</span>
+                </td>
+                <td class="p-6 text-center">
+                    <div class="flex items-center justify-center gap-4 md:gap-8 mb-2">
+                        <span class="font-display text-2xl md:text-3xl font-bold text-white text-right flex-1">GLIWICKIE ORŁY</span>
+                        <span class="text-xs text-mono-light bg-black px-2 py-1 border border-white/20">VS</span>
+                        <span class="font-display text-2xl md:text-3xl text-gray-400 flex-1 uppercase">${match.opponent}</span>
+                    </div>
+                    ${scoreHtml}
+                </td>
+                <td class="p-6 text-right text-gray-400 hidden md:table-cell">${match.location}</td>
+                <td class="p-6 text-right">
+                    <span class="text-xs px-2 py-1 uppercase ${badgeStyle}">${match.status}</span>
+                </td>
+            </tr>
+            `;
+            matchesBody.innerHTML += html;
+        });
 
-                if (distance < 0) {
-                    daysEl.innerText = "00";
-                    document.getElementById('hours').innerText = "00";
-                    document.getElementById('minutes').innerText = "00";
-                    return;
-                }
+        // Aktualizacja licznika do najbliższego meczu
+        updateCountdown(querySnapshot);
+    }
 
-                const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    function updateCountdown(snapshot) {
+        const now = new Date();
+        let nextMatchDate = null;
 
-                daysEl.innerText = d < 10 ? '0'+d : d;
+        // Znajdź pierwszy mecz, który jest w przyszłości
+        snapshot.forEach(doc => {
+            const m = doc.data();
+            const mDate = new Date(`${m.date}T${m.time}:00`);
+            if (!nextMatchDate && mDate > now && m.status !== 'Zakończony') {
+                nextMatchDate = mDate;
+            }
+        });
+
+        if (nextMatchDate) {
+            startTimer(nextMatchDate);
+        } else {
+            // Brak przyszłych meczów
+            document.getElementById('days').innerText = "--";
+            document.getElementById('hours').innerText = "--";
+            document.getElementById('minutes').innerText = "--";
+        }
+    }
+
+    function startTimer(targetDate) {
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate.getTime() - now;
+
+            if (distance < 0) return;
+
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+            const dEl = document.getElementById('days');
+            if(dEl) {
+                dEl.innerText = d < 10 ? '0'+d : d;
                 document.getElementById('hours').innerText = h < 10 ? '0'+h : h;
                 document.getElementById('minutes').innerText = m < 10 ? '0'+m : m;
-            }, 1000);
-        }
+            }
+        }, 1000);
+    }
 
-        document.addEventListener('DOMContentLoaded', () => {
-             document.getElementById('home-page').classList.remove('page-hidden');
-             startTimer();
-        });
-    </script>
+    // Załaduj mecze przy starcie
+    document.addEventListener('DOMContentLoaded', loadMatches);
+</script>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({ once: true, duration: 800, easing: 'ease-out-cubic' });
+    
+    let isAnimating = false;
+    let currentPageId = 'home-page';
+
+    function changePage(targetId) {
+        if (isAnimating || targetId === currentPageId) return;
+        const currentSection = document.getElementById(currentPageId);
+        const targetSection = document.getElementById(targetId);
+        if (!currentSection || !targetSection) return;
+
+        isAnimating = true;
+        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = document.getElementById('btn-' + targetId);
+        if(activeBtn) activeBtn.classList.add('active');
+
+        currentSection.classList.add('page-exit');
+        setTimeout(() => {
+            currentSection.classList.add('page-hidden');
+            currentSection.classList.remove('page-exit', 'relative'); 
+            currentSection.classList.add('absolute');
+            targetSection.classList.remove('page-hidden');
+            targetSection.classList.add('page-enter'); 
+            void targetSection.offsetWidth;
+            targetSection.classList.remove('page-enter');
+            
+            if(targetId === 'home-page') {
+            } else {
+                targetSection.classList.remove('absolute');
+                targetSection.classList.add('relative');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => {
+                AOS.refresh();
+                isAnimating = false;
+                currentPageId = targetId;
+            }, 400);
+        }, 400);
+    }
+
+    function toggleMobileMenu() {
+        document.getElementById('mobile-menu').classList.add('hidden');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+         document.getElementById('home-page').classList.remove('page-hidden');
+    });
+</script>
 </body>
+
 </html>
