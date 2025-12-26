@@ -342,189 +342,142 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
-   <script type="module">se
+  <script type="module">
+        // Importy Firebase z CDN (działające w przeglądarce)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-import { initializeApp } from "firebase/app";
-const firebaseConfig = {
-  apiKey: "AIzaSyC3-xVHKLCmPhF6PUfE-9ZTUxGzVU2czoA",
-  authDomain: "gliwickie-orly.firebaseapp.com",
-  projectId: "gliwickie-orly",
-  storageBucket: "gliwickie-orly.firebasestorage.app",
-  messagingSenderId: "278448854634",
-  appId: "1:278448854634:web:0b4481155d915df56b9c13"
-};
+        // Konfiguracja Twojego projektu
+        const firebaseConfig = {
+            apiKey: "AIzaSyC3-xVHKLCmPhF6PUfE-9ZTUxGzVU2czoA",
+            authDomain: "gliwickie-orly.firebaseapp.com",
+            projectId: "gliwickie-orly",
+            storageBucket: "gliwickie-orly.firebasestorage.app",
+            messagingSenderId: "278448854634",
+            appId: "1:278448854634:web:0b4481155d915df56b9c13"
+        };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+        // Inicjalizacja
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+        async function loadMatches() {
+            const matchesBody = document.getElementById('matches-body');
+            if (!matchesBody) return;
 
-    async function loadMatches() {
-        const matchesBody = document.getElementById('matches-body');
-        if (!matchesBody) return;
+            try {
+                // Pobierz mecze posortowane po dacie
+                const q = query(collection(db, "matches"), orderBy("date", "asc"));
+                const querySnapshot = await getDocs(q);
 
-        // Pobierz mecze posortowane po dacie
-        const q = query(collection(db, "matches"), orderBy("date", "asc"));
-        const querySnapshot = await getDocs(q);
+                matchesBody.innerHTML = ''; // Wyczyść "Ładowanie..."
 
-        matchesBody.innerHTML = ''; // Wyczyść "Ładowanie..."
+                if (querySnapshot.empty) {
+                    matchesBody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-gray-500">Brak zaplanowanych spotkań.</td></tr>';
+                    return;
+                }
 
-        if (querySnapshot.empty) {
-            matchesBody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-gray-500">Brak zaplanowanych spotkań.</td></tr>';
-            return;
+                querySnapshot.forEach((doc) => {
+                    const match = doc.data();
+                    
+                    // Formatowanie daty (np. 2025-12-26 -> 26.12.2025)
+                    const dateParts = match.date.split('-');
+                    const formattedDate = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
+                    
+                    // Logika stylów
+                    const isFinished = match.status === 'Zakończony';
+                    const rowOpacity = isFinished ? 'opacity-70' : 'bg-white/5';
+                    const badgeStyle = isFinished 
+                        ? 'border border-gray-600 text-gray-400' 
+                        : 'bg-white text-black font-bold';
+                    
+                    let scoreHtml = '';
+                    if (isFinished && match.score) {
+                         scoreHtml = `
+                            <div class="inline-block border border-white/20 bg-white/5 px-6 py-1 mt-2">
+                                <span class="font-display text-3xl font-bold text-white tracking-widest">${match.score}</span>
+                            </div>`;
+                    }
+
+                    const html = `
+                    <tr class="border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer group ${rowOpacity}">
+                        <td class="p-6">
+                            <span class="block text-white font-bold text-xl">${formattedDate}</span>
+                            <span class="text-sm text-gray-400">${match.time}</span>
+                        </td>
+                        <td class="p-6 text-center">
+                            <div class="flex items-center justify-center gap-4 md:gap-8 mb-2">
+                                <span class="font-display text-2xl md:text-3xl font-bold text-white text-right flex-1">GLIWICKIE ORŁY</span>
+                                <span class="text-xs text-mono-light bg-black px-2 py-1 border border-white/20">VS</span>
+                                <span class="font-display text-2xl md:text-3xl text-gray-400 flex-1 uppercase">${match.opponent}</span>
+                            </div>
+                            ${scoreHtml}
+                        </td>
+                        <td class="p-6 text-right text-gray-400 hidden md:table-cell">${match.location}</td>
+                        <td class="p-6 text-right">
+                            <span class="text-xs px-2 py-1 uppercase ${badgeStyle}">${match.status}</span>
+                        </td>
+                    </tr>
+                    `;
+                    matchesBody.innerHTML += html;
+                });
+
+                updateCountdown(querySnapshot);
+
+            } catch (error) {
+                console.error("Błąd pobierania meczów:", error);
+                matchesBody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-red-500">Nie udało się pobrać terminarza. Sprawdź konsolę (F12).<br>Błąd: ${error.message}</td></tr>`;
+            }
         }
 
-        querySnapshot.forEach((doc) => {
-            const match = doc.data();
-            
-            // Formatowanie daty (np. 2025-12-26 -> 26.12.2025)
-            const dateParts = match.date.split('-');
-            const formattedDate = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
-            
-            // Logika stylów (czy zakończony czy nadchodzący)
-            const isFinished = match.status === 'Zakończony';
-            const rowOpacity = isFinished ? 'opacity-70' : 'bg-white/5';
-            const badgeStyle = isFinished 
-                ? 'border border-gray-600 text-gray-400' 
-                : 'bg-white text-black font-bold';
-            
-            // Wynik lub VS
-            let scoreHtml = '';
-            if (isFinished && match.score) {
-                 scoreHtml = `
-                    <div class="inline-block border border-white/20 bg-white/5 px-6 py-1 mt-2">
-                        <span class="font-display text-3xl font-bold text-white tracking-widest">${match.score}</span>
-                    </div>`;
-            }
+        function updateCountdown(snapshot) {
+            const now = new Date();
+            let nextMatchDate = null;
 
-            const html = `
-            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer group ${rowOpacity}">
-                <td class="p-6">
-                    <span class="block text-white font-bold text-xl">${formattedDate}</span>
-                    <span class="text-sm text-gray-400">${match.time}</span>
-                </td>
-                <td class="p-6 text-center">
-                    <div class="flex items-center justify-center gap-4 md:gap-8 mb-2">
-                        <span class="font-display text-2xl md:text-3xl font-bold text-white text-right flex-1">GLIWICKIE ORŁY</span>
-                        <span class="text-xs text-mono-light bg-black px-2 py-1 border border-white/20">VS</span>
-                        <span class="font-display text-2xl md:text-3xl text-gray-400 flex-1 uppercase">${match.opponent}</span>
-                    </div>
-                    ${scoreHtml}
-                </td>
-                <td class="p-6 text-right text-gray-400 hidden md:table-cell">${match.location}</td>
-                <td class="p-6 text-right">
-                    <span class="text-xs px-2 py-1 uppercase ${badgeStyle}">${match.status}</span>
-                </td>
-            </tr>
-            `;
-            matchesBody.innerHTML += html;
-        });
+            snapshot.forEach(doc => {
+                const m = doc.data();
+                const mDate = new Date(`${m.date}T${m.time}:00`);
+                if (!nextMatchDate && mDate > now && m.status !== 'Zakończony') {
+                    nextMatchDate = mDate;
+                }
+            });
 
-        // Aktualizacja licznika do najbliższego meczu
-        updateCountdown(querySnapshot);
-    }
-
-    function updateCountdown(snapshot) {
-        const now = new Date();
-        let nextMatchDate = null;
-
-        // Znajdź pierwszy mecz, który jest w przyszłości
-        snapshot.forEach(doc => {
-            const m = doc.data();
-            const mDate = new Date(`${m.date}T${m.time}:00`);
-            if (!nextMatchDate && mDate > now && m.status !== 'Zakończony') {
-                nextMatchDate = mDate;
-            }
-        });
-
-        if (nextMatchDate) {
-            startTimer(nextMatchDate);
-        } else {
-            // Brak przyszłych meczów
-            document.getElementById('days').innerText = "--";
-            document.getElementById('hours').innerText = "--";
-            document.getElementById('minutes').innerText = "--";
-        }
-    }
-
-    function startTimer(targetDate) {
-        setInterval(() => {
-            const now = new Date().getTime();
-            const distance = targetDate.getTime() - now;
-
-            if (distance < 0) return;
-
-            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-            const dEl = document.getElementById('days');
-            if(dEl) {
-                dEl.innerText = d < 10 ? '0'+d : d;
-                document.getElementById('hours').innerText = h < 10 ? '0'+h : h;
-                document.getElementById('minutes').innerText = m < 10 ? '0'+m : m;
-            }
-        }, 1000);
-    }
-
-    // Załaduj mecze przy starcie
-    document.addEventListener('DOMContentLoaded', loadMatches);
-</script>
-
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-    AOS.init({ once: true, duration: 800, easing: 'ease-out-cubic' });
-    
-    let isAnimating = false;
-    let currentPageId = 'home-page';
-
-    function changePage(targetId) {
-        if (isAnimating || targetId === currentPageId) return;
-        const currentSection = document.getElementById(currentPageId);
-        const targetSection = document.getElementById(targetId);
-        if (!currentSection || !targetSection) return;
-
-        isAnimating = true;
-        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-        const activeBtn = document.getElementById('btn-' + targetId);
-        if(activeBtn) activeBtn.classList.add('active');
-
-        currentSection.classList.add('page-exit');
-        setTimeout(() => {
-            currentSection.classList.add('page-hidden');
-            currentSection.classList.remove('page-exit', 'relative'); 
-            currentSection.classList.add('absolute');
-            targetSection.classList.remove('page-hidden');
-            targetSection.classList.add('page-enter'); 
-            void targetSection.offsetWidth;
-            targetSection.classList.remove('page-enter');
-            
-            if(targetId === 'home-page') {
+            if (nextMatchDate) {
+                startTimer(nextMatchDate);
             } else {
-                targetSection.classList.remove('absolute');
-                targetSection.classList.add('relative');
+                const ids = ['days', 'hours', 'minutes'];
+                ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) el.innerText = "--";
+                });
             }
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setTimeout(() => {
-                AOS.refresh();
-                isAnimating = false;
-                currentPageId = targetId;
-            }, 400);
-        }, 400);
-    }
+        }
 
-    function toggleMobileMenu() {
-        document.getElementById('mobile-menu').classList.add('hidden');
-    }
+        function startTimer(targetDate) {
+            setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate.getTime() - now;
 
-    document.addEventListener('DOMContentLoaded', () => {
-         document.getElementById('home-page').classList.remove('page-hidden');
-    });
-</script>
+                if (distance < 0) return;
+
+                const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+                const dEl = document.getElementById('days');
+                if(dEl) {
+                    dEl.innerText = d < 10 ? '0'+d : d;
+                    document.getElementById('hours').innerText = h < 10 ? '0'+h : h;
+                    document.getElementById('minutes').innerText = m < 10 ? '0'+m : m;
+                }
+            }, 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadMatches);
+    </script>
 </body>
 
 </html>
+
 
 
