@@ -14,21 +14,12 @@
             theme: {
                 extend: {
                     colors: {
-                        mono: {
-                            black: '#000000',
-                            darkest: '#080808',
-                            dark: '#121212',
-                            medium: '#2a2a2a',
-                            light: '#888888',
-                            white: '#ffffff',
-                        }
+                        mono: { black: '#000000', darkest: '#050505', dark: '#121212', light: '#888888', white: '#ffffff' },
+                        gold: { 400: '#FACC15', 500: '#EAB308', 600: '#CA8A04' }
                     },
                     fontFamily: {
                         sans: ['Roboto', 'sans-serif'],
                         display: ['Teko', 'sans-serif'],
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     }
                 }
             }
@@ -36,63 +27,74 @@
     </script>
 
     <style>
-        body { background-color: #080808; color: #ffffff; overflow-x: hidden; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #111; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        body { background-color: #050505; color: #ffffff; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #555; }
 
+        /* Główne style strony */
         .page-content { opacity: 1; transform: translateY(0); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
         .page-hidden { display: none; }
         .page-exit { opacity: 0; transform: translateY(-20px); pointer-events: none; }
         .page-enter { opacity: 0; transform: translateY(20px); }
-
         .bw-filter { filter: grayscale(100%) contrast(110%) brightness(95%); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .color-reveal:hover .bw-filter { filter: grayscale(0%) contrast(100%) brightness(100%); }
-
-        .hero-bg {
-            background-image: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, #080808 100%), url('https://www.jasna31.pl/image/mdsmkfafqtsx/1920/1080/smart/original/');
-            background-size: cover; background-position: center; background-attachment: fixed;
-        }
-
-        .nav-item { position: relative; }
+        .hero-bg { background-image: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, #050505 100%), url('https://www.jasna31.pl/image/mdsmkfafqtsx/1920/1080/smart/original/'); background-size: cover; background-position: center; background-attachment: fixed; }
         .nav-item::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background-color: white; transition: width 0.3s ease; }
         .nav-item:hover::after, .nav-item.active::after { width: 100%; }
         .nav-item.active { color: white; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+        /* --- NOWY DESIGN ADMINA (SIDEBAR LAYOUT) --- */
+        .admin-layout { display: flex; height: 100vh; overflow: hidden; background-color: #09090b; }
+        .sidebar { width: 280px; background-color: #000000; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; flex-shrink: 0; transition: transform 0.3s ease; z-index: 50; }
+        .main-content { flex: 1; overflow-y: auto; padding: 2rem; position: relative; }
         
-        /* Style Premium Admin - POPRAWIONE POLA */
-        .glass-panel { @apply bg-[#111]/90 backdrop-blur-xl border border-white/10 shadow-2xl; }
-        .admin-stat-card { @apply bg-gradient-to-br from-white/5 to-white/0 border border-white/10 p-6 rounded-2xl flex flex-col items-start justify-between hover:border-white/20 transition-all duration-300; }
-        .admin-tab-btn { @apply px-6 py-4 text-gray-500 font-display text-xl uppercase tracking-widest border-b-2 border-transparent hover:text-white transition-all duration-300 flex items-center gap-2; }
-        .admin-tab-btn.active { @apply text-white border-white bg-white/5; }
-        
-        /* Tu jest zmiana - wymuszone ciemne tło */
-        .admin-input { 
-            @apply w-full bg-[#1a1a1a] border border-white/20 p-4 text-white focus:border-white focus:ring-1 focus:ring-white outline-none transition-all rounded-lg font-mono text-sm placeholder-gray-500; 
+        .sidebar-link { 
+            display: flex; items-center; gap: 1rem; padding: 1rem 1.5rem; color: #a1a1aa; 
+            transition: all 0.2s; border-left: 3px solid transparent; cursor: pointer; font-family: 'Roboto', sans-serif; font-size: 0.95rem;
         }
+        .sidebar-link:hover { background-color: rgba(255,255,255,0.03); color: white; }
+        .sidebar-link.active { background-color: rgba(255,255,255,0.05); color: white; border-left-color: #EAB308; } /* Złoty akcent */
+        .sidebar-link i { width: 20px; text-align: center; font-size: 1.1rem; }
+
+        .stat-card { background: #18181b; border: 1px solid rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; }
+        .card-value { font-family: 'Teko', sans-serif; font-size: 3rem; line-height: 1; font-weight: 700; color: white; }
+        .card-label { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; color: #71717a; margin-bottom: 0.5rem; }
+
+        /* Tabela w nowym stylu */
+        .modern-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+        .modern-table th { text-align: left; padding: 1rem; color: #71717a; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+        .modern-table td { background: #18181b; padding: 1rem; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); first-child: border-left: 1px solid rgba(255,255,255,0.05); last-child: border-right: 1px solid rgba(255,255,255,0.05); }
+        .modern-table tr td:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; border-left: 1px solid rgba(255,255,255,0.05); }
+        .modern-table tr td:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-right: 1px solid rgba(255,255,255,0.05); }
         
-        /* Naprawa kalendarza i zegara w przeglądarkach */
-        input[type="date"], input[type="time"] {
-            color-scheme: dark;
+        /* Formularze - naprawione kolory */
+        .modern-input { 
+            width: 100%; background-color: #09090b; border: 1px solid #27272a; color: white; padding: 0.75rem 1rem; 
+            border-radius: 8px; outline: none; transition: border-color 0.2s; font-size: 0.95rem;
+        }
+        .modern-input:focus { border-color: #EAB308; }
+        .modern-label { display: block; color: #a1a1aa; font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+        
+        /* Wymuszenie ciemnego kalendarza */
+        input[type="date"], input[type="time"] { color-scheme: dark; }
+        input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus {
+            -webkit-text-fill-color: white; -webkit-box-shadow: 0 0 0px 1000px #09090b inset; transition: background-color 5000s ease-in-out 0s;
         }
 
-        /* Naprawa białego tła przy autouzupełnianiu */
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover, 
-        input:-webkit-autofill:focus, 
-        input:-webkit-autofill:active{
-            -webkit-box-shadow: 0 0 0 30px #1a1a1a inset !important;
-            -webkit-text-fill-color: white !important;
-        }
-
-        .admin-label { @apply block text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-2 font-bold; }
-        .table-header { @apply px-6 py-4 text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-white/10; }
-        .table-cell { @apply px-6 py-4 whitespace-nowrap text-sm border-b border-white/5 group-hover:bg-white/5 transition-colors; }
+        /* Karty zawodników w adminie */
+        .admin-player-card { background: #18181b; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; position: relative; group; }
+        .admin-player-card:hover { border-color: #EAB308; transform: translateY(-2px); transition: all 0.2s; }
+        
+        /* Modal slide-in animation */
+        @keyframes modalFade { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .modal-content { animation: modalFade 0.2s ease-out forwards; }
     </style>
 </head>
-<body class="font-sans antialiased bg-mono-darkest selection:bg-white selection:text-black">
+<body class="font-sans antialiased bg-mono-darkest selection:bg-gold-500 selection:text-black">
 
-    <nav class="fixed w-full z-50 bg-mono-black/90 backdrop-blur-md border-b border-white/5 transition-all duration-300" id="navbar">
+    <nav class="fixed w-full z-40 bg-black/90 backdrop-blur-md border-b border-white/5 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex items-center justify-between h-24">
                 <div class="flex items-center gap-4 cursor-pointer group" onclick="changePage('home-page')">
@@ -112,17 +114,17 @@
                         <button onclick="changePage('media-page')" id="btn-media-page" class="nav-item hover:text-white transition-colors py-2">MEDIA</button>
                     </div>
                 </div>
-                <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden text-white p-2 hover:bg-white/10 rounded transition">
+                <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden text-white p-2">
                     <i class="fas fa-bars text-2xl"></i>
                 </button>
             </div>
         </div>
         <div id="mobile-menu" class="hidden md:hidden bg-[#050505] border-b border-white/10 absolute w-full shadow-2xl">
             <div class="flex flex-col p-6 space-y-6 font-display text-2xl text-center">
-                <button onclick="changePage('home-page'); toggleMobileMenu()" class="text-white hover:text-gray-300">START</button>
-                <button onclick="changePage('schedule-page'); toggleMobileMenu()" class="text-white hover:text-gray-300">TERMINARZ</button>
-                <button onclick="changePage('squad-page'); toggleMobileMenu()" class="text-white hover:text-gray-300">KADRA</button>
-                <button onclick="changePage('media-page'); toggleMobileMenu()" class="text-white hover:text-gray-300">MEDIA</button>
+                <button onclick="changePage('home-page'); toggleMobileMenu()" class="text-white">START</button>
+                <button onclick="changePage('schedule-page'); toggleMobileMenu()" class="text-white">TERMINARZ</button>
+                <button onclick="changePage('squad-page'); toggleMobileMenu()" class="text-white">KADRA</button>
+                <button onclick="changePage('media-page'); toggleMobileMenu()" class="text-white">MEDIA</button>
             </div>
         </div>
     </nav>
@@ -135,38 +137,22 @@
                     <div class="inline-block mb-6 px-4 py-1 border border-white/20 rounded-full bg-black/30 backdrop-blur-sm" data-aos="fade-down">
                          <p class="text-mono-light font-mono text-xs tracking-[0.4em] uppercase">Oficjalna strona klubu</p>
                     </div>
-                    <h1 class="text-7xl md:text-[9rem] font-display font-bold mb-6 leading-[0.9] uppercase text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]" data-aos="zoom-in" data-aos-duration="1000">
+                    <h1 class="text-7xl md:text-[9rem] font-display font-bold mb-6 leading-[0.9] uppercase text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]" data-aos="zoom-in">
                         Gliwickie<br><span class="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600" style="-webkit-text-stroke: 1px rgba(255,255,255,0.3);">Orły</span>
                     </h1>
-                    
                     <p class="text-gray-300 text-xl md:text-2xl max-w-2xl mx-auto mb-12 font-light tracking-wide leading-relaxed" data-aos="fade-up" data-aos-delay="200">
                         Pasja. Walka. Charakter.<br><span class="text-white/50 text-base">Dumny reprezentant Gliwic.</span>
                     </p>
-
                     <div class="mb-12 inline-flex items-center justify-center gap-8 p-8 border border-white/10 bg-black/60 backdrop-blur-md rounded-2xl shadow-2xl" data-aos="fade-up" data-aos-delay="300">
-                        <div class="text-center">
-                            <span class="block text-5xl font-display font-bold text-white tabular-nums" id="days">00</span>
-                            <span class="text-[10px] text-mono-light uppercase tracking-[0.3em]">Dni</span>
-                        </div>
+                        <div class="text-center"><span class="block text-5xl font-display font-bold text-white tabular-nums" id="days">00</span><span class="text-[10px] text-mono-light uppercase tracking-[0.3em]">Dni</span></div>
                         <span class="text-3xl text-white/20 font-light">:</span>
-                        <div class="text-center">
-                            <span class="block text-5xl font-display font-bold text-white tabular-nums" id="hours">00</span>
-                            <span class="text-[10px] text-mono-light uppercase tracking-[0.3em]">Godz</span>
-                        </div>
+                        <div class="text-center"><span class="block text-5xl font-display font-bold text-white tabular-nums" id="hours">00</span><span class="text-[10px] text-mono-light uppercase tracking-[0.3em]">Godz</span></div>
                         <span class="text-3xl text-white/20 font-light">:</span>
-                         <div class="text-center">
-                            <span class="block text-5xl font-display font-bold text-white tabular-nums" id="minutes">00</span>
-                            <span class="text-[10px] text-mono-light uppercase tracking-[0.3em]">Min</span>
-                        </div>
+                         <div class="text-center"><span class="block text-5xl font-display font-bold text-white tabular-nums" id="minutes">00</span><span class="text-[10px] text-mono-light uppercase tracking-[0.3em]">Min</span></div>
                     </div>
-
                     <div class="flex flex-col sm:flex-row gap-6 justify-center" data-aos="fade-up" data-aos-delay="400">
-                        <button onclick="changePage('schedule-page')" class="group px-10 py-4 bg-white text-black font-display text-2xl font-bold tracking-wider hover:bg-gray-200 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_50px_rgba(255,255,255,0.4)] hover:-translate-y-1">
-                            NAJBLIŻSZY MECZ <i class="fas fa-arrow-right ml-2 text-sm opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0"></i>
-                        </button>
-                        <button onclick="changePage('media-page')" class="group px-10 py-4 bg-transparent border border-white/30 text-white font-display text-2xl font-bold tracking-wider hover:bg-white/10 transition-all hover:-translate-y-1 backdrop-blur-sm">
-                            ZOBACZ MEDIA
-                        </button>
+                        <button onclick="changePage('schedule-page')" class="group px-10 py-4 bg-white text-black font-display text-2xl font-bold tracking-wider hover:bg-gray-200 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)]">NAJBLIŻSZY MECZ</button>
+                        <button onclick="changePage('media-page')" class="group px-10 py-4 bg-transparent border border-white/30 text-white font-display text-2xl font-bold tracking-wider hover:bg-white/10 transition-all">ZOBACZ MEDIA</button>
                     </div>
                 </div>
             </section>
@@ -176,40 +162,25 @@
              <div class="max-w-7xl mx-auto px-4 pb-20">
                 <div class="text-center mb-16" data-aos="fade-down">
                     <h2 class="text-6xl md:text-8xl font-display font-bold uppercase mb-4">Centrum <span class="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-800">Mediów</span></h2>
-                    <p class="text-mono-light uppercase tracking-widest text-sm">Bądź na bieżąco z życiem klubu</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[300px]">
                     <a href="https://www.instagram.com/ks_gliwickie_orly/" target="_blank" class="color-reveal group relative lg:col-span-2 lg:row-span-2 overflow-hidden border border-white/10 block cursor-pointer rounded-2xl">
                         <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" class="w-full h-full object-cover bw-filter transition-transform duration-700 group-hover:scale-105" alt="Insta Post">
-                        <div class="absolute top-4 right-4 bg-white/10 backdrop-blur-md text-white w-12 h-12 flex items-center justify-center rounded-full z-20 group-hover:bg-[#E1306C] transition-colors border border-white/20 shadow-lg">
-                            <i class="fab fa-instagram text-2xl"></i>
-                        </div>
                         <div class="absolute bottom-0 left-0 p-10 w-full bg-gradient-to-t from-black via-black/70 to-transparent">
                             <h3 class="font-display text-5xl font-bold uppercase text-white mb-2 translate-y-4 group-hover:translate-y-0 transition-transform">Instagram</h3>
-                            <p class="text-gray-300 font-mono text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">Ekskluzywne materiały z szatni</p>
                         </div>
                     </a>
                     <a href="https://www.tiktok.com/@ks_gliwickie_orly" target="_blank" class="color-reveal group relative overflow-hidden border border-white/10 block rounded-2xl">
                          <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover bw-filter transition-transform duration-700 group-hover:scale-105" alt="TikTok">
-                        <div class="absolute inset-0 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                             <i class="fas fa-play-circle text-7xl text-white drop-shadow-lg"></i>
-                        </div>
-                         <div class="absolute bottom-6 left-6 z-20">
-                            <p class="font-display text-2xl uppercase drop-shadow-md">Najlepsze akcje</p>
-                        </div>
+                         <div class="absolute inset-0 flex items-center justify-center z-10"><i class="fas fa-play-circle text-6xl text-white/80 drop-shadow-lg"></i></div>
                     </a>
                     <a href="https://www.facebook.com/KSGliwickieOrly" target="_blank" class="group relative overflow-hidden border border-white/10 bg-[#111] flex flex-col items-center justify-center p-6 text-center hover:bg-[#1a1a1a] transition-colors rounded-2xl">
-                        <div class="w-20 h-20 bg-[#1877F2]/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-[#1877F2] transition-colors duration-500">
-                            <i class="fab fa-facebook-f text-4xl text-[#1877F2] group-hover:text-white transition-colors"></i>
-                        </div>
+                        <div class="w-20 h-20 bg-[#1877F2]/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-[#1877F2] transition-colors duration-500"><i class="fab fa-facebook-f text-4xl text-[#1877F2] group-hover:text-white transition-colors"></i></div>
                         <h3 class="font-display text-3xl uppercase font-bold text-white">Facebook</h3>
-                        <p class="text-gray-500 text-xs mt-2 uppercase tracking-wide">Newsy i Wyniki</p>
                     </a>
                      <a href="https://www.instagram.com/ks_gliwickie_orly/" target="_blank" class="color-reveal group relative overflow-hidden border border-white/10 block rounded-2xl">
                         <img src="https://images.unsplash.com/photo-1551958219-acbc608c6377?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover bw-filter transition-transform duration-700 group-hover:scale-105" alt="Team">
-                         <div class="absolute bottom-0 left-0 p-6 bg-gradient-to-t from-black to-transparent w-full">
-                            <p class="font-display text-2xl uppercase">Drużyna</p>
-                        </div>
+                         <div class="absolute bottom-0 left-0 p-6 bg-gradient-to-t from-black to-transparent w-full"><p class="font-display text-2xl uppercase">Drużyna</p></div>
                     </a>
                 </div>
             </div>
@@ -219,12 +190,9 @@
             <div class="max-w-5xl mx-auto px-4 pb-20">
                 <header class="mb-12 text-center">
                     <h1 class="text-5xl md:text-8xl font-display font-bold uppercase">Terminarz <span class="text-gray-600">25/26</span></h1>
-                    <div class="h-1 w-24 bg-gradient-to-r from-transparent via-white to-transparent mx-auto mt-6"></div>
                 </header>
                 <div id="matches-container" class="grid gap-4">
-                    <div class="text-center text-gray-500 py-20 animate-pulse">
-                        <i class="fas fa-circle-notch fa-spin text-4xl mb-4"></i><br>Ładowanie terminarza...
-                    </div>
+                    <div class="text-center text-gray-500 py-20 animate-pulse">Ładowanie terminarza...</div>
                 </div>
             </div>
         </main>
@@ -235,312 +203,228 @@
                     <h1 class="text-6xl md:text-8xl font-display font-bold uppercase">NASZA <span class="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-800">KADRA</span></h1>
                 </header>
                 <div id="squad-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="col-span-full text-center py-20 text-gray-500">
-                         <i class="fas fa-circle-notch fa-spin text-4xl mb-4"></i><br>Ładowanie kadry...
-                    </div>
+                    <div class="col-span-full text-center py-20 text-gray-500">Ładowanie kadry...</div>
                 </div>
             </div>
         </main>
 
-        <main id="admin-page" class="page-content page-hidden absolute inset-0 w-full pt-32 bg-[#050505] min-h-screen">
-            <div class="max-w-[1400px] mx-auto px-6 pb-20">
+        <main id="admin-page" class="page-content page-hidden absolute inset-0 w-full bg-[#050505] min-h-screen z-50">
+            
+            <div id="login-screen" class="flex flex-col items-center justify-center h-screen w-full relative z-50 bg-black">
+                <div class="absolute inset-0 bg-[url('https://www.jasna31.pl/image/mdsmkfafqtsx/1920/1080/smart/original/')] bg-cover bg-center opacity-20 blur-sm"></div>
+                <div class="bg-black/80 backdrop-blur-xl p-12 rounded-3xl border border-white/10 max-w-md w-full text-center relative z-10 shadow-2xl">
+                    <img src="./logo.png" class="w-20 h-20 mx-auto mb-6 opacity-80" alt="Admin Logo">
+                    <h2 class="text-4xl font-display font-bold text-white mb-2">PANEL <span class="text-gold-500">ADMINA</span></h2>
+                    <p class="text-gray-500 text-sm mb-8 uppercase tracking-widest">Dostęp tylko dla zarządu</p>
+                    <button onclick="loginWithGoogle()" class="w-full py-4 bg-white text-black font-bold uppercase tracking-wider rounded-xl hover:bg-gray-200 transition-all flex items-center justify-center gap-3">
+                        <i class="fab fa-google"></i> Zaloguj się
+                    </button>
+                    <p id="error-msg" class="text-red-500 mt-6 font-mono text-xs hidden bg-red-900/20 py-2 border border-red-900/50 rounded"></p>
+                </div>
+            </div>
+
+            <div id="dashboard" class="hidden admin-layout animate-fade-in">
                 
-                <div id="login-screen" class="flex flex-col items-center justify-center min-h-[60vh] text-center relative z-10">
-                    <div class="absolute inset-0 bg-white/5 blur-[100px] rounded-full opacity-20 pointer-events-none"></div>
-                    
-                    <div class="glass-panel p-12 rounded-3xl max-w-md w-full relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white to-transparent"></div>
-                        
-                        <h2 class="text-5xl font-display font-bold mb-2 text-white">ADMIN<span class="text-gray-500">PANEL</span></h2>
-                        <p class="text-gray-400 text-sm mb-10 font-mono uppercase tracking-widest">Autoryzowany dostęp</p>
-                        
-                        <button onclick="loginWithGoogle()" class="group relative w-full py-5 bg-white text-black font-display text-2xl font-bold tracking-wider hover:bg-gray-200 transition-all rounded-xl overflow-hidden">
-                            <div class="relative z-10 flex items-center justify-center gap-3">
-                                <i class="fab fa-google"></i> ZALOGUJ SIĘ
-                            </div>
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                        </button>
-                        <p id="error-msg" class="text-red-500 mt-6 font-mono text-xs hidden uppercase tracking-widest bg-red-900/10 py-2 border border-red-900/30 rounded"></p>
-                    </div>
-                </div>
-
-                <div id="dashboard" class="hidden animate-fade-in-up">
-                    
-                    <div class="flex flex-col md:flex-row justify-between items-end mb-10 pb-6 border-b border-white/10 gap-6">
+                <aside class="sidebar">
+                    <div class="p-6 border-b border-white/5 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gold-500 rounded flex items-center justify-center text-black font-bold text-xl font-display">KS</div>
                         <div>
-                            <p class="text-gray-500 font-mono text-xs uppercase tracking-widest mb-1">Witaj w centrum dowodzenia</p>
-                            <h2 class="text-5xl md:text-6xl font-display font-bold text-white">DASHBOARD</h2>
-                        </div>
-                        <button onclick="logout()" class="group flex items-center gap-3 text-gray-400 hover:text-red-400 font-mono text-xs uppercase tracking-wider transition-all bg-white/5 hover:bg-red-900/20 px-5 py-3 rounded-lg border border-white/10 hover:border-red-500/30">
-                            <span>Wyloguj</span>
-                            <i class="fas fa-sign-out-alt group-hover:translate-x-1 transition-transform"></i>
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                        <div class="admin-stat-card group">
-                            <div class="mb-4 p-3 bg-white/5 rounded-lg text-white group-hover:bg-white group-hover:text-black transition-colors">
-                                <i class="fas fa-calendar-check text-2xl"></i>
-                            </div>
-                            <div>
-                                <p class="text-gray-400 text-xs uppercase tracking-widest font-bold">Liczba Meczów</p>
-                                <h3 class="text-4xl font-display font-bold text-white mt-1" id="stat-total-matches">--</h3>
-                            </div>
-                        </div>
-                        <div class="admin-stat-card group">
-                            <div class="mb-4 p-3 bg-white/5 rounded-lg text-white group-hover:bg-white group-hover:text-black transition-colors">
-                                <i class="fas fa-users text-2xl"></i>
-                            </div>
-                            <div>
-                                <p class="text-gray-400 text-xs uppercase tracking-widest font-bold">Liczba Zawodników</p>
-                                <h3 class="text-4xl font-display font-bold text-white mt-1" id="stat-total-players">--</h3>
-                            </div>
-                        </div>
-                        <div class="admin-stat-card group border-green-500/20 bg-green-900/5">
-                            <div class="mb-4 p-3 bg-green-500/10 rounded-lg text-green-400 group-hover:bg-green-500 group-hover:text-black transition-colors">
-                                <i class="fas fa-clock text-2xl"></i>
-                            </div>
-                            <div>
-                                <p class="text-gray-400 text-xs uppercase tracking-widest font-bold">Najbliższy Mecz</p>
-                                <h3 class="text-xl font-display font-bold text-white mt-1 truncate w-full" id="stat-next-match">Brak</h3>
-                            </div>
+                            <h3 class="font-display text-xl leading-none text-white">GLIWICKIE ORŁY</h3>
+                            <span class="text-[10px] text-gray-500 uppercase tracking-widest">CMS v3.0</span>
                         </div>
                     </div>
+                    
+                    <nav class="flex-1 py-6 space-y-1">
+                        <div onclick="switchAdminTab('dashboard')" class="sidebar-link active" id="link-dashboard">
+                            <i class="fas fa-home"></i> <span>Pulpit</span>
+                        </div>
+                        <div onclick="switchAdminTab('matches')" class="sidebar-link" id="link-matches">
+                            <i class="fas fa-calendar-alt"></i> <span>Zarządzaj Meczami</span>
+                        </div>
+                        <div onclick="switchAdminTab('squad')" class="sidebar-link" id="link-squad">
+                            <i class="fas fa-users"></i> <span>Kadra Zawodników</span>
+                        </div>
+                        <div onclick="switchAdminTab('live')" class="sidebar-link" id="link-live">
+                            <i class="fas fa-broadcast-tower text-red-500"></i> <span class="text-white">Centrum LIVE</span>
+                        </div>
+                    </nav>
 
-                    <div class="glass-panel rounded-2xl p-2 mb-8 inline-flex gap-2 relative z-10">
-                        <button onclick="switchAdminTab('matches')" class="px-6 py-3 rounded-xl font-display text-xl uppercase tracking-wider transition-all text-gray-400 hover:text-white hover:bg-white/5" id="tab-matches">
-                            <i class="fas fa-list mr-2 text-sm"></i> Mecze
-                        </button>
-                        <button onclick="switchAdminTab('squad')" class="px-6 py-3 rounded-xl font-display text-xl uppercase tracking-wider transition-all text-gray-400 hover:text-white hover:bg-white/5" id="tab-squad">
-                            <i class="fas fa-user-friends mr-2 text-sm"></i> Kadra
-                        </button>
-                        <button onclick="switchAdminTab('live')" class="px-6 py-3 rounded-xl font-display text-xl uppercase tracking-wider transition-all text-red-500 bg-red-900/10 hover:bg-red-900/30 border border-red-500/20" id="tab-live">
-                            <span class="animate-pulse mr-2 text-[10px] align-middle">●</span> LIVE CONTROL
+                    <div class="p-6 border-t border-white/5">
+                        <button onclick="logout()" class="flex items-center gap-3 text-gray-500 hover:text-white transition-colors text-sm font-medium w-full">
+                            <i class="fas fa-sign-out-alt"></i> Wyloguj się
                         </button>
                     </div>
+                </aside>
 
-                    <div id="panel-matches" class="admin-panel-section">
-                        <div class="glass-panel rounded-2xl overflow-hidden">
-                            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
-                                <h3 class="font-display text-2xl uppercase text-white">Baza Spotkań</h3>
-                                <button onclick="openMatchModal()" class="px-6 py-2 bg-white text-black font-bold uppercase text-xs tracking-widest rounded hover:bg-gray-200 transition-colors shadow-lg shadow-white/10">
-                                    <i class="fas fa-plus mr-2"></i> Dodaj
+                <main class="main-content">
+                    
+                    <div id="view-dashboard" class="admin-view">
+                        <h2 class="text-3xl font-display font-bold text-white mb-8">PULPIT</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="stat-card">
+                                <p class="card-label">Wszystkie Mecze</p>
+                                <p class="card-value" id="stat-total-matches">--</p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="card-label">Zawodnicy</p>
+                                <p class="card-value text-gold-500" id="stat-total-players">--</p>
+                            </div>
+                            <div class="stat-card bg-gradient-to-br from-[#18181b] to-green-900/10 border-green-900/30">
+                                <p class="card-label text-green-500">Najbliższy Mecz</p>
+                                <p class="text-xl font-bold font-display text-white mt-2 truncate" id="stat-next-match">Brak</p>
+                            </div>
+                        </div>
+                         <div class="stat-card">
+                            <p class="card-label mb-4">Szybkie Akcje</p>
+                            <div class="flex gap-4">
+                                <button onclick="switchAdminTab('matches'); openMatchModal()" class="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm font-bold uppercase transition-all">
+                                    + Dodaj Mecz
+                                </button>
+                                <button onclick="switchAdminTab('squad'); openPlayerModal()" class="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm font-bold uppercase transition-all">
+                                    + Dodaj Gracza
                                 </button>
                             </div>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse">
-                                    <thead class="bg-black/40">
-                                        <tr>
-                                            <th class="table-header">Data / Czas</th>
-                                            <th class="table-header">Rywal</th>
-                                            <th class="table-header">Status</th>
-                                            <th class="table-header">Wynik</th>
-                                            <th class="table-header text-right">Opcje</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="admin-matches-list" class="font-mono text-sm text-gray-300 group">
-                                        </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
 
-                    <div id="panel-squad" class="admin-panel-section hidden">
-                         <div class="glass-panel rounded-2xl overflow-hidden">
-                            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
-                                <h3 class="font-display text-2xl uppercase text-white">Lista Zawodników</h3>
-                                <button onclick="openPlayerModal()" class="px-6 py-2 bg-white text-black font-bold uppercase text-xs tracking-widest rounded hover:bg-gray-200 transition-colors shadow-lg shadow-white/10">
-                                    <i class="fas fa-plus mr-2"></i> Dodaj
-                                </button>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse">
-                                    <thead class="bg-black/40">
-                                        <tr>
-                                            <th class="table-header w-20">Nr</th>
-                                            <th class="table-header">Imię i Nazwisko</th>
-                                            <th class="table-header">Pozycja</th>
-                                            <th class="table-header text-right">Opcje</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="admin-players-list" class="font-mono text-sm text-gray-300">
-                                        </tbody>
-                                </table>
-                            </div>
+                    <div id="view-matches" class="admin-view hidden">
+                        <div class="flex justify-between items-center mb-8">
+                            <h2 class="text-3xl font-display font-bold text-white">LISTA MECZÓW</h2>
+                            <button onclick="openMatchModal()" class="px-6 py-2 bg-gold-500 hover:bg-gold-600 text-black font-bold uppercase text-xs tracking-widest rounded transition-colors shadow-lg shadow-gold-500/20">
+                                <i class="fas fa-plus mr-2"></i> Nowy Mecz
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="modern-table">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Rywal</th>
+                                        <th>Status</th>
+                                        <th>Wynik</th>
+                                        <th class="text-right">Akcje</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-matches-list"></tbody>
+                            </table>
                         </div>
                     </div>
 
-                    <div id="panel-live" class="admin-panel-section hidden">
-                        <div class="grid lg:grid-cols-12 gap-8">
-                            
-                            <div class="lg:col-span-4 space-y-6">
-                                <div class="glass-panel p-6 rounded-2xl">
-                                    <label class="admin-label">Wybierz aktywne spotkanie</label>
-                                    <select id="live-match-select" onchange="loadLiveMatch()" class="admin-input mb-4 cursor-pointer">
-                                        <option value="">-- Wybierz mecz --</option>
+                    <div id="view-squad" class="admin-view hidden">
+                        <div class="flex justify-between items-center mb-8">
+                            <h2 class="text-3xl font-display font-bold text-white">ZAWODNICY</h2>
+                            <button onclick="openPlayerModal()" class="px-6 py-2 bg-white hover:bg-gray-200 text-black font-bold uppercase text-xs tracking-widest rounded transition-colors">
+                                <i class="fas fa-plus mr-2"></i> Nowy Gracz
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6" id="admin-players-grid">
+                            </div>
+                    </div>
+
+                    <div id="view-live" class="admin-view hidden">
+                        <div class="grid lg:grid-cols-12 gap-8 h-[calc(100vh-8rem)]">
+                            <div class="lg:col-span-4 flex flex-col gap-6">
+                                <div class="stat-card">
+                                    <label class="modern-label">Wybierz Mecz</label>
+                                    <select id="live-match-select" onchange="loadLiveMatch()" class="modern-input cursor-pointer">
+                                        <option value="">-- Wybierz z listy --</option>
                                     </select>
-                                    <p class="text-xs text-gray-500 leading-relaxed">
-                                        <i class="fas fa-info-circle mr-1"></i> Tutaj pojawiają się tylko mecze, które nie mają statusu "Zakończony".
-                                    </p>
+                                    <p class="text-[10px] text-gray-500 mt-2 uppercase">Tylko trwające lub nadchodzące</p>
                                 </div>
-                                <div class="glass-panel p-6 rounded-2xl text-center">
-                                    <p class="text-xs uppercase tracking-widest text-gray-500 mb-4">Status transmisji</p>
-                                    <div class="flex flex-col gap-3">
-                                        <button onclick="setLiveStatus('Trwa')" class="w-full py-3 bg-red-600 hover:bg-red-500 text-white font-bold uppercase text-xs rounded shadow-lg shadow-red-900/20 flex items-center justify-center gap-2">
-                                            <span class="animate-pulse">●</span> Rozpocznij LIVE
+                                <div class="stat-card flex-1">
+                                    <label class="modern-label mb-4">Sterowanie Statusem</label>
+                                    <div class="grid grid-cols-1 gap-3">
+                                        <button onclick="setLiveStatus('Trwa')" class="py-4 bg-red-600 hover:bg-red-500 text-white font-bold uppercase text-xs rounded shadow-lg shadow-red-900/20 flex items-center justify-center gap-2">
+                                            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span> START LIVE
                                         </button>
-                                        <div class="flex gap-3">
-                                            <button onclick="setLiveStatus('Przerwa')" class="flex-1 py-3 bg-yellow-600/20 hover:bg-yellow-600/40 border border-yellow-600/50 text-yellow-500 font-bold uppercase text-xs rounded transition-colors">
-                                                Przerwa
-                                            </button>
-                                            <button onclick="setLiveStatus('Zakończony')" class="flex-1 py-3 bg-gray-800 hover:bg-gray-700 text-gray-400 font-bold uppercase text-xs rounded transition-colors">
-                                                Koniec
-                                            </button>
-                                        </div>
+                                        <button onclick="setLiveStatus('Przerwa')" class="py-3 bg-[#27272a] hover:bg-[#3f3f46] text-white font-bold uppercase text-xs rounded transition-colors border border-white/5">
+                                            PRZERWA
+                                        </button>
+                                        <button onclick="setLiveStatus('Zakończony')" class="py-3 bg-[#27272a] hover:bg-[#3f3f46] text-gray-400 font-bold uppercase text-xs rounded transition-colors border border-white/5">
+                                            KONIEC MECZU
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="lg:col-span-8">
-                                <div id="live-controls" class="hidden glass-panel rounded-3xl p-8 relative overflow-hidden h-full flex flex-col justify-center">
-                                    <div class="absolute inset-0 bg-gradient-to-br from-red-900/10 to-transparent pointer-events-none"></div>
+                                <div id="live-controls" class="hidden h-full bg-[#111] border border-white/10 rounded-2xl p-8 relative overflow-hidden flex flex-col justify-center items-center">
+                                    <div class="absolute inset-0 bg-gradient-to-br from-red-900/5 to-transparent"></div>
+                                    <h3 class="text-2xl font-display font-bold text-gray-500 uppercase mb-8 relative z-10">Tablica Wyników</h3>
                                     
-                                    <div class="text-center mb-10 relative z-10">
-                                        <span class="inline-block px-3 py-1 bg-red-600 text-white text-[10px] font-bold uppercase tracking-widest rounded-full mb-4 animate-pulse">Na Żywo</span>
-                                        <h3 class="text-3xl font-display font-bold text-white uppercase opacity-80">GLIWICKIE ORŁY <span class="text-gray-600 mx-2">vs</span> <span id="live-opponent-name" class="text-white">RYWAL</span></h3>
-                                    </div>
-
-                                    <div class="flex items-center justify-center gap-8 mb-10 relative z-10">
+                                    <div class="flex items-center gap-12 mb-12 relative z-10">
                                         <div class="text-center">
-                                            <div class="text-8xl md:text-9xl font-display font-bold text-white tabular-nums tracking-tighter" id="live-score-home">0</div>
-                                            <p class="text-xs text-gray-500 uppercase tracking-widest mt-2">Gospodarze</p>
+                                            <div class="text-8xl font-display font-bold text-white tabular-nums" id="live-score-home">0</div>
+                                            <p class="text-xs text-gold-500 uppercase tracking-widest mt-2 font-bold">ORŁY</p>
                                         </div>
-                                        <div class="text-6xl text-gray-700 font-light opacity-30">:</div>
+                                        <div class="text-6xl text-gray-700 font-light">:</div>
                                         <div class="text-center">
-                                            <div class="text-8xl md:text-9xl font-display font-bold text-white tabular-nums tracking-tighter" id="live-score-away">0</div>
-                                             <p class="text-xs text-gray-500 uppercase tracking-widest mt-2">Goście</p>
+                                            <div class="text-8xl font-display font-bold text-white tabular-nums" id="live-score-away">0</div>
+                                            <p class="text-xs text-gray-500 uppercase tracking-widest mt-2" id="live-opponent-name-display">RYWAL</p>
                                         </div>
                                     </div>
 
-                                    <div class="grid grid-cols-2 gap-12 max-w-2xl mx-auto w-full relative z-10">
+                                    <div class="grid grid-cols-2 gap-16 relative z-10 w-full max-w-lg">
                                         <div class="flex gap-4 justify-center">
-                                            <button onclick="updateLiveScore(-1, 0)" class="w-16 h-16 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-2xl transition-all flex items-center justify-center"><i class="fas fa-minus"></i></button>
-                                            <button onclick="updateLiveScore(1, 0)" class="w-16 h-16 rounded-2xl bg-white text-black font-bold text-3xl shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:scale-105 transition-all flex items-center justify-center"><i class="fas fa-plus"></i></button>
+                                            <button onclick="updateLiveScore(-1, 0)" class="w-14 h-14 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xl"><i class="fas fa-minus"></i></button>
+                                            <button onclick="updateLiveScore(1, 0)" class="w-14 h-14 rounded-full bg-gold-500 hover:bg-gold-400 text-black text-xl shadow-lg shadow-gold-500/20"><i class="fas fa-plus"></i></button>
                                         </div>
                                         <div class="flex gap-4 justify-center">
-                                            <button onclick="updateLiveScore(0, -1)" class="w-16 h-16 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-2xl transition-all flex items-center justify-center"><i class="fas fa-minus"></i></button>
-                                            <button onclick="updateLiveScore(0, 1)" class="w-16 h-16 rounded-2xl bg-gray-700 text-white font-bold text-3xl hover:bg-gray-600 hover:scale-105 transition-all flex items-center justify-center border border-white/20"><i class="fas fa-plus"></i></button>
+                                            <button onclick="updateLiveScore(0, -1)" class="w-14 h-14 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xl"><i class="fas fa-minus"></i></button>
+                                            <button onclick="updateLiveScore(0, 1)" class="w-14 h-14 rounded-full bg-white hover:bg-gray-200 text-black text-xl"><i class="fas fa-plus"></i></button>
                                         </div>
                                     </div>
-
                                 </div>
-                                <div id="live-placeholder" class="glass-panel rounded-3xl p-12 h-full flex flex-col items-center justify-center text-center text-gray-500 border-dashed">
-                                    <i class="fas fa-satellite-dish text-6xl mb-6 opacity-20"></i>
-                                    <h3 class="text-xl font-display uppercase tracking-wide text-gray-400">Panel Kontrolny LIVE</h3>
-                                    <p class="text-sm mt-2 max-w-xs mx-auto">Wybierz aktywny mecz z listy po lewej stronie, aby odblokować kontrolę wyniku.</p>
+                                <div id="live-placeholder" class="h-full border-2 border-dashed border-white/5 rounded-2xl flex flex-col items-center justify-center text-gray-600">
+                                    <i class="fas fa-gamepad text-6xl mb-4 opacity-20"></i>
+                                    <p>Wybierz mecz, aby sterować wynikiem</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                </div>
+                </main>
             </div>
         </main>
     </div>
 
-    <div id="match-modal" class="fixed inset-0 z-[60] bg-black/90 hidden items-center justify-center p-4 backdrop-blur-md opacity-0 transition-opacity duration-300">
-        <div class="glass-panel p-8 max-w-lg w-full rounded-2xl relative scale-95 transition-transform duration-300" id="match-modal-content">
-            <button onclick="closeModal('match-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-            <h3 id="modal-match-title" class="font-display text-3xl text-white mb-6 uppercase flex items-center gap-3"><i class="fas fa-futbol text-gray-500"></i> <span>Dodaj Mecz</span></h3>
-            <form id="match-form" class="space-y-5">
+    <div id="match-modal" class="fixed inset-0 z-[60] bg-black/80 hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-[#18181b] border border-white/10 p-8 max-w-lg w-full rounded-2xl relative shadow-2xl modal-content">
+            <button onclick="closeModal('match-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+            <h3 id="modal-match-title" class="font-display text-3xl text-white mb-6 uppercase">Edytuj Mecz</h3>
+            <form id="match-form" class="space-y-4">
                 <input type="hidden" id="match-id">
                 <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="admin-label">Data</label>
-                        <input type="date" id="matchDate" required class="admin-input">
-                    </div>
-                    <div>
-                        <label class="admin-label">Godzina</label>
-                        <input type="time" id="matchTime" required class="admin-input">
-                    </div>
+                    <div><label class="modern-label">Data</label><input type="date" id="matchDate" required class="modern-input"></div>
+                    <div><label class="modern-label">Godzina</label><input type="time" id="matchTime" required class="modern-input"></div>
                 </div>
-                <div>
-                    <label class="admin-label">Rywal</label>
-                    <input type="text" id="opponent" placeholder="np. KS Hutnicy" required class="admin-input">
-                </div>
-                <div>
-                    <label class="admin-label">Lokalizacja</label>
-                    <input type="text" id="location" value="ul. Jasna 31, Gliwice" required class="admin-input">
-                </div>
+                <div><label class="modern-label">Rywal</label><input type="text" id="opponent" required class="modern-input" placeholder="Wpisz nazwę..."></div>
+                <div><label class="modern-label">Lokalizacja</label><input type="text" id="location" value="ul. Jasna 31, Gliwice" required class="modern-input"></div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="admin-label">Typ</label>
-                         <select id="matchType" class="admin-input cursor-pointer">
-                            <option value="Mecz Ligowy">Mecz Ligowy</option>
-                            <option value="Sparing">Sparing</option>
-                            <option value="Puchar">Puchar</option>
-                        </select>
-                    </div>
-                    <div>
-                         <label class="admin-label">Status</label>
-                         <select id="matchStatus" class="admin-input cursor-pointer">
-                            <option value="Nadchodzący">Nadchodzący</option>
-                            <option value="Trwa">Trwa (LIVE)</option>
-                            <option value="Przerwa">Przerwa</option>
-                            <option value="Zakończony">Zakończony</option>
-                        </select>
-                    </div>
+                    <div><label class="modern-label">Typ</label><select id="matchType" class="modern-input"><option value="Mecz Ligowy">Mecz Ligowy</option><option value="Sparing">Sparing</option></select></div>
+                    <div><label class="modern-label">Status</label><select id="matchStatus" class="modern-input"><option value="Nadchodzący">Nadchodzący</option><option value="Trwa">Trwa</option><option value="Zakończony">Zakończony</option></select></div>
                 </div>
-                 <div>
-                    <label class="admin-label">Wynik (np. 3 : 0)</label>
-                    <input type="text" id="matchScore" class="admin-input text-center text-lg tracking-widest font-bold" placeholder="- : -">
-                </div>
-                <button type="submit" class="w-full bg-white text-black font-display text-xl font-bold py-4 rounded-xl hover:bg-gray-200 mt-2 transition-all shadow-lg shadow-white/10">ZAPISZ DANE</button>
+                <div><label class="modern-label">Wynik</label><input type="text" id="matchScore" class="modern-input text-center font-mono font-bold tracking-widest" placeholder="0 : 0"></div>
+                <button type="submit" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-gray-200 mt-2">ZAPISZ</button>
             </form>
         </div>
     </div>
 
-    <div id="player-modal" class="fixed inset-0 z-[60] bg-black/90 hidden items-center justify-center p-4 backdrop-blur-md opacity-0 transition-opacity duration-300">
-        <div class="glass-panel p-8 max-w-lg w-full rounded-2xl relative scale-95 transition-transform duration-300" id="player-modal-content">
-            <button onclick="closeModal('player-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-            <h3 id="modal-player-title" class="font-display text-3xl text-white mb-6 uppercase flex items-center gap-3"><i class="fas fa-user text-gray-500"></i> <span>Dodaj Gracza</span></h3>
-            <form id="player-form" class="space-y-5">
+    <div id="player-modal" class="fixed inset-0 z-[60] bg-black/80 hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-[#18181b] border border-white/10 p-8 max-w-lg w-full rounded-2xl relative shadow-2xl modal-content">
+            <button onclick="closeModal('player-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+            <h3 id="modal-player-title" class="font-display text-3xl text-white mb-6 uppercase">Edytuj Gracza</h3>
+            <form id="player-form" class="space-y-4">
                 <input type="hidden" id="player-id">
                 <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="admin-label">Imię</label>
-                        <input type="text" id="playerFirstName" required class="admin-input">
-                    </div>
-                    <div>
-                        <label class="admin-label">Nazwisko</label>
-                        <input type="text" id="playerLastName" required class="admin-input">
-                    </div>
+                    <div><label class="modern-label">Imię</label><input type="text" id="playerFirstName" required class="modern-input"></div>
+                    <div><label class="modern-label">Nazwisko</label><input type="text" id="playerLastName" required class="modern-input"></div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="admin-label">Numer</label>
-                        <input type="number" id="playerNumber" required class="admin-input">
-                    </div>
-                    <div>
-                        <label class="admin-label">Pozycja</label>
-                         <select id="playerPosition" class="admin-input cursor-pointer">
-                            <option value="Bramkarz">Bramkarz</option>
-                            <option value="Obrońca">Obrońca</option>
-                            <option value="Pomocnik">Pomocnik</option>
-                            <option value="Napastnik">Napastnik</option>
-                        </select>
-                    </div>
+                    <div><label class="modern-label">Numer</label><input type="number" id="playerNumber" required class="modern-input"></div>
+                    <div><label class="modern-label">Pozycja</label><select id="playerPosition" class="modern-input"><option value="Bramkarz">Bramkarz</option><option value="Obrońca">Obrońca</option><option value="Pomocnik">Pomocnik</option><option value="Napastnik">Napastnik</option></select></div>
                 </div>
-                 <div>
-                    <label class="admin-label">Zdjęcie URL</label>
-                    <input type="url" id="playerPhoto" required class="admin-input">
-                     <p class="text-[10px] text-gray-500 mt-2 flex items-center gap-2"><i class="fas fa-exclamation-circle"></i> Zalecany format pionowy (np. 600x800px)</p>
-                </div>
-                <button type="submit" class="w-full bg-white text-black font-display text-xl font-bold py-4 rounded-xl hover:bg-gray-200 mt-2 transition-all shadow-lg shadow-white/10">ZAPISZ DANE</button>
+                <div><label class="modern-label">Zdjęcie URL</label><input type="url" id="playerPhoto" required class="modern-input"><p class="text-[10px] text-gray-500 mt-1">Link do zdjęcia (format pionowy)</p></div>
+                <button type="submit" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-gray-200 mt-2">ZAPISZ</button>
             </form>
         </div>
     </div>
@@ -548,30 +432,12 @@
     <footer id="contact-footer" class="bg-black pt-20 pb-8 border-t-2 border-white relative overflow-hidden">
         <div class="max-w-[1400px] mx-auto px-6 relative z-10">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
-                <div class="md:col-span-4">
-                    <span class="block text-mono-light text-sm font-mono uppercase tracking-widest mb-6">• O Nas</span>
-                    <p class="text-2xl font-display text-white leading-tight mb-6">
-                        Jesteśmy młodą, amatorską drużyną grającą w <a href="https://www.instagram.com/gtspnp_piatka/" target="_blank" class="text-white border-b-2 border-white hover:bg-white hover:text-black transition-all">@gtspnp_piatka</a>
-                    </p>
-                </div>
-                <div class="md:col-span-4">
-                    <span class="block text-mono-light text-sm font-mono uppercase tracking-widest mb-6">• Dom</span>
-                    <address class="not-italic text-white font-display text-3xl mb-8">ul. Jasna 31<br>Gliwice, PL</address>
-                    <span class="block text-mono-light text-sm font-mono uppercase tracking-widest mb-4">• Kontakt</span>
-                    <a href="mailto:kontakt@gliwickieorly.pl" class="block text-white hover:text-gray-300 text-lg font-mono mb-2">kontakt@gliwickieorly.pl</a>
-                    <a href="tel:+48123456789" class="block text-white hover:text-gray-300 text-lg font-mono">+48 123 456 789</a>
-                </div>
-                <div class="md:col-span-4 flex flex-col gap-2">
-                    <a href="https://www.instagram.com/ks_gliwickie_orly/" target="_blank" class="footer-link flex items-center justify-between p-6 border border-white/20 bg-transparent text-white group"><span class="font-display text-3xl font-bold uppercase">Instagram</span><i class="fas fa-arrow-right text-2xl group-hover:-rotate-45 transition-transform duration-300"></i></a>
-                    <a href="https://www.facebook.com/KSGliwickieOrly" target="_blank" class="footer-link flex items-center justify-between p-6 border border-white/20 bg-transparent text-white group"><span class="font-display text-3xl font-bold uppercase">Facebook</span><i class="fas fa-arrow-right text-2xl group-hover:-rotate-45 transition-transform duration-300"></i></a>
-                    <a href="https://www.tiktok.com/@ks_gliwickie_orly" target="_blank" class="footer-link flex items-center justify-between p-6 border border-white/20 bg-transparent text-white group"><span class="font-display text-3xl font-bold uppercase">TikTok</span><i class="fas fa-arrow-right text-2xl group-hover:-rotate-45 transition-transform duration-300"></i></a>
-                </div>
+                <div class="md:col-span-4"><span class="block text-mono-light text-sm font-mono uppercase tracking-widest mb-6">• O Nas</span><p class="text-2xl font-display text-white leading-tight mb-6">Jesteśmy młodą, amatorską drużyną grającą w <a href="https://www.instagram.com/gtspnp_piatka/" target="_blank" class="text-white border-b-2 border-white hover:bg-white hover:text-black transition-all">@gtspnp_piatka</a></p></div>
+                <div class="md:col-span-4"><span class="block text-mono-light text-sm font-mono uppercase tracking-widest mb-6">• Dom</span><address class="not-italic text-white font-display text-3xl mb-8">ul. Jasna 31<br>Gliwice, PL</address><span class="block text-mono-light text-sm font-mono uppercase tracking-widest mb-4">• Kontakt</span><a href="mailto:kontakt@gliwickieorly.pl" class="block text-white hover:text-gray-300 text-lg font-mono mb-2">kontakt@gliwickieorly.pl</a></div>
+                <div class="md:col-span-4 flex flex-col gap-2"><a href="https://www.instagram.com/ks_gliwickie_orly/" target="_blank" class="footer-link flex items-center justify-between p-6 border border-white/20 bg-transparent text-white group"><span class="font-display text-3xl font-bold uppercase">Instagram</span><i class="fas fa-arrow-right text-2xl group-hover:-rotate-45 transition-transform duration-300"></i></a><a href="https://www.facebook.com/KSGliwickieOrly" target="_blank" class="footer-link flex items-center justify-between p-6 border border-white/20 bg-transparent text-white group"><span class="font-display text-3xl font-bold uppercase">Facebook</span><i class="fas fa-arrow-right text-2xl group-hover:-rotate-45 transition-transform duration-300"></i></a></div>
             </div>
             <div class="mt-20 flex flex-col md:flex-row justify-between items-end gap-4 border-t border-white/10 pt-8">
-                <div class="text-gray-500 font-mono text-xs uppercase tracking-widest flex items-center gap-2">
-                    &copy; 2024 KS Gliwickie Orły.
-                    <button onclick="changePage('admin-page')" class="opacity-10 hover:opacity-100 transition-opacity duration-300 p-2 cursor-pointer" title="Panel Admina"><i class="fas fa-lock text-[10px]"></i></button>
-                </div>
+                <div class="text-gray-500 font-mono text-xs uppercase tracking-widest flex items-center gap-2">&copy; 2024 KS Gliwickie Orły. <button onclick="changePage('admin-page')" class="opacity-10 hover:opacity-100 transition-opacity duration-300 p-2 cursor-pointer" title="Panel Admina"><i class="fas fa-lock text-[10px]"></i></button></div>
             </div>
         </div>
     </footer>
@@ -581,451 +447,104 @@
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, query, orderBy, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC3-xVHKLCmPhF6PUfE-9ZTUxGzVU2czoA",
-            authDomain: "gliwickie-orly.firebaseapp.com",
-            projectId: "gliwickie-orly",
-            storageBucket: "gliwickie-orly.firebasestorage.app",
-            messagingSenderId: "278448854634",
-            appId: "1:278448854634:web:0b4481155d915df56b9c13"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyC3-xVHKLCmPhF6PUfE-9ZTUxGzVU2czoA", authDomain: "gliwickie-orly.firebaseapp.com", projectId: "gliwickie-orly", storageBucket: "gliwickie-orly.firebasestorage.app", messagingSenderId: "278448854634", appId: "1:278448854634:web:0b4481155d915df56b9c13" };
+        const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app); const provider = new GoogleAuthProvider(); const ALLOWED_ADMIN = 'zbvsiu@gmail.com';
+        
+        let adminMatchesCache = []; let adminPlayersCache = [];
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
-        const ALLOWED_ADMIN = 'zbvsiu@gmail.com';
-
-        let adminMatchesCache = [];
-        let adminPlayersCache = [];
-
-        // --- PUBLIC ---
+        // --- PUBLIC FUNCTIONS ---
         async function loadMatches() {
-            const container = document.getElementById('matches-container');
-            if (!container) return;
+            const container = document.getElementById('matches-container'); if (!container) return;
             try {
-                const q = query(collection(db, "matches"), orderBy("date", "desc"));
-                const querySnapshot = await getDocs(q);
-                container.innerHTML = '';
-                if (querySnapshot.empty) {
-                    container.innerHTML = `<div class="p-12 text-center border border-white/10 bg-white/5 rounded-2xl"><i class="fas fa-calendar-times text-4xl text-gray-600 mb-4"></i><p class="text-gray-400 font-display text-2xl uppercase">Brak zaplanowanych spotkań</p></div>`;
-                    return;
-                }
-                querySnapshot.forEach((doc) => {
-                    const match = doc.data();
-                    const d = match.date.split('-');
-                    const isFinished = match.status === 'Zakończony';
-                    const isLive = match.status === 'Trwa';
-                    const opacityClass = isFinished ? 'opacity-60 grayscale hover:grayscale-0 hover:opacity-100' : 'opacity-100';
-                    let statusColor = isFinished ? 'text-gray-400 border-gray-600' : 'text-green-400 border-green-500/50 bg-green-500/10';
-                    if(isLive) statusColor = 'text-red-500 border-red-500 bg-red-900/20 animate-pulse';
-
-                    let centerContent = '';
-                    if ((isFinished || isLive) && match.score) {
-                        const scoreParts = match.score.split(':').map(s => s.trim());
-                        centerContent = `<div class="flex items-center gap-4 bg-black/40 px-6 py-2 rounded-lg border border-white/10"><span class="text-4xl md:text-5xl font-display font-bold text-white">${scoreParts[0] || 0}</span><span class="text-gray-500 text-xl">:</span><span class="text-4xl md:text-5xl font-display font-bold text-white">${scoreParts[1] || 0}</span></div>`;
-                    } else {
-                        centerContent = `<div class="flex flex-col items-center justify-center w-16 h-16 rounded-full bg-white/5 border border-white/10"><span class="font-display text-xl text-mono-light">VS</span></div>`;
-                    }
-
-                    container.innerHTML += `
-                    <div class="group relative bg-mono-dark border border-white/10 hover:border-white/40 transition-all duration-300 rounded-xl overflow-hidden ${opacityClass}">
-                        <div class="flex flex-col md:flex-row items-stretch">
-                            <div class="flex md:flex-col items-center justify-between md:justify-center p-6 md:w-32 bg-white/5 border-b md:border-b-0 md:border-r border-white/10">
-                                <div class="text-center"><span class="block text-3xl md:text-4xl font-display font-bold text-white leading-none">${d[2]}.${d[1]}</span><span class="text-xs text-gray-500 font-mono">${d[0]}</span></div>
-                                <div class="md:mt-2 text-center"><span class="block text-sm font-mono text-white bg-black px-2 py-1 rounded border border-white/20 mb-1">${match.time}</span><span class="text-[10px] text-mono-light uppercase tracking-wide">${match.type || 'LIGA'}</span></div>
-                            </div>
-                            <div class="flex-1 p-8 flex flex-col md:flex-row items-center justify-center gap-8">
-                                <div class="flex-1 text-center md:text-right order-1"><h3 class="text-2xl md:text-4xl font-display font-bold text-white uppercase leading-none break-words">GLIWICKIE ORŁY</h3></div>
-                                <div class="order-2 md:px-4 shrink-0">${centerContent}</div>
-                                <div class="flex-1 text-center md:text-left order-3"><h3 class="text-2xl md:text-4xl font-display font-bold text-gray-400 group-hover:text-white transition-colors uppercase leading-none break-words">${match.opponent}</h3></div>
-                            </div>
-                            <div class="flex flex-row md:flex-col items-center justify-between md:justify-center p-4 md:w-48 bg-black/20 border-t md:border-t-0 md:border-l border-white/10 gap-3">
-                                <div class="px-3 py-1 rounded-full border ${statusColor} text-[10px] font-bold uppercase tracking-widest">${match.status}</div>
-                                <div class="text-right md:text-center max-w-[150px]"><p class="text-xs text-gray-400 font-mono leading-tight break-words"><i class="fas fa-map-marker-alt mb-1 block md:inline md:mr-1 text-white/30"></i>${match.location}</p></div>
-                            </div>
-                        </div>
-                    </div>`;
+                const q = query(collection(db, "matches"), orderBy("date", "desc")); const qs = await getDocs(q); container.innerHTML = '';
+                if (qs.empty) { container.innerHTML = `<div class="p-12 text-center border border-white/10 bg-white/5 rounded-2xl"><p class="text-gray-400 font-display text-xl">Brak meczów</p></div>`; return; }
+                qs.forEach(doc => {
+                    const m = doc.data(); const d = m.date.split('-'); const isF = m.status === 'Zakończony'; const isL = m.status === 'Trwa';
+                    const op = isF ? 'opacity-60' : 'opacity-100'; const stCol = isL ? 'text-red-500 border-red-500 animate-pulse' : (isF ? 'text-gray-500 border-gray-600' : 'text-green-400 border-green-500');
+                    const score = (isF || isL) && m.score ? `<span class="text-4xl font-bold font-display">${m.score}</span>` : `<span class="text-mono-light font-display text-xl">VS</span>`;
+                    container.innerHTML += `<div class="bg-mono-dark border border-white/10 rounded-xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 ${op}"><div class="text-center md:text-left"><span class="block text-2xl font-bold font-display">${d[2]}.${d[1]}</span><span class="text-xs text-gray-500">${m.time} | ${m.type||'Liga'}</span></div><div class="flex-1 flex items-center justify-center gap-8"><h3 class="text-xl font-bold font-display text-right flex-1">ORŁY</h3>${score}<h3 class="text-xl font-bold font-display text-left flex-1 text-gray-400">${m.opponent}</h3></div><div class="text-xs px-3 py-1 border rounded-full uppercase tracking-widest ${stCol}">${m.status}</div></div>`;
                 });
-                updateCountdown(querySnapshot);
-            } catch (e) { console.error(e); }
+                updateCountdown(qs);
+            } catch (e) {}
         }
 
         async function loadSquad() {
-            const container = document.getElementById('squad-container');
-            if(!container) return;
-            try {
-                const q = query(collection(db, "players"));
-                const qs = await getDocs(q);
-                container.innerHTML = '';
-                const joinCard = `<a href="#contact-footer" class="group h-[500px] bg-[#111] border border-dashed border-gray-700 hover:border-white hover:bg-black transition-all duration-300 flex flex-col items-center justify-center text-center cursor-pointer order-last rounded-2xl"><div class="w-20 h-20 rounded-full border border-gray-600 flex items-center justify-center mb-6 group-hover:bg-white group-hover:text-black transition-all"><i class="fas fa-plus text-3xl"></i></div><h3 class="text-3xl font-bold font-display uppercase tracking-wider mb-2">Dołącz<br>do nas</h3><p class="text-gray-500 uppercase tracking-widest text-xs">Rekrutacja otwarta</p></a>`;
-                
-                if (qs.empty) { container.innerHTML = joinCard; return; }
-                const players = [];
-                qs.forEach(d => players.push(d.data()));
-                players.sort((a,b) => a.number - b.number);
-                players.forEach(p => {
-                    container.innerHTML += `
-                    <div class="group relative h-[500px] bg-mono-dark border border-white/10 hover:border-white transition-all duration-300 overflow-hidden rounded-2xl">
-                        <img src="${p.photoUrl}" class="w-full h-full object-cover bw-filter group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://via.placeholder.com/600x800?text=Brak'">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90"></div>
-                        <span class="absolute top-2 right-4 text-9xl font-display font-bold text-white/5 group-hover:text-white/20 transition-colors select-none z-0">${p.number}</span>
-                        <div class="absolute bottom-0 left-0 p-8 w-full z-10">
-                            <h3 class="text-4xl font-bold font-display uppercase leading-none mb-2 text-white drop-shadow-lg">${p.firstName}<br>${p.lastName}</h3>
-                            <div class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full">
-                                <p class="text-white text-[10px] uppercase tracking-widest font-bold">${p.position}</p>
-                            </div>
-                        </div>
-                    </div>`;
-                });
-                container.innerHTML += joinCard;
-            } catch(e) { console.error(e); }
+            const container = document.getElementById('squad-container'); if(!container) return;
+            try { const q = query(collection(db, "players")); const qs = await getDocs(q); container.innerHTML = ''; 
+                const pl = []; qs.forEach(d=>pl.push(d.data())); pl.sort((a,b)=>a.number-b.number);
+                pl.forEach(p=>{ container.innerHTML += `<div class="relative h-[400px] bg-mono-dark border border-white/10 overflow-hidden group"><img src="${p.photoUrl}" class="w-full h-full object-cover bw-filter group-hover:scale-105 transition-transform duration-500"><div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div><span class="absolute top-2 right-4 text-7xl font-bold font-display text-white/10">${p.number}</span><div class="absolute bottom-0 left-0 p-6"><h3 class="text-3xl font-bold font-display uppercase leading-none text-white">${p.firstName}<br>${p.lastName}</h3><p class="text-gold-500 text-xs uppercase tracking-widest font-bold mt-1">${p.position}</p></div></div>`; });
+            } catch(e) {}
         }
 
-        // --- DASHBOARD STATS ---
-        function updateDashboardStats() {
-            const matchesCount = adminMatchesCache.length;
-            const playersCount = adminPlayersCache.length;
-            let nextMatch = "Brak";
-            
-            // Znajdź najbliższy mecz (przyszłość)
-            const now = new Date();
-            let minDiff = Infinity;
-            
-            adminMatchesCache.forEach(m => {
-                const mDate = new Date(`${m.date}T${m.time}:00`);
-                const diff = mDate - now;
-                if(diff > 0 && diff < minDiff && m.status !== 'Zakończony') {
-                    minDiff = diff;
-                    nextMatch = `${m.date} vs ${m.opponent}`;
-                }
-            });
-
-            document.getElementById('stat-total-matches').innerText = matchesCount;
-            document.getElementById('stat-total-players').innerText = playersCount;
-            document.getElementById('stat-next-match').innerText = nextMatch;
-        }
-
-        // --- ADMIN RENDER ---
-        window.renderAdminMatches = async () => {
-            const list = document.getElementById('admin-matches-list');
-            const liveSelect = document.getElementById('live-match-select');
-            list.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-500 animate-pulse">Pobieranie danych...</td></tr>';
-            
-            const q = query(collection(db, "matches"), orderBy("date", "desc"));
-            const snapshot = await getDocs(q);
-            adminMatchesCache = [];
-            list.innerHTML = '';
-            liveSelect.innerHTML = '<option value="">-- Wybierz mecz --</option>';
-
-            snapshot.forEach(docSnap => {
-                const m = docSnap.data();
-                m.id = docSnap.id;
-                adminMatchesCache.push(m);
-                
-                const isLive = m.status === 'Trwa';
-                const statusBadge = isLive 
-                    ? '<span class="px-2 py-1 rounded bg-red-600 text-white animate-pulse">LIVE</span>' 
-                    : `<span class="px-2 py-1 rounded border border-white/20 ${m.status==='Zakończony'?'text-gray-500':'text-green-400'}">${m.status}</span>`;
-
-                list.innerHTML += `
-                <tr class="hover:bg-white/5 transition-colors group border-b border-white/5 last:border-0">
-                    <td class="table-cell text-white">
-                        <div class="flex flex-col">
-                            <span class="font-bold">${m.date}</span>
-                            <span class="text-xs text-gray-500">${m.time} | ${m.type || 'Liga'}</span>
-                        </div>
-                    </td>
-                    <td class="table-cell font-bold text-white uppercase text-lg">${m.opponent}</td>
-                    <td class="table-cell text-xs font-mono uppercase">${statusBadge}</td>
-                    <td class="table-cell font-display text-xl tracking-widest">${m.score || '-'}</td>
-                    <td class="table-cell text-right space-x-2">
-                        <button onclick="editMatch('${m.id}')" class="text-blue-400 hover:bg-blue-400/20 p-2 rounded transition-all"><i class="fas fa-edit"></i></button>
-                        <button onclick="deleteItem('matches', '${m.id}')" class="text-red-500 hover:bg-red-500/20 p-2 rounded transition-all"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>`;
-
-                if(m.status !== 'Zakończony') {
-                    liveSelect.innerHTML += `<option value="${m.id}">${m.date} vs ${m.opponent}</option>`;
-                }
-            });
-            updateDashboardStats();
-        };
-
-        window.renderAdminPlayers = async () => {
-            const list = document.getElementById('admin-players-list');
-            list.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-500 animate-pulse">Pobieranie danych...</td></tr>';
-            
-            const q = query(collection(db, "players"));
-            const snapshot = await getDocs(q);
-            adminPlayersCache = [];
-            list.innerHTML = '';
-            
-            const tempPlayers = [];
-            snapshot.forEach(docSnap => {
-                const p = docSnap.data();
-                p.id = docSnap.id;
-                tempPlayers.push(p);
-            });
-            tempPlayers.sort((a,b) => a.number - b.number);
-            adminPlayersCache = tempPlayers;
-
-            tempPlayers.forEach(p => {
-                list.innerHTML += `
-                <tr class="hover:bg-white/5 transition-colors border-b border-white/5 last:border-0">
-                    <td class="table-cell font-display text-2xl text-white/30 font-bold">${p.number}</td>
-                    <td class="table-cell font-bold text-white text-lg">${p.firstName} ${p.lastName}</td>
-                    <td class="table-cell text-xs uppercase tracking-widest text-gray-400"><span class="bg-white/10 px-2 py-1 rounded">${p.position}</span></td>
-                    <td class="table-cell text-right space-x-2">
-                        <button onclick="editPlayer('${p.id}')" class="text-blue-400 hover:bg-blue-400/20 p-2 rounded transition-all"><i class="fas fa-edit"></i></button>
-                        <button onclick="deleteItem('players', '${p.id}')" class="text-red-500 hover:bg-red-500/20 p-2 rounded transition-all"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>`;
-            });
-            updateDashboardStats();
-        };
-
-        // --- COMMON ACTIONS ---
-        window.deleteItem = async (coll, id) => {
-            if(!confirm("Czy na pewno chcesz usunąć ten element? Operacja jest nieodwracalna.")) return;
-            try {
-                await deleteDoc(doc(db, coll, id));
-                if(coll === 'matches') { await renderAdminMatches(); loadMatches(); }
-                else { await renderAdminPlayers(); loadSquad(); }
-            } catch(e) { alert("Błąd: " + e.message); }
-        };
-
-        // --- MODAL UTILS ---
-        window.openModal = (id) => {
-            const el = document.getElementById(id);
-            el.classList.remove('hidden');
-            el.classList.add('flex');
-            // Animation trick
-            setTimeout(() => {
-                el.classList.remove('opacity-0');
-                el.querySelector('div').classList.remove('scale-95');
-                el.querySelector('div').classList.add('scale-100');
-            }, 10);
-        };
-
-        window.closeModal = (id) => {
-            const el = document.getElementById(id);
-            el.classList.add('opacity-0');
-            el.querySelector('div').classList.remove('scale-100');
-            el.querySelector('div').classList.add('scale-95');
-            setTimeout(() => {
-                el.classList.remove('flex');
-                el.classList.add('hidden');
-            }, 300);
-        };
-
-        // --- MATCH FORM ---
-        window.openMatchModal = () => {
-            document.getElementById('match-form').reset();
-            document.getElementById('match-id').value = '';
-            document.getElementById('modal-match-title').innerHTML = '<i class="fas fa-plus-circle text-gray-500 mr-3"></i> Dodaj Mecz';
-            openModal('match-modal');
-        };
-
-        window.editMatch = (id) => {
-            const m = adminMatchesCache.find(x => x.id === id);
-            if(!m) return;
-            document.getElementById('match-id').value = m.id;
-            document.getElementById('matchDate').value = m.date;
-            document.getElementById('matchTime').value = m.time;
-            document.getElementById('opponent').value = m.opponent;
-            document.getElementById('location').value = m.location;
-            document.getElementById('matchType').value = m.type || 'Mecz Ligowy';
-            document.getElementById('matchStatus').value = m.status;
-            document.getElementById('matchScore').value = m.score || '';
-            document.getElementById('modal-match-title').innerHTML = '<i class="fas fa-edit text-gray-500 mr-3"></i> Edytuj Mecz';
-            openModal('match-modal');
-        };
-
-        document.getElementById('match-form').addEventListener('submit', async(e) => {
-            e.preventDefault();
-            const id = document.getElementById('match-id').value;
-            const data = {
-                date: document.getElementById('matchDate').value,
-                time: document.getElementById('matchTime').value,
-                opponent: document.getElementById('opponent').value,
-                location: document.getElementById('location').value,
-                type: document.getElementById('matchType').value,
-                status: document.getElementById('matchStatus').value,
-                score: document.getElementById('matchScore').value
-            };
-            try {
-                if(id) await updateDoc(doc(db, "matches", id), data);
-                else { data.createdAt = new Date(); await addDoc(collection(db, "matches"), data); }
-                closeModal('match-modal');
-                await renderAdminMatches();
-                loadMatches();
-            } catch(err) { alert(err.message); }
-        });
-
-        // --- PLAYER FORM ---
-        window.openPlayerModal = () => {
-            document.getElementById('player-form').reset();
-            document.getElementById('player-id').value = '';
-            document.getElementById('modal-player-title').innerHTML = '<i class="fas fa-user-plus text-gray-500 mr-3"></i> Dodaj Gracza';
-            openModal('player-modal');
-        };
-
-        window.editPlayer = (id) => {
-            const p = adminPlayersCache.find(x => x.id === id);
-            if(!p) return;
-            document.getElementById('player-id').value = p.id;
-            document.getElementById('playerFirstName').value = p.firstName;
-            document.getElementById('playerLastName').value = p.lastName;
-            document.getElementById('playerNumber').value = p.number;
-            document.getElementById('playerPosition').value = p.position;
-            document.getElementById('playerPhoto').value = p.photoUrl;
-            document.getElementById('modal-player-title').innerHTML = '<i class="fas fa-user-edit text-gray-500 mr-3"></i> Edytuj Gracza';
-            openModal('player-modal');
-        };
-
-        document.getElementById('player-form').addEventListener('submit', async(e) => {
-            e.preventDefault();
-            const id = document.getElementById('player-id').value;
-            const data = {
-                firstName: document.getElementById('playerFirstName').value,
-                lastName: document.getElementById('playerLastName').value,
-                number: parseInt(document.getElementById('playerNumber').value),
-                position: document.getElementById('playerPosition').value,
-                photoUrl: document.getElementById('playerPhoto').value
-            };
-            try {
-                if(id) await updateDoc(doc(db, "players", id), data);
-                else { data.createdAt = new Date(); await addDoc(collection(db, "players"), data); }
-                closeModal('player-modal');
-                await renderAdminPlayers();
-                loadSquad();
-            } catch(err) { alert(err.message); }
-        });
-
-        // --- LIVE CONTROL ---
-        let currentLiveMatchId = null;
-
-        window.loadLiveMatch = () => {
-            const id = document.getElementById('live-match-select').value;
-            const controls = document.getElementById('live-controls');
-            const placeholder = document.getElementById('live-placeholder');
-            
-            if(!id) {
-                controls.classList.add('hidden');
-                placeholder.classList.remove('hidden');
-                currentLiveMatchId = null;
-                return;
-            }
-            
-            const m = adminMatchesCache.find(x => x.id === id);
-            currentLiveMatchId = id;
-            document.getElementById('live-opponent-name').innerText = m.opponent;
-            
-            let h = 0, a = 0;
-            if(m.score && m.score.includes(':')) {
-                const parts = m.score.split(':');
-                h = parseInt(parts[0]) || 0;
-                a = parseInt(parts[1]) || 0;
-            }
-            document.getElementById('live-score-home').innerText = h;
-            document.getElementById('live-score-away').innerText = a;
-            
-            placeholder.classList.add('hidden');
-            controls.classList.remove('hidden');
-        };
-
-        window.updateLiveScore = async (hDelta, aDelta) => {
-            if(!currentLiveMatchId) return;
-            let h = parseInt(document.getElementById('live-score-home').innerText);
-            let a = parseInt(document.getElementById('live-score-away').innerText);
-            h = Math.max(0, h + hDelta);
-            a = Math.max(0, a + aDelta);
-            
-            const newScore = `${h} : ${a}`;
-            document.getElementById('live-score-home').innerText = h;
-            document.getElementById('live-score-away').innerText = a;
-
-            try {
-                await updateDoc(doc(db, "matches", currentLiveMatchId), { score: newScore });
-                loadMatches();
-            } catch(e) { console.error(e); }
-        };
-
-        window.setLiveStatus = async (status) => {
-            if(!currentLiveMatchId) return;
-            try {
-                await updateDoc(doc(db, "matches", currentLiveMatchId), { status: status });
-                await renderAdminMatches();
-                if(status === 'Zakończony') {
-                     document.getElementById('live-match-select').value = "";
-                     window.loadLiveMatch();
-                }
-                loadMatches();
-            } catch(e) { console.error(e); }
-        };
-
-        // --- AUTH & UI ---
-        window.loginWithGoogle = () => {
-            signInWithPopup(auth, provider).then(res => {
-                if(res.user.email !== ALLOWED_ADMIN) { signOut(auth); document.getElementById('error-msg').innerText = "BRAK UPRAWNIEŃ"; document.getElementById('error-msg').classList.remove('hidden'); }
-            }).catch(e => alert(e.message));
-        };
-        window.logout = () => signOut(auth);
-
+        // --- ADMIN CORE ---
         window.switchAdminTab = (tab) => {
-            document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-'+tab).classList.add('active');
-            document.querySelectorAll('.admin-panel-section').forEach(s => s.classList.add('hidden'));
-            document.getElementById('panel-'+tab).classList.remove('hidden');
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            document.getElementById('link-'+tab).classList.add('active');
+            document.querySelectorAll('.admin-view').forEach(v => v.classList.add('hidden'));
+            document.getElementById('view-'+tab).classList.remove('hidden');
         };
 
-        onAuthStateChanged(auth, user => {
-            const login = document.getElementById('login-screen');
-            const dash = document.getElementById('dashboard');
-            if(login && dash) {
-                if(user && user.email === ALLOWED_ADMIN) {
-                    login.classList.add('hidden');
-                    dash.classList.remove('hidden');
-                    renderAdminMatches();
-                    renderAdminPlayers();
-                } else {
-                    if(user) signOut(auth);
-                    login.classList.remove('hidden');
-                    dash.classList.add('hidden');
-                }
-            }
+        window.renderAdminData = async () => {
+            // Matches Table
+            const mList = document.getElementById('admin-matches-list');
+            const lSel = document.getElementById('live-match-select');
+            const qM = query(collection(db, "matches"), orderBy("date", "desc"));
+            const sM = await getDocs(qM);
+            mList.innerHTML = ''; lSel.innerHTML = '<option value="">-- Wybierz --</option>'; adminMatchesCache = [];
+            
+            sM.forEach(doc => {
+                const m = doc.data(); m.id = doc.id; adminMatchesCache.push(m);
+                if(m.status !== 'Zakończony') lSel.innerHTML += `<option value="${m.id}">${m.opponent}</option>`;
+                mList.innerHTML += `<tr><td><div class="font-bold text-white">${m.date}</div><div class="text-xs text-gray-500">${m.time}</div></td><td class="text-white font-bold">${m.opponent}</td><td><span class="text-xs uppercase px-2 py-1 rounded bg-white/5 border border-white/10">${m.status}</span></td><td class="font-mono text-gold-500">${m.score||'-'}</td><td class="text-right"><button onclick="editMatch('${m.id}')" class="text-gray-400 hover:text-white mx-2"><i class="fas fa-edit"></i></button><button onclick="deleteItem('matches','${m.id}')" class="text-red-500 hover:text-red-400 mx-2"><i class="fas fa-trash"></i></button></td></tr>`;
+            });
+
+            // Players Grid
+            const pList = document.getElementById('admin-players-grid');
+            const qP = query(collection(db, "players"));
+            const sP = await getDocs(qP);
+            pList.innerHTML = ''; adminPlayersCache = []; const pArr = [];
+            sP.forEach(doc => { const p=doc.data(); p.id=doc.id; pArr.push(p); });
+            pArr.sort((a,b)=>a.number-b.number); adminPlayersCache=pArr;
+            
+            pArr.forEach(p => {
+                pList.innerHTML += `<div class="admin-player-card p-4 flex items-center gap-4"><img src="${p.photoUrl}" class="w-16 h-16 rounded-lg object-cover bg-gray-800"><div><p class="text-gold-500 text-xs font-bold">#${p.number}</p><h4 class="font-display text-xl leading-none text-white">${p.firstName} ${p.lastName}</h4><p class="text-xs text-gray-500 uppercase">${p.position}</p></div><div class="ml-auto flex flex-col gap-2"><button onclick="editPlayer('${p.id}')" class="text-gray-400 hover:text-white"><i class="fas fa-edit"></i></button><button onclick="deleteItem('players','${p.id}')" class="text-red-500 hover:text-red-300"><i class="fas fa-trash"></i></button></div></div>`;
+            });
+
+            // Stats
+            document.getElementById('stat-total-matches').innerText = adminMatchesCache.length;
+            document.getElementById('stat-total-players').innerText = adminPlayersCache.length;
+        };
+
+        // --- ACTIONS ---
+        window.deleteItem = async (c,id) => { if(confirm("Usunąć?")) { await deleteDoc(doc(db,c,id)); renderAdminData(); loadMatches(); loadSquad(); } };
+        window.openMatchModal = () => { document.getElementById('match-form').reset(); document.getElementById('match-id').value=''; document.getElementById('match-modal').classList.remove('hidden'); document.getElementById('match-modal').classList.add('flex'); };
+        window.editMatch = (id) => { const m = adminMatchesCache.find(x=>x.id===id); if(!m)return; document.getElementById('match-id').value=m.id; document.getElementById('matchDate').value=m.date; document.getElementById('matchTime').value=m.time; document.getElementById('opponent').value=m.opponent; document.getElementById('location').value=m.location; document.getElementById('matchType').value=m.type; document.getElementById('matchStatus').value=m.status; document.getElementById('matchScore').value=m.score; document.getElementById('match-modal').classList.remove('hidden'); document.getElementById('match-modal').classList.add('flex'); };
+        window.openPlayerModal = () => { document.getElementById('player-form').reset(); document.getElementById('player-id').value=''; document.getElementById('player-modal').classList.remove('hidden'); document.getElementById('player-modal').classList.add('flex'); };
+        window.editPlayer = (id) => { const p = adminPlayersCache.find(x=>x.id===id); if(!p)return; document.getElementById('player-id').value=p.id; document.getElementById('playerFirstName').value=p.firstName; document.getElementById('playerLastName').value=p.lastName; document.getElementById('playerNumber').value=p.number; document.getElementById('playerPosition').value=p.position; document.getElementById('playerPhoto').value=p.photoUrl; document.getElementById('player-modal').classList.remove('hidden'); document.getElementById('player-modal').classList.add('flex'); };
+        window.closeModal = (id) => { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); };
+
+        // Forms
+        document.getElementById('match-form').addEventListener('submit', async(e)=>{ e.preventDefault(); const id=document.getElementById('match-id').value; const d={ date:document.getElementById('matchDate').value, time:document.getElementById('matchTime').value, opponent:document.getElementById('opponent').value, location:document.getElementById('location').value, type:document.getElementById('matchType').value, status:document.getElementById('matchStatus').value, score:document.getElementById('matchScore').value }; if(id) await updateDoc(doc(db,"matches",id),d); else await addDoc(collection(db,"matches"),d); closeModal('match-modal'); renderAdminData(); loadMatches(); });
+        document.getElementById('player-form').addEventListener('submit', async(e)=>{ e.preventDefault(); const id=document.getElementById('player-id').value; const d={ firstName:document.getElementById('playerFirstName').value, lastName:document.getElementById('playerLastName').value, number:parseInt(document.getElementById('playerNumber').value), position:document.getElementById('playerPosition').value, photoUrl:document.getElementById('playerPhoto').value }; if(id) await updateDoc(doc(db,"players",id),d); else await addDoc(collection(db,"players"),d); closeModal('player-modal'); renderAdminData(); loadSquad(); });
+
+        // LIVE
+        let liveId = null;
+        window.loadLiveMatch = () => { const id = document.getElementById('live-match-select').value; const ctr = document.getElementById('live-controls'); const ph = document.getElementById('live-placeholder'); if(!id){ctr.classList.add('hidden');ph.classList.remove('hidden');return;} liveId=id; const m = adminMatchesCache.find(x=>x.id===id); document.getElementById('live-opponent-name-display').innerText = m.opponent; let s = m.score.split(':'); document.getElementById('live-score-home').innerText=parseInt(s[0])||0; document.getElementById('live-score-away').innerText=parseInt(s[1])||0; ph.classList.add('hidden'); ctr.classList.remove('hidden'); };
+        window.updateLiveScore = async (h,a) => { if(!liveId)return; let H=parseInt(document.getElementById('live-score-home').innerText)+h; let A=parseInt(document.getElementById('live-score-away').innerText)+a; if(H<0)H=0;if(A<0)A=0; document.getElementById('live-score-home').innerText=H; document.getElementById('live-score-away').innerText=A; await updateDoc(doc(db,"matches",liveId),{score:`${H} : ${A}`}); loadMatches(); };
+        window.setLiveStatus = async (s) => { if(!liveId)return; await updateDoc(doc(db,"matches",liveId),{status:s}); renderAdminData(); loadMatches(); if(s==='Zakończony'){document.getElementById('live-match-select').value=''; window.loadLiveMatch();} };
+
+        // AUTH
+        window.loginWithGoogle = () => { signInWithPopup(auth, provider).then(res=>{ if(res.user.email!==ALLOWED_ADMIN){ signOut(auth); alert("Brak uprawnień"); } }).catch(e=>console.log(e)); };
+        window.logout = () => signOut(auth);
+        onAuthStateChanged(auth, u => { 
+            const l=document.getElementById('login-screen'); const d=document.getElementById('dashboard'); 
+            if(u && u.email===ALLOWED_ADMIN){ l.classList.add('hidden'); d.classList.remove('hidden'); renderAdminData(); } 
+            else { if(u) signOut(auth); l.classList.remove('hidden'); d.classList.add('hidden'); }
         });
 
-        function updateCountdown(snapshot) {
-            const now = new Date();
-            let nextMatchDate = null;
-            snapshot.forEach(doc => {
-                const m = doc.data();
-                const mDate = new Date(`${m.date}T${m.time}:00`);
-                if (mDate > now && m.status !== 'Zakończony') {
-                    if (!nextMatchDate || mDate < nextMatchDate) nextMatchDate = mDate;
-                }
-            });
-            if (nextMatchDate) startTimer(nextMatchDate);
-            else ['days','hours','minutes'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerText = "--"; });
-        }
-        function startTimer(targetDate) {
-            if(window.timerInterval) clearInterval(window.timerInterval);
-            window.timerInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const d = targetDate.getTime() - now;
-                if(d < 0) return;
-                const da = Math.floor(d / (1000 * 60 * 60 * 24));
-                const h = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60));
-                if(document.getElementById('days')) {
-                    document.getElementById('days').innerText = da < 10 ? '0'+da : da;
-                    document.getElementById('hours').innerText = h < 10 ? '0'+h : h;
-                    document.getElementById('minutes').innerText = m < 10 ? '0'+m : m;
-                }
-            }, 1000);
-        }
+        // Utils
+        function updateCountdown(qs){ const now=new Date(); let n=null; qs.forEach(d=>{ const m=d.data(); const md=new Date(`${m.date}T${m.time}:00`); if(md>now && m.status!=='Zakończony'){ if(!n||md<n)n=md; } }); if(n) startTimer(n); }
+        function startTimer(t){ setInterval(()=>{ const now=new Date().getTime(); const d=t.getTime()-now; if(d<0)return; const da=Math.floor(d/(1000*60*60*24)); const h=Math.floor((d%(1000*60*60*24))/(1000*60*60)); const m=Math.floor((d%(1000*60*60))/(1000*60)); if(document.getElementById('days')){ document.getElementById('days').innerText=da<10?'0'+da:da; document.getElementById('hours').innerText=h<10?'0'+h:h; document.getElementById('minutes').innerText=m<10?'0'+m:m; } },1000); }
 
         document.addEventListener('DOMContentLoaded', () => { loadMatches(); loadSquad(); });
     </script>
