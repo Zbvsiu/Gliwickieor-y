@@ -224,27 +224,14 @@
         </main>
 
         <main id="schedule-page" class="page-content page-hidden absolute inset-0 w-full pt-32 bg-mono-darkest min-h-screen">
-             <div class="max-w-6xl mx-auto px-4 pb-20">
-                <header class="mb-16 text-center">
-                    <h1 class="text-6xl md:text-8xl font-display font-bold uppercase">Terminarz <span class="text-mono-light">25/26</span></h1>
+            <div class="max-w-5xl mx-auto px-4 pb-20">
+                <header class="mb-12 text-center">
+                    <h1 class="text-5xl md:text-8xl font-display font-bold uppercase">Terminarz <span class="text-mono-light">25/26</span></h1>
                     <div class="h-1 w-20 bg-white mx-auto mt-4"></div>
                 </header>
-                <div class="border border-white/10 bg-mono-dark/50 backdrop-blur-sm">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-white/5 text-mono-light font-display text-xl uppercase tracking-wider">
-                                <th class="p-6 font-normal">Data</th>
-                                <th class="p-6 font-normal text-center w-1/2">Mecz</th>
-                                <th class="p-6 font-normal text-right hidden md:table-cell">Lokalizacja</th>
-                                <th class="p-6 font-normal text-right">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="matches-body" class="font-mono text-lg">
-                            <tr class="border-b border-white/5">
-                                <td colspan="4" class="p-6 text-center text-gray-500">Ładowanie terminarza...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                <div id="matches-container" class="grid gap-4">
+                    <div class="text-center text-gray-500 py-10 animate-pulse">Ładowanie terminarza...</div>
                 </div>
             </div>
         </main>
@@ -436,65 +423,105 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // --- OBSŁUGA TERMINARZA (PUBLICZNA) ---
+        // --- KONFIGURACJA ADMINA ---
+        const ALLOWED_ADMIN = 'zbvsiu@gmail.com';
+
+        // --- OBSŁUGA TERMINARZA (ZAKTUALIZOWANA) ---
         async function loadMatches() {
-            const matchesBody = document.getElementById('matches-body');
-            if (!matchesBody) return;
+            const container = document.getElementById('matches-container');
+            if (!container) return;
 
             try {
                 const q = query(collection(db, "matches"), orderBy("date", "asc"));
                 const querySnapshot = await getDocs(q);
 
-                matchesBody.innerHTML = '';
+                container.innerHTML = '';
 
                 if (querySnapshot.empty) {
-                    matchesBody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-gray-500">Brak zaplanowanych spotkań.</td></tr>';
+                    container.innerHTML = `
+                        <div class="p-8 text-center border border-white/10 bg-white/5 rounded-xl">
+                            <p class="text-gray-400 font-display text-xl">Brak zaplanowanych spotkań.</p>
+                        </div>`;
                     return;
                 }
 
                 querySnapshot.forEach((doc) => {
                     const match = doc.data();
-                    const dateParts = match.date.split('-');
-                    const formattedDate = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
-                    
+                    const dateParts = match.date.split('-'); // RRRR-MM-DD
+                    const day = dateParts[2];
+                    const month = dateParts[1];
+                    const year = dateParts[0];
+
                     const isFinished = match.status === 'Zakończony';
-                    const rowOpacity = isFinished ? 'opacity-70' : 'bg-white/5';
-                    const badgeStyle = isFinished ? 'border border-gray-600 text-gray-400' : 'bg-white text-black font-bold';
                     
-                    let scoreHtml = '';
+                    const opacityClass = isFinished ? 'opacity-60 grayscale hover:grayscale-0 hover:opacity-100' : 'opacity-100';
+                    const statusColor = isFinished ? 'text-gray-400 border-gray-600' : 'text-green-400 border-green-500/50 bg-green-500/10';
+                    
+                    let centerContent = '';
                     if (isFinished && match.score) {
-                         scoreHtml = `
-                            <div class="inline-block border border-white/20 bg-white/5 px-6 py-1 mt-2">
-                                <span class="font-display text-3xl font-bold text-white tracking-widest">${match.score}</span>
-                            </div>`;
+                        const scoreParts = match.score.split(':').map(s => s.trim());
+                        centerContent = `
+                            <div class="flex items-center gap-4 bg-black/40 px-6 py-2 rounded-lg border border-white/10">
+                                <span class="text-4xl md:text-5xl font-display font-bold text-white">${scoreParts[0] || 0}</span>
+                                <span class="text-gray-500 text-xl">:</span>
+                                <span class="text-4xl md:text-5xl font-display font-bold text-white">${scoreParts[1] || 0}</span>
+                            </div>
+                        `;
+                    } else {
+                        centerContent = `
+                            <div class="flex flex-col items-center justify-center w-16 h-16 rounded-full bg-white/5 border border-white/10">
+                                <span class="font-display text-xl text-mono-light">VS</span>
+                            </div>
+                        `;
                     }
 
                     const html = `
-                    <tr class="border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer group ${rowOpacity}">
-                        <td class="p-6">
-                            <span class="block text-white font-bold text-xl">${formattedDate}</span>
-                            <span class="text-sm text-gray-400">${match.time}</span>
-                        </td>
-                        <td class="p-6 text-center">
-                            <div class="flex items-center justify-center gap-4 md:gap-8 mb-2">
-                                <span class="font-display text-2xl md:text-3xl font-bold text-white text-right flex-1">GLIWICKIE ORŁY</span>
-                                <span class="text-xs text-mono-light bg-black px-2 py-1 border border-white/20">VS</span>
-                                <span class="font-display text-2xl md:text-3xl text-gray-400 flex-1 uppercase">${match.opponent}</span>
+                    <div class="group relative bg-mono-dark border border-white/10 hover:border-white/40 transition-all duration-300 rounded-xl overflow-hidden ${opacityClass}">
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none"></div>
+                        
+                        <div class="flex flex-col md:flex-row items-stretch">
+                            <div class="flex md:flex-col items-center justify-between md:justify-center p-4 md:w-32 bg-white/5 border-b md:border-b-0 md:border-r border-white/10">
+                                <div class="text-center">
+                                    <span class="block text-3xl md:text-4xl font-display font-bold text-white leading-none">${day}.${month}</span>
+                                    <span class="text-xs text-gray-500 font-mono">${year}</span>
+                                </div>
+                                <div class="md:mt-2 bg-black px-3 py-1 rounded border border-white/20">
+                                    <span class="text-sm font-mono text-white">${match.time}</span>
+                                </div>
                             </div>
-                            ${scoreHtml}
-                        </td>
-                        <td class="p-6 text-right text-gray-400 hidden md:table-cell">${match.location}</td>
-                        <td class="p-6 text-right">
-                            <span class="text-xs px-2 py-1 uppercase ${badgeStyle}">${match.status}</span>
-                        </td>
-                    </tr>
+
+                            <div class="flex-1 p-6 flex flex-col md:flex-row items-center justify-center gap-6">
+                                <div class="flex-1 text-center md:text-right order-1">
+                                    <h3 class="text-2xl md:text-4xl font-display font-bold text-white uppercase leading-none break-words">GLIWICKIE ORŁY</h3>
+                                </div>
+                                <div class="order-2 md:px-4 shrink-0">
+                                    ${centerContent}
+                                </div>
+                                <div class="flex-1 text-center md:text-left order-3">
+                                    <h3 class="text-2xl md:text-4xl font-display font-bold text-gray-400 group-hover:text-white transition-colors uppercase leading-none break-words">${match.opponent}</h3>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-row md:flex-col items-center justify-between md:justify-center p-4 md:w-48 bg-black/20 border-t md:border-t-0 md:border-l border-white/10 gap-3">
+                                <div class="px-3 py-1 rounded-full border ${statusColor} text-xs font-mono uppercase tracking-widest">
+                                    ${match.status}
+                                </div>
+                                <div class="text-right md:text-center max-w-[150px]">
+                                    <p class="text-xs text-gray-400 font-mono leading-tight break-words">
+                                        <i class="fas fa-map-marker-alt mb-1 block md:inline md:mr-1 text-white/30"></i>
+                                        ${match.location}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     `;
-                    matchesBody.innerHTML += html;
+                    container.innerHTML += html;
                 });
                 updateCountdown(querySnapshot);
             } catch (error) {
                 console.error(error);
-                matchesBody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-red-500">Błąd ładowania danych. Sprawdź konsolę.</td></tr>';
+                container.innerHTML = '<div class="text-center text-red-500 p-4 border border-red-900 rounded">Błąd ładowania danych.</div>';
             }
         }
 
@@ -539,9 +566,22 @@
             }, 1000);
         }
 
-        // --- OBSŁUGA ADMINA ---
+        // --- OBSŁUGA ADMINA Z WERYFIKACJĄ EMAILA ---
         window.loginWithGoogle = () => {
-            signInWithPopup(auth, provider).catch((error) => {
+            signInWithPopup(auth, provider)
+            .then((result) => {
+                // Sprawdzamy email PO zalogowaniu
+                if(result.user.email !== ALLOWED_ADMIN) {
+                    // Jeśli email się nie zgadza, wyloguj od razu
+                    signOut(auth);
+                    const errEl = document.getElementById('error-msg');
+                    if(errEl) {
+                        errEl.innerText = "Brak uprawnień. Zaloguj się jako " + ALLOWED_ADMIN;
+                        errEl.classList.remove('hidden');
+                    }
+                }
+            })
+            .catch((error) => {
                 console.error("Błąd logowania:", error);
                 const errEl = document.getElementById('error-msg');
                 if(errEl) {
@@ -558,10 +598,15 @@
             const dashboard = document.getElementById('dashboard');
             
             if (loginScreen && dashboard) {
-                if (user) {
+                // Dodatkowe sprawdzenie przy odświeżeniu strony
+                if (user && user.email === ALLOWED_ADMIN) {
                     loginScreen.classList.add('hidden');
                     dashboard.classList.remove('hidden');
                 } else {
+                    if (user) { 
+                        // Jeśli użytkownik jest zalogowany ale ma zły email -> wyloguj
+                        signOut(auth); 
+                    }
                     loginScreen.classList.remove('hidden');
                     dashboard.classList.add('hidden');
                 }
@@ -588,14 +633,10 @@
                     const msg = document.getElementById('success-msg');
                     msg.classList.remove('hidden');
                     matchForm.reset();
-                    
-                    // Odśwież dane od razu
                     loadMatches();
-                    
                     setTimeout(() => msg.classList.add('hidden'), 3000);
                 } catch (error) {
                     alert("Błąd zapisu: " + error.message);
-                    console.error("Szczegóły błędu:", error);
                 }
             });
         }
@@ -632,8 +673,6 @@
                 targetSection.classList.remove('page-enter');
                 
                 if(targetId === 'home-page') {
-                    // Home stays absolute (overlay on hero) if needed, 
-                    // but usually logic handles it. For now, keep as is.
                 } else {
                     targetSection.classList.remove('absolute');
                     targetSection.classList.add('relative');
