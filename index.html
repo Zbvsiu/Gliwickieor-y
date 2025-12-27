@@ -60,12 +60,31 @@
         .nav-item:hover::after, .nav-item.active::after { width: 100%; }
         .nav-item.active { color: white; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
         
-        /* Style Premium Admin */
-        .glass-panel { @apply bg-[#111]/80 backdrop-blur-xl border border-white/10 shadow-2xl; }
+        /* Style Premium Admin - POPRAWIONE POLA */
+        .glass-panel { @apply bg-[#111]/90 backdrop-blur-xl border border-white/10 shadow-2xl; }
         .admin-stat-card { @apply bg-gradient-to-br from-white/5 to-white/0 border border-white/10 p-6 rounded-2xl flex flex-col items-start justify-between hover:border-white/20 transition-all duration-300; }
         .admin-tab-btn { @apply px-6 py-4 text-gray-500 font-display text-xl uppercase tracking-widest border-b-2 border-transparent hover:text-white transition-all duration-300 flex items-center gap-2; }
         .admin-tab-btn.active { @apply text-white border-white bg-white/5; }
-        .admin-input { @apply w-full bg-black/50 border border-white/20 p-4 text-white focus:border-white focus:ring-1 focus:ring-white outline-none transition-all rounded-lg font-mono text-sm placeholder-gray-600; }
+        
+        /* Tu jest zmiana - wymuszone ciemne tło */
+        .admin-input { 
+            @apply w-full bg-[#1a1a1a] border border-white/20 p-4 text-white focus:border-white focus:ring-1 focus:ring-white outline-none transition-all rounded-lg font-mono text-sm placeholder-gray-500; 
+        }
+        
+        /* Naprawa kalendarza i zegara w przeglądarkach */
+        input[type="date"], input[type="time"] {
+            color-scheme: dark;
+        }
+
+        /* Naprawa białego tła przy autouzupełnianiu */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #1a1a1a inset !important;
+            -webkit-text-fill-color: white !important;
+        }
+
         .admin-label { @apply block text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-2 font-bold; }
         .table-header { @apply px-6 py-4 text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-white/10; }
         .table-cell { @apply px-6 py-4 whitespace-nowrap text-sm border-b border-white/5 group-hover:bg-white/5 transition-colors; }
