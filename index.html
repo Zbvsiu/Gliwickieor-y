@@ -62,14 +62,9 @@
 
         /* Custom Notification Toast */
         #custom-toast {
-            position: fixed; top: 20px; left: 50%; transform: translate(-50%, -150%);
-            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 100;
+            transform: translateY(-150%); transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
-        #custom-toast.show { transform: translate(-50%, 0); }
-
-        /* Cookie Banner */
-        #cookie-banner { transform: translateY(100%); transition: transform 0.5s ease-out; }
-        #cookie-banner.show { transform: translateY(0); }
+        #custom-toast.show { transform: translateY(0); }
 
         /* Admin Styles */
         .admin-layout { display: flex; height: 100vh; overflow: hidden; background-color: #050505; position: relative; }
@@ -101,22 +96,11 @@
 </head>
 <body class="font-sans antialiased bg-mono-darkest selection:bg-gold-500 selection:text-black">
 
-    <div id="custom-toast" class="flex items-center gap-4 bg-[#111] border border-l-4 px-6 py-4 rounded-lg shadow-2xl min-w-[320px]">
+    <div id="custom-toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-4 bg-[#1a1a1a] border border-l-4 px-6 py-4 rounded-lg shadow-2xl min-w-[300px]">
         <div id="toast-icon" class="text-xl"></div>
         <div>
             <h4 id="toast-title" class="font-bold text-sm uppercase tracking-wider text-white"></h4>
             <p id="toast-message" class="text-xs text-gray-400 mt-1"></p>
-        </div>
-    </div>
-
-    <div id="cookie-banner" class="fixed bottom-0 left-0 w-full bg-[#0a0a0a] border-t border-white/10 p-4 z-[90] shadow-[0_-10px_40px_rgba(0,0,0,0.9)]">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="text-xs text-gray-400 text-center md:text-left font-mono">
-                <p>Używamy ciasteczek, żeby strona działała jak najlepiej. <span class="text-gold-500">Zero spamu, tylko piłka.</span></p>
-            </div>
-            <button onclick="acceptCookies()" class="px-6 py-2 bg-white text-black font-bold uppercase text-[10px] tracking-widest rounded hover:bg-gray-200 transition-colors">
-                ROZUMIEM
-            </button>
         </div>
     </div>
 
@@ -168,15 +152,12 @@
             <section class="hero-bg min-h-[calc(100vh-6rem)] flex items-center justify-center relative">
                 <div class="text-center px-4 max-w-7xl mx-auto z-10 w-full flex flex-col items-center">
                     
-                    <h1 class="text-7xl md:text-[11rem] font-display font-bold mb-10 leading-[0.8] uppercase text-white drop-shadow-2xl" data-aos="zoom-in">
-                        GLIWICKIE<br><span class="text-transparent bg-clip-text bg-gradient-to-b from-gold-400 to-yellow-700 drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">ORŁY</span>
+                    <h1 class="text-7xl md:text-[10rem] font-display font-bold mb-10 leading-[0.85] uppercase text-white drop-shadow-2xl" data-aos="zoom-in">
+                        Gliwickie<br><span class="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500" style="-webkit-text-stroke: 1px rgba(255,255,255,0.1);">Orły</span>
                     </h1>
                     
                     <div id="hero-dynamic-content" class="w-full max-w-6xl mx-auto min-h-[250px] flex items-center justify-center mb-12" data-aos="fade-up" data-aos-delay="200">
-                        <div class="animate-pulse text-gray-500 font-mono text-sm tracking-widest uppercase flex flex-col items-center gap-2">
-                            <i class="fas fa-circle-notch fa-spin text-2xl"></i>
-                            Ładowanie statusu meczu...
-                        </div>
+                        <div class="animate-pulse text-gray-500 font-mono text-sm tracking-widest uppercase">Ładowanie statusu meczu...</div>
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-6 justify-center w-full" data-aos="fade-up" data-aos-delay="400">
@@ -373,22 +354,69 @@
         </main>
     </div>
 
-    <footer id="contact-footer" class="bg-[#050505] border-t border-white/5 py-4 mt-auto">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <img src="./logo.png" class="w-8 h-8 object-cover bw-filter" onerror="this.src='https://via.placeholder.com/50x50?text=KS'">
-                <p class="text-gray-500 font-mono text-[10px] uppercase tracking-widest">
-                    Jesteśmy młodą, amatorską drużyną grającą w <a href="https://www.instagram.com/gtspnp_piatka/" target="_blank" class="text-white hover:text-gold-500 transition-colors font-bold border-b border-white/20 pb-[1px]">@gtspnp_piatka</a>
-                </p>
-            </div>
-            <div class="flex items-center gap-6">
-                <a href="https://www.facebook.com/KSGliwickieOrly" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/ks_gliwickie_orly/" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@ks_gliwickie_orly" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i class="fab fa-tiktok"></i></a>
-            </div>
+    <div id="match-modal" class="fixed inset-0 z-[70] bg-black/90 hidden items-center justify-center p-4 backdrop-blur-md">
+        <div class="bg-[#0f0f0f] border border-white/10 p-8 max-w-lg w-full rounded-3xl relative shadow-2xl modal-content">
+            <button onclick="closeModal('match-modal')" class="absolute top-6 right-6 text-gray-600 hover:text-white transition-colors"><i class="fas fa-times text-2xl"></i></button>
+            <h3 id="modal-match-title" class="font-display text-4xl text-white mb-8 uppercase">Edytuj Mecz</h3>
+            <form id="match-form" class="space-y-5">
+                <input type="hidden" id="match-id">
+                <div class="grid grid-cols-2 gap-5">
+                    <div><label class="modern-label">Data</label><input type="date" id="matchDate" required class="modern-input"></div>
+                    <div><label class="modern-label">Godzina</label><input type="time" id="matchTime" required class="modern-input"></div>
+                </div>
+                <div><label class="modern-label">Rywal</label><input type="text" id="opponent" required class="modern-input" placeholder="Wpisz nazwę..."></div>
+                <div><label class="modern-label">Lokalizacja</label><input type="text" id="location" value="ul. Jasna 31, Gliwice" required class="modern-input"></div>
+                <div class="grid grid-cols-2 gap-5">
+                    <div><label class="modern-label">Typ</label><select id="matchType" class="modern-input cursor-pointer"><option value="Mecz Ligowy">Mecz Ligowy</option><option value="Sparing">Sparing</option></select></div>
+                    <div><label class="modern-label">Status</label><select id="matchStatus" class="modern-input cursor-pointer"><option value="Nadchodzący">Nadchodzący</option><option value="1. Połowa">1. Połowa</option><option value="Przerwa">Przerwa</option><option value="2. Połowa">2. Połowa</option><option value="Zakończony">Zakończony</option></select></div>
+                </div>
+                <div><label class="modern-label">Wynik</label><input type="text" id="matchScore" class="modern-input text-center font-mono font-bold tracking-widest text-lg" placeholder="0 : 0"></div>
+                <button type="submit" class="w-full bg-white text-black font-bold py-4 rounded-xl hover:bg-gray-200 mt-4 uppercase tracking-wider text-sm shadow-lg">Zapisz Zmiany</button>
+            </form>
         </div>
-        <div class="text-center mt-2 opacity-20 hover:opacity-100 transition-opacity">
-            <button onclick="changePage('admin-page')" class="text-white p-2" title="Panel Admina"><i class="fas fa-lock text-[10px]"></i> &copy; 2024 KS Gliwickie Orły</button>
+    </div>
+
+    <div id="player-modal" class="fixed inset-0 z-[70] bg-black/90 hidden items-center justify-center p-4 backdrop-blur-md">
+        <div class="bg-[#0f0f0f] border border-white/10 p-8 max-w-lg w-full rounded-3xl relative shadow-2xl modal-content">
+            <button onclick="closeModal('player-modal')" class="absolute top-6 right-6 text-gray-600 hover:text-white transition-colors"><i class="fas fa-times text-2xl"></i></button>
+            <h3 id="modal-player-title" class="font-display text-4xl text-white mb-8 uppercase">Edytuj Gracza</h3>
+            <form id="player-form" class="space-y-5">
+                <input type="hidden" id="player-id">
+                <div class="grid grid-cols-2 gap-5">
+                    <div><label class="modern-label">Imię</label><input type="text" id="playerFirstName" required class="modern-input"></div>
+                    <div><label class="modern-label">Nazwisko</label><input type="text" id="playerLastName" required class="modern-input"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-5">
+                    <div><label class="modern-label">Numer</label><input type="number" id="playerNumber" required class="modern-input"></div>
+                    <div><label class="modern-label">Pozycja</label><select id="playerPosition" class="modern-input cursor-pointer"><option value="Bramkarz">Bramkarz</option><option value="Obrońca">Obrońca</option><option value="Pomocnik">Pomocnik</option><option value="Napastnik">Napastnik</option></select></div>
+                </div>
+                <div><label class="modern-label">Zdjęcie URL</label><input type="url" id="playerPhoto" required class="modern-input"><p class="text-[10px] text-gray-500 mt-2">Link do zdjęcia (format pionowy)</p></div>
+                <button type="submit" class="w-full bg-white text-black font-bold py-4 rounded-xl hover:bg-gray-200 mt-4 uppercase tracking-wider text-sm shadow-lg">Zapisz Zmiany</button>
+            </form>
+        </div>
+    </div>
+
+    <footer id="contact-footer" class="bg-[#050505] border-t border-white/5 py-8">
+        <div class="max-w-4xl mx-auto px-6 flex flex-col items-center text-center">
+            
+            <div class="w-16 h-16 bg-white flex items-center justify-center rounded-sm mb-4 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                <img src="./logo.png" class="w-12 h-12 object-cover bw-filter" onerror="this.src='https://via.placeholder.com/50x50?text=KS'">
+            </div>
+            
+            <p class="text-gray-400 font-mono text-xs uppercase tracking-widest mb-6 max-w-md leading-relaxed">
+                Jesteśmy młodą, amatorską drużyną grającą w <a href="https://www.instagram.com/gtspnp_piatka/" target="_blank" class="text-white hover:text-gold-500 transition-colors font-bold border-b border-white/20 pb-[1px]">@gtspnp_piatka</a>
+            </p>
+
+            <div class="flex justify-center gap-6 mb-8">
+                <a href="https://www.facebook.com/KSGliwickieOrly" target="_blank" class="w-10 h-10 rounded-full bg-[#111] border border-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/20 transition-all"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/ks_gliwickie_orly/" target="_blank" class="w-10 h-10 rounded-full bg-[#111] border border-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/20 transition-all"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@ks_gliwickie_orly" target="_blank" class="w-10 h-10 rounded-full bg-[#111] border border-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/20 transition-all"><i class="fab fa-tiktok"></i></a>
+            </div>
+
+            <p class="text-gray-700 text-[10px] uppercase tracking-widest flex items-center gap-2">
+                &copy; 2024 KS Gliwickie Orły 
+                <button onclick="changePage('admin-page')" class="opacity-20 hover:opacity-100 transition-opacity p-1"><i class="fas fa-lock"></i></button>
+            </p>
         </div>
     </footer>
 
@@ -403,15 +431,13 @@
         const ALLOWED_ADMINS = ['zbvsiu@gmail.com', 'szmonii134@gmail.com', 'jakubbiesek@gmail.com', 'gliwickieorly@gmail.com', 'mateos.11.2006@gmail.com'];
         let adminMatchesCache = []; let adminPlayersCache = [];
 
-        window.acceptCookies = () => { localStorage.setItem('cookiesAccepted', 'true'); document.getElementById('cookie-banner').classList.remove('show'); };
-        
+        // --- TOAST NOTIFICATION ---
         window.showToast = (msg, type = 'error') => {
             const toast = document.getElementById('custom-toast');
             const title = document.getElementById('toast-title');
             const message = document.getElementById('toast-message');
             const icon = document.getElementById('toast-icon');
             
-            // CENTERED TOAST
             toast.className = `fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-4 px-6 py-4 rounded-lg shadow-2xl min-w-[300px] border-l-4 transition-transform duration-500 ease-out transform show`;
             
             if(type === 'error') {
@@ -424,12 +450,21 @@
                 icon.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
             }
             message.innerText = msg;
+            
             setTimeout(() => { toast.classList.remove('show'); }, 4000);
         };
 
+        // --- ANTI INSPECT ---
         document.addEventListener('contextmenu', event => event.preventDefault());
-        document.onkeydown = function(e) { if(e.keyCode == 123) return false; if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false; if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; }
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false;
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        }
 
+        // --- PUBLIC FUNCTIONS ---
         async function loadMatches() {
             const container = document.getElementById('matches-container'); if (!container) return;
             try {
@@ -442,24 +477,35 @@
                     const d = m.date.split('-'); 
                     const isF = m.status === 'Zakończony'; const isL = ['1. Połowa', '2. Połowa', 'Trwa'].includes(m.status); const isB = m.status === 'Przerwa';
                     
-                    let containerClass = "bg-[#0a0a0a] rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 transition-all duration-300 border-l-8";
+                    // VIVID COLORS
+                    let containerClass = "bg-[#0a0a0a] rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 transition-all duration-300 border-l-4";
                     let badgeClass = "text-[10px] px-4 py-2 border rounded-full uppercase tracking-[0.2em] font-bold";
                     
-                    if (isL || isB) { containerClass += " border-red-600 bg-red-900/10 shadow-[0_0_15px_rgba(220,38,38,0.2)]"; badgeClass += " text-white bg-red-600 border-red-600 animate-pulse"; } 
-                    else if (isF && m.score) { 
+                    if (isL || isB) { 
+                        containerClass += " border-red-600 bg-red-900/10 shadow-[0_0_15px_rgba(220,38,38,0.2)]"; 
+                        badgeClass += " text-white bg-red-600 border-red-600 animate-pulse"; 
+                    } else if (isF && m.score) { 
                         const parts = m.score.split(':'); const h = parseInt(parts[0]); const a = parseInt(parts[1]);
                         if(h > a) { containerClass += " border-green-600 bg-green-900/10 shadow-[0_0_15px_rgba(22,163,74,0.2)]"; badgeClass += " text-green-400 border-green-600"; } 
                         else if (h < a) { containerClass += " border-red-800 bg-red-900/10 shadow-[0_0_15px_rgba(153,27,27,0.2)]"; badgeClass += " text-red-400 border-red-800"; } 
                         else { containerClass += " border-orange-500 bg-orange-900/10 shadow-[0_0_15px_rgba(249,115,22,0.2)]"; badgeClass += " text-orange-400 border-orange-500"; } 
-                    } else { containerClass += " border-blue-600 bg-blue-900/10 shadow-[0_0_15px_rgba(37,99,235,0.2)]"; badgeClass += " text-blue-400 border-blue-600"; }
+                    } else { 
+                        containerClass += " border-blue-600 bg-blue-900/10 shadow-[0_0_15px_rgba(37,99,235,0.2)]"; 
+                        badgeClass += " text-blue-400 border-blue-600"; 
+                    }
 
                     const showScore = (isF || isL || isB) && m.score;
                     const score = showScore ? `<span class="text-5xl font-bold font-display text-white tracking-widest">${m.score}</span>` : `<span class="text-gray-600 font-display text-2xl tracking-widest">VS</span>`;
                     
-                    container.innerHTML += `<div class="${containerClass}"><div class="text-center md:text-left min-w-[140px]"><span class="block text-3xl font-bold font-display text-white leading-none">${d[2]}.${d[1]}</span><span class="text-sm text-gray-500 font-mono mt-1 block">${m.time}</span><span class="text-[10px] text-gray-600 uppercase tracking-widest font-bold mt-2 block border-t border-white/5 pt-2 mb-2">${m.type||'LIGA'}</span><div class="flex items-center justify-center md:justify-start text-xs text-gray-500 gap-1"><i class="fas fa-map-marker-alt"></i> <span>${m.location}</span></div></div><div class="flex-1 flex items-center justify-center gap-12"><h3 class="text-3xl font-bold font-display text-right flex-1 text-white uppercase">ORŁY</h3>${score}<h3 class="text-3xl font-bold font-display text-left flex-1 text-gray-400 uppercase">${m.opponent}</h3></div><div class="${badgeClass}">${m.status}</div></div>`;
+                    container.innerHTML += `
+                    <div class="${containerClass}">
+                        <div class="text-center md:text-left min-w-[140px]"><span class="block text-3xl font-bold font-display text-white leading-none">${d[2]}.${d[1]}</span><span class="text-sm text-gray-500 font-mono mt-1 block">${m.time}</span><span class="text-[10px] text-gray-600 uppercase tracking-widest font-bold mt-2 block border-t border-white/5 pt-2 mb-2">${m.type||'LIGA'}</span><div class="flex items-center justify-center md:justify-start text-xs text-gray-500 gap-1"><i class="fas fa-map-marker-alt"></i> <span>${m.location}</span></div></div>
+                        <div class="flex-1 flex items-center justify-center gap-12"><h3 class="text-3xl font-bold font-display text-right flex-1 text-white uppercase">ORŁY</h3>${score}<h3 class="text-3xl font-bold font-display text-left flex-1 text-gray-400 uppercase">${m.opponent}</h3></div>
+                        <div class="${badgeClass}">${m.status}</div>
+                    </div>`;
                 });
                 updateHeroContent(allMatches);
-            } catch (e) { console.error(e); container.innerHTML = '<div class="text-red-500 text-center p-4 border border-red-500 rounded">Błąd wczytywania danych. Sprawdź połączenie.</div>'; }
+            } catch (e) { console.error(e); }
         }
 
         function updateHeroContent(matches) {
@@ -475,16 +521,49 @@
                 else { targetMatch = matches[0]; mode = 'last'; } 
             }
 
-            const gridLayout = "grid grid-cols-3 w-full items-center";
-            const opponentName = targetMatch.opponent || "";
-            const nameClass = opponentName.length > 10 ? "text-3xl md:text-5xl" : "text-5xl md:text-7xl";
+            // CSS GRID DLA IDEALNEGO ŚRODKA
+            // grid-cols-[1fr_auto_1fr] - boczne kolumny zajmują resztę, środek tyle ile trzeba, ale dzięki text-right/left wygląda symetrycznie
+            const gridLayout = "grid grid-cols-1 md:grid-cols-3 w-full items-center gap-4";
 
             if (mode === 'live') {
-                container.innerHTML = `<div class="relative w-full max-w-5xl p-[1px] bg-gradient-to-r from-red-500/30 via-transparent to-red-500/30 rounded-3xl animate-pulse-slow"><div class="bg-black/80 backdrop-blur-xl rounded-3xl p-8 md:p-12 text-center border border-white/10 shadow-2xl flex flex-col items-center"><div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold uppercase tracking-[0.2em] mb-8 animate-pulse"><span class="w-2 h-2 bg-red-500 rounded-full animate-ping"></span> ${targetMatch.status}</div><div class="${gridLayout}"><div class="text-right pr-4"><span class="block ${nameClass} font-display font-bold text-white leading-none uppercase">ORŁY</span></div><div class="flex justify-center"><div class="bg-black/80 border border-white/10 px-8 py-2 rounded-xl"><span class="text-6xl md:text-8xl font-display font-bold text-white tabular-nums tracking-widest">${targetMatch.score || '0:0'}</span></div></div><div class="text-left pl-4"><span class="block ${nameClass} font-display font-bold text-gray-500 leading-none uppercase">${opponentName}</span></div></div></div></div>`;
+                container.innerHTML = `
+                    <div class="relative w-full max-w-5xl p-[1px] bg-gradient-to-r from-red-500/30 via-transparent to-red-500/30 rounded-3xl animate-pulse-slow">
+                        <div class="bg-white/5 backdrop-blur-xl rounded-3xl p-8 md:p-12 text-center border border-white/10 shadow-2xl flex flex-col items-center">
+                            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold uppercase tracking-[0.2em] mb-8 animate-pulse"><span class="w-2 h-2 bg-red-500 rounded-full animate-ping"></span> ${targetMatch.status}</div>
+                            <div class="${gridLayout}">
+                                <div class="text-center md:text-right"><span class="block text-5xl md:text-7xl font-display font-bold text-white leading-none uppercase">ORŁY</span></div>
+                                <div class="flex justify-center"><div class="bg-black/30 border border-white/10 px-8 py-2 rounded-xl"><span class="text-6xl md:text-8xl font-display font-bold text-white tabular-nums tracking-widest">${targetMatch.score || '0:0'}</span></div></div>
+                                <div class="text-center md:text-left"><span class="block text-5xl md:text-7xl font-display font-bold text-gray-500 leading-none uppercase">${targetMatch.opponent}</span></div>
+                            </div>
+                        </div>
+                    </div>`;
             } else if (mode === 'next') {
-                container.innerHTML = `<div class="bg-black/80 backdrop-blur-xl border border-white/10 rounded-3xl p-10 w-full max-w-5xl flex flex-col items-center shadow-2xl"><p class="text-gold-500 text-xs uppercase tracking-[0.3em] mb-6 font-bold flex items-center gap-2"><span class="w-1 h-1 bg-gold-500 rounded-full"></span> Najbliższe Spotkanie <span class="w-1 h-1 bg-gold-500 rounded-full"></span></p><div class="${gridLayout} mb-8 border-b border-white/5 pb-8"><div class="text-right pr-8"><span class="text-4xl md:text-6xl font-display font-bold text-white">ORŁY</span></div><div class="flex justify-center"><div class="w-12 h-[1px] bg-white/20"></div></div><div class="text-left pl-8"><span class="text-4xl md:text-6xl font-display font-bold text-gray-400 uppercase">${opponentName}</span></div></div><div class="flex gap-12"><div class="text-center"><span class="block text-5xl md:text-6xl font-display font-bold text-white tabular-nums" id="days">00</span><span class="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Dni</span></div><div class="text-center"><span class="block text-5xl md:text-6xl font-display font-bold text-white tabular-nums" id="hours">00</span><span class="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Godz</span></div><div class="text-center"><span class="block text-5xl md:text-6xl font-display font-bold text-white tabular-nums" id="minutes">00</span><span class="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Min</span></div></div></div>`; startTimer(new Date(`${targetMatch.date}T${targetMatch.time}:00`));
+                container.innerHTML = `
+                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-10 w-full max-w-5xl flex flex-col items-center shadow-2xl">
+                        <p class="text-gold-500 text-xs uppercase tracking-[0.3em] mb-6 font-bold flex items-center gap-2"><span class="w-1 h-1 bg-gold-500 rounded-full"></span> Najbliższe Spotkanie <span class="w-1 h-1 bg-gold-500 rounded-full"></span></p>
+                        <div class="${gridLayout} mb-8 border-b border-white/5 pb-8">
+                            <div class="text-center md:text-right"><span class="text-4xl md:text-6xl font-display font-bold text-white">ORŁY</span></div>
+                            <div class="flex justify-center"><div class="w-12 h-[1px] bg-white/20"></div></div>
+                            <div class="text-center md:text-left"><span class="text-4xl md:text-6xl font-display font-bold text-gray-400 uppercase">${targetMatch.opponent}</span></div>
+                        </div>
+                        <div class="flex gap-12">
+                            <div class="text-center"><span class="block text-5xl md:text-6xl font-display font-bold text-white tabular-nums" id="days">00</span><span class="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Dni</span></div>
+                            <div class="text-center"><span class="block text-5xl md:text-6xl font-display font-bold text-white tabular-nums" id="hours">00</span><span class="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Godz</span></div>
+                            <div class="text-center"><span class="block text-5xl md:text-6xl font-display font-bold text-white tabular-nums" id="minutes">00</span><span class="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Min</span></div>
+                        </div>
+                    </div>`;
+                startTimer(new Date(`${targetMatch.date}T${targetMatch.time}:00`));
             } else if (mode === 'last') {
-                container.innerHTML = `<div class="bg-black/80 backdrop-blur-xl border border-white/10 p-10 rounded-3xl text-center w-full max-w-5xl shadow-2xl flex flex-col items-center"><div class="text-gray-500 text-xs font-bold uppercase tracking-[0.3em] mb-8 flex justify-center gap-2 items-center"><i class="fas fa-history"></i> Ostatni Wynik</div><div class="${gridLayout}"><div class="text-right pr-4"><span class="block ${nameClass} font-display font-bold text-white leading-none uppercase">ORŁY</span></div><div class="text-center"><span class="text-6xl md:text-8xl font-display font-bold text-gold-500 tabular-nums tracking-widest mx-4">${targetMatch.score || '-'}</span></div><div class="text-left pl-4"><span class="block ${nameClass} font-display font-bold text-gray-500 leading-none uppercase">${opponentName}</span></div></div><div class="mt-8 pt-6 border-t border-white/5 inline-block px-8"><span class="text-xs text-gray-600 uppercase tracking-widest font-mono">${targetMatch.date}</span></div></div>`;
+                container.innerHTML = `
+                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-3xl text-center w-full max-w-5xl shadow-2xl flex flex-col items-center">
+                        <div class="text-gray-500 text-xs font-bold uppercase tracking-[0.3em] mb-8 flex justify-center gap-2 items-center"><i class="fas fa-history"></i> Ostatni Wynik</div>
+                        <div class="${gridLayout}">
+                            <div class="text-center md:text-right"><span class="block text-5xl md:text-7xl font-display font-bold text-white leading-none uppercase">ORŁY</span></div>
+                            <div class="text-center"><span class="text-6xl md:text-8xl font-display font-bold text-gold-500 tabular-nums tracking-widest mx-4">${targetMatch.score || '-'}</span></div>
+                            <div class="text-center md:text-left"><span class="block text-5xl md:text-7xl font-display font-bold text-gray-500 leading-none uppercase">${targetMatch.opponent}</span></div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-white/5 inline-block px-8"><span class="text-xs text-gray-600 uppercase tracking-widest font-mono">${targetMatch.date}</span></div>
+                    </div>`;
             }
         }
 
@@ -492,38 +571,132 @@
             const container = document.getElementById('squad-container'); if(!container) return;
             try { const q = query(collection(db, "players")); const qs = await getDocs(q); container.innerHTML = ''; 
                 const pl = []; qs.forEach(d=>pl.push(d.data())); pl.sort((a,b)=>a.number-b.number);
-                pl.forEach(p=>{ container.innerHTML += `<div class="relative h-[450px] bg-[#0a0a0a] border border-white/5 overflow-hidden group rounded-xl"><img src="${p.photoUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://via.placeholder.com/600x800?text=Brak'"><div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div><span class="absolute top-4 right-6 text-8xl font-bold font-display text-white/5 group-hover:text-white/20 transition-colors select-none">${p.number}</span><div class="absolute bottom-0 left-0 p-8"><h3 class="text-4xl font-bold font-display uppercase leading-none text-white mb-2">${p.firstName}<br>${p.lastName}</h3><p class="inline-block bg-white text-black px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-bold rounded-sm">${p.position}</p></div></div>`; });
+                pl.forEach(p=>{ container.innerHTML += `<div class="relative h-[450px] bg-[#0a0a0a] border border-white/5 overflow-hidden group rounded-xl"><img src="${p.photoUrl}" class="w-full h-full object-cover bw-filter group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://via.placeholder.com/600x800?text=Brak'"><div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div><span class="absolute top-4 right-6 text-8xl font-bold font-display text-white/5 group-hover:text-white/20 transition-colors select-none">${p.number}</span><div class="absolute bottom-0 left-0 p-8"><h3 class="text-4xl font-bold font-display uppercase leading-none text-white mb-2">${p.firstName}<br>${p.lastName}</h3><p class="inline-block bg-white text-black px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-bold rounded-sm">${p.position}</p></div></div>`; });
             } catch(e) {}
         }
 
-        window.switchAdminTab = (tab) => { document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active')); document.getElementById('link-'+tab).classList.add('active'); document.querySelectorAll('.admin-view').forEach(v => v.classList.add('hidden')); document.getElementById('view-'+tab).classList.remove('hidden'); window.toggleAdminSidebar(false); };
-        window.toggleAdminSidebar = (forceState) => { const s = document.getElementById('admin-sidebar'); const o = document.getElementById('admin-sidebar-overlay'); if (typeof forceState !== 'undefined') { if(forceState) { s.classList.add('open'); o.classList.add('active'); o.classList.remove('hidden'); } else { s.classList.remove('open'); o.classList.remove('active'); setTimeout(() => o.classList.add('hidden'), 300); } } else { if (s.classList.contains('open')) { s.classList.remove('open'); o.classList.remove('active'); setTimeout(() => o.classList.add('hidden'), 300); } else { s.classList.add('open'); o.classList.remove('hidden'); setTimeout(() => o.classList.add('active'), 10); } } };
-        window.renderAdminData = async () => { const mList = document.getElementById('admin-matches-list'); const lSel = document.getElementById('live-match-select'); const qM = query(collection(db, "matches"), orderBy("date", "desc")); const sM = await getDocs(qM); mList.innerHTML = ''; lSel.innerHTML = '<option value="">-- Kliknij, aby wybrać mecz --</option>'; adminMatchesCache = []; sM.forEach(doc => { const m = doc.data(); m.id = doc.id; adminMatchesCache.push(m); if(m.status !== 'Zakończony') lSel.innerHTML += `<option value="${m.id}">${m.opponent} (${m.date})</option>`; mList.innerHTML += `<tr><td><div class="font-bold text-white text-lg">${m.date}</div><div class="text-xs text-gray-500 font-mono">${m.time}</div></td><td class="text-white font-bold text-lg">${m.opponent}</td><td><span class="text-[10px] uppercase px-3 py-1 rounded-full bg-white/5 border border-white/10 font-bold tracking-widest">${m.status}</span></td><td class="font-display text-xl text-gold-500 tracking-widest">${m.score||'-'}</td><td class="text-right"><button onclick="editMatch('${m.id}')" class="text-gray-400 hover:text-white p-2 bg-white/5 rounded-lg mx-1 hover:bg-white/10 transition-all"><i class="fas fa-edit"></i></button><button onclick="deleteItem('matches','${m.id}')" class="text-red-500 hover:text-red-400 p-2 bg-red-900/10 rounded-lg mx-1 hover:bg-red-900/20 transition-all"><i class="fas fa-trash"></i></button></td></tr>`; }); const pList = document.getElementById('admin-players-grid'); const qP = query(collection(db, "players")); const sP = await getDocs(qP); pList.innerHTML = ''; adminPlayersCache = []; const pArr = []; sP.forEach(doc => { const p=doc.data(); p.id=doc.id; pArr.push(p); }); pArr.sort((a,b)=>a.number-b.number); adminPlayersCache=pArr; pArr.forEach(p => { pList.innerHTML += `<div class="admin-player-card p-5 flex items-center gap-5 hover:bg-[#141414] transition-colors"><img src="${p.photoUrl}" class="w-16 h-16 rounded-xl object-cover bg-gray-800"><div><p class="text-gold-500 text-xs font-bold mb-1">#${p.number}</p><h4 class="font-display text-2xl leading-none text-white">${p.firstName}<br>${p.lastName}</h4><p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1 font-bold">${p.position}</p></div><div class="ml-auto flex flex-col gap-2"><button onclick="editPlayer('${p.id}')" class="text-gray-400 hover:text-white"><i class="fas fa-edit"></i></button><button onclick="deleteItem('players','${p.id}')" class="text-red-500 hover:text-red-300"><i class="fas fa-trash"></i></button></div></div>`; }); document.getElementById('stat-total-matches').innerText = adminMatchesCache.length; document.getElementById('stat-total-players').innerText = adminPlayersCache.length; };
+        window.switchAdminTab = (tab) => {
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            document.getElementById('link-'+tab).classList.add('active');
+            document.querySelectorAll('.admin-view').forEach(v => v.classList.add('hidden'));
+            document.getElementById('view-'+tab).classList.remove('hidden');
+            window.toggleAdminSidebar(false);
+        };
+
+        window.toggleAdminSidebar = (forceState) => {
+            const sidebar = document.getElementById('admin-sidebar');
+            const overlay = document.getElementById('admin-sidebar-overlay');
+            if (typeof forceState !== 'undefined') {
+                if(forceState) { sidebar.classList.add('open'); overlay.classList.add('active'); overlay.classList.remove('hidden'); }
+                else { sidebar.classList.remove('open'); overlay.classList.remove('active'); setTimeout(() => overlay.classList.add('hidden'), 300); }
+            } else {
+                if (sidebar.classList.contains('open')) { sidebar.classList.remove('open'); overlay.classList.remove('active'); setTimeout(() => overlay.classList.add('hidden'), 300); }
+                else { sidebar.classList.add('open'); overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.add('active'), 10); }
+            }
+        };
+
+        window.renderAdminData = async () => {
+            const mList = document.getElementById('admin-matches-list');
+            const lSel = document.getElementById('live-match-select');
+            const qM = query(collection(db, "matches"), orderBy("date", "desc"));
+            const sM = await getDocs(qM);
+            mList.innerHTML = ''; lSel.innerHTML = '<option value="">-- Kliknij, aby wybrać mecz --</option>'; adminMatchesCache = [];
+            sM.forEach(doc => {
+                const m = doc.data(); m.id = doc.id; adminMatchesCache.push(m);
+                if(m.status !== 'Zakończony') lSel.innerHTML += `<option value="${m.id}">${m.opponent} (${m.date})</option>`;
+                mList.innerHTML += `<tr><td><div class="font-bold text-white text-lg">${m.date}</div><div class="text-xs text-gray-500 font-mono">${m.time}</div></td><td class="text-white font-bold text-lg">${m.opponent}</td><td><span class="text-[10px] uppercase px-3 py-1 rounded-full bg-white/5 border border-white/10 font-bold tracking-widest">${m.status}</span></td><td class="font-display text-xl text-gold-500 tracking-widest">${m.score||'-'}</td><td class="text-right"><button onclick="editMatch('${m.id}')" class="text-gray-400 hover:text-white p-2 bg-white/5 rounded-lg mx-1 hover:bg-white/10 transition-all"><i class="fas fa-edit"></i></button><button onclick="deleteItem('matches','${m.id}')" class="text-red-500 hover:text-red-400 p-2 bg-red-900/10 rounded-lg mx-1 hover:bg-red-900/20 transition-all"><i class="fas fa-trash"></i></button></td></tr>`;
+            });
+            const pList = document.getElementById('admin-players-grid');
+            const qP = query(collection(db, "players"));
+            const sP = await getDocs(qP);
+            pList.innerHTML = ''; adminPlayersCache = []; const pArr = [];
+            sP.forEach(doc => { const p=doc.data(); p.id=doc.id; pArr.push(p); });
+            pArr.sort((a,b)=>a.number-b.number); adminPlayersCache=pArr;
+            pArr.forEach(p => {
+                pList.innerHTML += `<div class="admin-player-card p-5 flex items-center gap-5 hover:bg-[#141414] transition-colors"><img src="${p.photoUrl}" class="w-16 h-16 rounded-xl object-cover bg-gray-800"><div><p class="text-gold-500 text-xs font-bold mb-1">#${p.number}</p><h4 class="font-display text-2xl leading-none text-white">${p.firstName}<br>${p.lastName}</h4><p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1 font-bold">${p.position}</p></div><div class="ml-auto flex flex-col gap-2"><button onclick="editPlayer('${p.id}')" class="text-gray-400 hover:text-white"><i class="fas fa-edit"></i></button><button onclick="deleteItem('players','${p.id}')" class="text-red-500 hover:text-red-300"><i class="fas fa-trash"></i></button></div></div>`;
+            });
+            document.getElementById('stat-total-matches').innerText = adminMatchesCache.length;
+            document.getElementById('stat-total-players').innerText = adminPlayersCache.length;
+        };
+
         let liveId = null;
-        window.loadLiveMatch = () => { const id = document.getElementById('live-match-select').value; if(!id) return; liveId=id; const m = adminMatchesCache.find(x=>x.id===id); document.getElementById('live-opponent-name-display').innerText = m.opponent; let s = m.score ? m.score.split(':') : ['0','0']; document.getElementById('live-score-home').innerText=parseInt(s[0])||0; document.getElementById('live-score-away').innerText=parseInt(s[1])||0; document.getElementById('live-selection-stage').classList.add('hidden'); document.getElementById('live-active-stage').classList.remove('hidden'); };
-        window.exitLiveMatch = () => { liveId = null; document.getElementById('live-match-select').value = ""; document.getElementById('live-active-stage').classList.add('hidden'); document.getElementById('live-selection-stage').classList.remove('hidden'); };
+        window.loadLiveMatch = () => { 
+            const id = document.getElementById('live-match-select').value; if(!id) return; liveId=id; 
+            const m = adminMatchesCache.find(x=>x.id===id); 
+            document.getElementById('live-opponent-name-display').innerText = m.opponent; 
+            let s = m.score ? m.score.split(':') : ['0','0']; 
+            document.getElementById('live-score-home').innerText=parseInt(s[0])||0; 
+            document.getElementById('live-score-away').innerText=parseInt(s[1])||0; 
+            document.getElementById('live-selection-stage').classList.add('hidden');
+            document.getElementById('live-active-stage').classList.remove('hidden');
+        };
+
+        window.exitLiveMatch = () => {
+            liveId = null; document.getElementById('live-match-select').value = "";
+            document.getElementById('live-active-stage').classList.add('hidden');
+            document.getElementById('live-selection-stage').classList.remove('hidden');
+        };
+
         window.updateLiveScore = async (h,a) => { if(!liveId)return; let H=parseInt(document.getElementById('live-score-home').innerText)+h; let A=parseInt(document.getElementById('live-score-away').innerText)+a; if(H<0)H=0;if(A<0)A=0; document.getElementById('live-score-home').innerText=H; document.getElementById('live-score-away').innerText=A; await updateDoc(doc(db,"matches",liveId),{score:`${H} : ${A}`}); loadMatches(); };
         window.setLiveStatus = async (s) => { if(!liveId)return; await updateDoc(doc(db,"matches",liveId),{status:s}); renderAdminData(); loadMatches(); if(s==='Zakończony'){ exitLiveMatch(); } };
+
         window.deleteItem = async (c,id) => { if(confirm("Usunąć trwale?")) { await deleteDoc(doc(db,c,id)); renderAdminData(); loadMatches(); loadSquad(); } };
         window.openMatchModal = () => { document.getElementById('match-form').reset(); document.getElementById('match-id').value=''; document.getElementById('match-modal').classList.remove('hidden'); document.getElementById('match-modal').classList.add('flex'); };
         window.editMatch = (id) => { const m = adminMatchesCache.find(x=>x.id===id); if(!m)return; document.getElementById('match-id').value=m.id; document.getElementById('matchDate').value=m.date; document.getElementById('matchTime').value=m.time; document.getElementById('opponent').value=m.opponent; document.getElementById('location').value=m.location; document.getElementById('matchType').value=m.type; document.getElementById('matchStatus').value=m.status; document.getElementById('matchScore').value=m.score; document.getElementById('match-modal').classList.remove('hidden'); document.getElementById('match-modal').classList.add('flex'); };
         window.openPlayerModal = () => { document.getElementById('player-form').reset(); document.getElementById('player-id').value=''; document.getElementById('player-modal').classList.remove('hidden'); document.getElementById('player-modal').classList.add('flex'); };
         window.editPlayer = (id) => { const p = adminPlayersCache.find(x=>x.id===id); if(!p)return; document.getElementById('player-id').value=p.id; document.getElementById('playerFirstName').value=p.firstName; document.getElementById('playerLastName').value=p.lastName; document.getElementById('playerNumber').value=p.number; document.getElementById('playerPosition').value=p.position; document.getElementById('playerPhoto').value=p.photoUrl; document.getElementById('player-modal').classList.remove('hidden'); document.getElementById('player-modal').classList.add('flex'); };
         window.closeModal = (id) => { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); };
+
         document.getElementById('match-form').addEventListener('submit', async(e)=>{ e.preventDefault(); const id=document.getElementById('match-id').value; const d={ date:document.getElementById('matchDate').value, time:document.getElementById('matchTime').value, opponent:document.getElementById('opponent').value, location:document.getElementById('location').value, type:document.getElementById('matchType').value, status:document.getElementById('matchStatus').value, score:document.getElementById('matchScore').value }; if(id) await updateDoc(doc(db,"matches",id),d); else await addDoc(collection(db,"matches"),d); closeModal('match-modal'); renderAdminData(); loadMatches(); });
         document.getElementById('player-form').addEventListener('submit', async(e)=>{ e.preventDefault(); const id=document.getElementById('player-id').value; const d={ firstName:document.getElementById('playerFirstName').value, lastName:document.getElementById('playerLastName').value, number:parseInt(document.getElementById('playerNumber').value), position:document.getElementById('playerPosition').value, photoUrl:document.getElementById('playerPhoto').value }; if(id) await updateDoc(doc(db,"players",id),d); else await addDoc(collection(db,"players"),d); closeModal('player-modal'); renderAdminData(); loadSquad(); });
+
         window.loginWithGoogle = () => { signInWithPopup(auth, provider).then(res=>{ if(!ALLOWED_ADMINS.includes(res.user.email)){ signOut(auth); showToast('Brak uprawnień dla tego konta', 'error'); } else { showToast('Zalogowano pomyślnie', 'success'); } }).catch(e=>{ showToast(e.message, 'error'); }); };
         window.logout = () => signOut(auth);
-        onAuthStateChanged(auth, u => { const l=document.getElementById('login-screen'); const d=document.getElementById('dashboard'); if(u && ALLOWED_ADMINS.includes(u.email)){ l.classList.add('hidden'); d.classList.remove('hidden'); renderAdminData(); } else { if(u) signOut(auth); l.classList.remove('hidden'); d.classList.add('hidden'); } });
-        function startTimer(t){ if(window.timerInterval) clearInterval(window.timerInterval); window.timerInterval = setInterval(()=>{ const now=new Date().getTime(); const d=t.getTime()-now; if(d<0){ clearInterval(window.timerInterval); loadMatches(); return; } const da=Math.floor(d/(1000*60*60*24)); const h=Math.floor((d%(1000*60*60*24))/(1000*60*60)); const m=Math.floor((d%(1000*60*60))/(1000*60)); if(document.getElementById('days')){ document.getElementById('days').innerText=da<10?'0'+da:da; document.getElementById('hours').innerText=h<10?'0'+h:h; document.getElementById('minutes').innerText=m<10?'0'+m:m; } },1000); }
-        if(!localStorage.getItem('cookiesAccepted')) { setTimeout(() => document.getElementById('cookie-banner').classList.add('show'), 1000); }
+        onAuthStateChanged(auth, u => { 
+            const l=document.getElementById('login-screen'); const d=document.getElementById('dashboard'); 
+            if(u && ALLOWED_ADMINS.includes(u.email)){ l.classList.add('hidden'); d.classList.remove('hidden'); renderAdminData(); } 
+            else { if(u) signOut(auth); l.classList.remove('hidden'); d.classList.add('hidden'); }
+        });
+
+        function startTimer(t){ 
+            if(window.timerInterval) clearInterval(window.timerInterval);
+            window.timerInterval = setInterval(()=>{ 
+                const now=new Date().getTime(); const d=t.getTime()-now; 
+                if(d<0){ clearInterval(window.timerInterval); loadMatches(); return; } 
+                const da=Math.floor(d/(1000*60*60*24)); const h=Math.floor((d%(1000*60*60*24))/(1000*60*60)); const m=Math.floor((d%(1000*60*60))/(1000*60)); 
+                if(document.getElementById('days')){ document.getElementById('days').innerText=da<10?'0'+da:da; document.getElementById('hours').innerText=h<10?'0'+h:h; document.getElementById('minutes').innerText=m<10?'0'+m:m; } 
+            },1000); 
+        }
+
         document.addEventListener('DOMContentLoaded', () => { loadMatches(); loadSquad(); });
     </script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ once: true, duration: 800, easing: 'ease-out-cubic' });
         let isAnimating = false; let currentPageId = 'home-page';
-        function changePage(targetId) { if (isAnimating || targetId === currentPageId) return; const currentSection = document.getElementById(currentPageId); const targetSection = document.getElementById(targetId); if (!currentSection || !targetSection) return; isAnimating = true; document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active')); const activeBtn = document.getElementById('btn-' + targetId); if(activeBtn) activeBtn.classList.add('active'); currentSection.classList.add('page-exit'); setTimeout(() => { currentSection.classList.add('page-hidden'); currentSection.classList.remove('page-exit', 'relative'); currentSection.classList.add('absolute'); targetSection.classList.remove('page-hidden'); targetSection.classList.add('page-enter'); void targetSection.offsetWidth; targetSection.classList.remove('page-enter'); if(targetId !== 'home-page') { targetSection.classList.remove('absolute'); targetSection.classList.add('relative'); } window.scrollTo({ top: 0, behavior: 'smooth' }); setTimeout(() => { AOS.refresh(); isAnimating = false; currentPageId = targetId; }, 400); }, 400); }
+        function changePage(targetId) {
+            if (isAnimating || targetId === currentPageId) return;
+            const currentSection = document.getElementById(currentPageId);
+            const targetSection = document.getElementById(targetId);
+            if (!currentSection || !targetSection) return;
+            isAnimating = true;
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('btn-' + targetId);
+            if(activeBtn) activeBtn.classList.add('active');
+            currentSection.classList.add('page-exit');
+            setTimeout(() => {
+                currentSection.classList.add('page-hidden');
+                currentSection.classList.remove('page-exit', 'relative'); 
+                currentSection.classList.add('absolute');
+                targetSection.classList.remove('page-hidden');
+                targetSection.classList.add('page-enter'); 
+                void targetSection.offsetWidth;
+                targetSection.classList.remove('page-enter');
+                if(targetId !== 'home-page') { targetSection.classList.remove('absolute'); targetSection.classList.add('relative'); }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setTimeout(() => { AOS.refresh(); isAnimating = false; currentPageId = targetId; }, 400);
+            }, 400);
+        }
         function openMobileMenu() { const m = document.getElementById('mobile-menu'); m.classList.remove('menu-closed'); m.classList.add('menu-open'); }
         function closeMobileMenu() { const m = document.getElementById('mobile-menu'); m.classList.remove('menu-open'); m.classList.add('menu-closed'); }
         document.addEventListener('DOMContentLoaded', () => { document.getElementById('home-page').classList.remove('page-hidden'); });
