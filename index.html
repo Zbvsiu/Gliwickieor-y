@@ -77,6 +77,7 @@
         .modern-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
         .modern-table th { text-align: left; padding: 1rem 1.5rem; color: #52525b; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
         .modern-table td { background: #0f0f0f; padding: 1.25rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .modern-table tr:hover td { background: #141414; }
         .modern-table tr td:first-child { border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-left: 1px solid rgba(255,255,255,0.02); }
         .modern-table tr td:last-child { border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-right: 1px solid rgba(255,255,255,0.02); }
         .modern-input { width: 100%; background-color: #0f0f0f; border: 1px solid #27272a; color: white; padding: 1rem; border-radius: 10px; outline: none; transition: all 0.2s; font-size: 0.95rem; }
@@ -384,46 +385,38 @@
         </div>
     </div>
 
-    <footer id="contact-footer" class="bg-[#080808] border-t border-white/5 py-12">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+    <footer id="contact-footer" class="bg-[#080808] border-t border-white/5 py-8">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             
-            <div class="flex flex-col items-center md:items-start">
-                <div class="w-12 h-12 bg-white flex items-center justify-center rounded-sm mb-4">
-                    <img src="./logo.png" class="w-10 h-10 object-cover bw-filter">
+            <div class="text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+                    <div class="w-8 h-8 bg-white rounded-sm flex items-center justify-center">
+                        <img src="./logo.png" class="w-6 h-6 object-cover bw-filter">
+                    </div>
+                    <span class="font-display text-xl text-white">GLIWICKIE<span class="text-gold-500">ORŁY</span></span>
                 </div>
-                <p class="text-gray-500 text-xs font-mono uppercase tracking-widest leading-relaxed">
-                    Oficjalny serwis klubu KS Gliwickie Orły.<br>Pasja, zaangażowanie, walka.
+                <p class="text-gray-500 text-[10px] uppercase tracking-widest">
+                    Jesteśmy młodą, amatorską drużyną grającą w <a href="https://www.instagram.com/gtspnp_piatka/" target="_blank" class="text-white hover:text-gold-500 transition-colors border-b border-white/20 pb-[1px]">@gtspnp_piatka</a>
                 </p>
-                <div class="flex gap-4 mt-6">
-                    <a href="https://www.facebook.com/KSGliwickieOrly" target="_blank" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-facebook-f text-xl"></i></a>
-                    <a href="https://www.instagram.com/ks_gliwickie_orly/" target="_blank" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-instagram text-xl"></i></a>
-                    <a href="https://www.tiktok.com/@ks_gliwickie_orly" target="_blank" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-tiktok text-xl"></i></a>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-center md:justify-end gap-6 md:gap-12">
+                <div class="text-center md:text-right">
+                    <a href="mailto:kontakt@gliwickieorly.pl" class="block text-gray-400 hover:text-white text-sm transition-colors mb-1">kontakt@gliwickieorly.pl</a>
+                    <span class="text-gray-600 text-xs">ul. Jasna 31, Gliwice</span>
                 </div>
-            </div>
-
-            <div class="flex flex-col items-center">
-                <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Nawigacja</h5>
-                <ul class="space-y-4 text-sm text-gray-400 font-mono">
-                    <li><a href="#" onclick="changePage('home-page')" class="hover:text-gold-500 transition-colors">Start</a></li>
-                    <li><a href="#" onclick="changePage('schedule-page')" class="hover:text-gold-500 transition-colors">Terminarz</a></li>
-                    <li><a href="#" onclick="changePage('squad-page')" class="hover:text-gold-500 transition-colors">Kadra</a></li>
-                    <li><a href="#" onclick="changePage('media-page')" class="hover:text-gold-500 transition-colors">Media</a></li>
-                </ul>
-            </div>
-
-            <div class="flex flex-col items-center md:items-end">
-                <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Kontakt</h5>
-                <ul class="space-y-4 text-sm text-gray-400 font-mono text-center md:text-right">
-                    <li>ul. Jasna 31, Gliwice</li>
-                    <li><a href="mailto:kontakt@gliwickieorly.pl" class="hover:text-white">kontakt@gliwickieorly.pl</a></li>
-                    <li><a href="tel:+48123456789" class="hover:text-white">+48 123 456 789</a></li>
-                </ul>
+                <div class="flex gap-4">
+                    <a href="https://www.facebook.com/KSGliwickieOrly" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i class="fab fa-facebook-f text-lg"></i></a>
+                    <a href="https://www.instagram.com/ks_gliwickie_orly/" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i class="fab fa-instagram text-lg"></i></a>
+                    <a href="https://www.tiktok.com/@ks_gliwickie_orly" target="_blank" class="text-gray-500 hover:text-white transition-colors"><i class="fab fa-tiktok text-lg"></i></a>
+                </div>
             </div>
         </div>
-        <div class="border-t border-white/5 mt-12 pt-8 text-center">
-            <p class="text-gray-600 text-[10px] uppercase tracking-widest flex items-center justify-center gap-2">
+        
+        <div class="mt-8 pt-4 border-t border-white/5 text-center">
+            <p class="text-gray-700 text-[9px] uppercase tracking-widest flex items-center justify-center gap-2">
                 &copy; 2024 KS Gliwickie Orły 
-                <button onclick="changePage('admin-page')" class="opacity-20 hover:opacity-100 transition-opacity"><i class="fas fa-lock"></i></button>
+                <button onclick="changePage('admin-page')" class="opacity-20 hover:opacity-100 transition-opacity p-1"><i class="fas fa-lock"></i></button>
             </p>
         </div>
     </footer>
@@ -465,13 +458,13 @@
                     let containerClass = "bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 transition-all duration-300";
                     let badgeClass = "text-[10px] px-4 py-2 border rounded-full uppercase tracking-[0.2em] font-bold";
                     
-                    if (isL || isB) { containerClass += " shadow-[0_0_30px_rgba(239,68,68,0.15)] border-red-500/30"; badgeClass += " text-red-500 border-red-500 bg-red-900/10 animate-pulse"; } 
+                    if (isL || isB) { containerClass += " shadow-[0_0_30px_rgba(239,68,68,0.15)] border-red-500/30 bg-red-900/5"; badgeClass += " text-red-500 border-red-500 bg-red-900/10 animate-pulse"; } 
                     else if (isF && m.score) { 
                         const parts = m.score.split(':'); const h = parseInt(parts[0]); const a = parseInt(parts[1]);
-                        if(h > a) { containerClass += " shadow-[0_0_20px_rgba(34,197,94,0.1)] border-green-500/20"; badgeClass += " text-green-500 border-green-500"; } 
-                        else if (h < a) { containerClass += " shadow-[0_0_20px_rgba(239,68,68,0.1)] border-red-500/20"; badgeClass += " text-red-500 border-red-500"; } 
-                        else { containerClass += " shadow-[0_0_20px_rgba(234,179,8,0.1)] border-yellow-500/20"; badgeClass += " text-yellow-500 border-yellow-500"; } 
-                    } else { containerClass += " shadow-[0_0_20px_rgba(59,130,246,0.1)] border-blue-500/20"; badgeClass += " text-blue-400 border-blue-500"; }
+                        if(h > a) { containerClass += " shadow-[0_0_20px_rgba(34,197,94,0.1)] border-green-500/20 bg-green-900/5"; badgeClass += " text-green-500 border-green-500"; } 
+                        else if (h < a) { containerClass += " shadow-[0_0_20px_rgba(239,68,68,0.1)] border-red-500/20 bg-red-900/5"; badgeClass += " text-red-500 border-red-500"; } 
+                        else { containerClass += " shadow-[0_0_20px_rgba(234,179,8,0.1)] border-yellow-500/20 bg-yellow-900/5"; badgeClass += " text-yellow-500 border-yellow-500"; } 
+                    } else { containerClass += " shadow-[0_0_20px_rgba(59,130,246,0.1)] border-blue-500/20 bg-blue-900/5"; badgeClass += " text-blue-400 border-blue-500"; }
 
                     const showScore = (isF || isL || isB) && m.score;
                     const score = showScore ? `<span class="text-5xl font-bold font-display text-white tracking-widest">${m.score}</span>` : `<span class="text-gray-600 font-display text-2xl tracking-widest">VS</span>`;
@@ -503,12 +496,12 @@
             if (mode === 'live') {
                 container.innerHTML = `
                     <div class="relative w-full max-w-4xl p-[1px] bg-gradient-to-r from-red-500/30 via-transparent to-red-500/30 rounded-3xl animate-pulse-slow">
-                        <div class="bg-white/5 backdrop-blur-xl rounded-3xl p-8 md:p-12 text-center border border-white/10 shadow-2xl">
+                        <div class="bg-white/5 backdrop-blur-xl rounded-3xl p-8 md:p-12 text-center border border-white/10 shadow-2xl flex flex-col items-center">
                             <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold uppercase tracking-[0.2em] mb-8 animate-pulse"><span class="w-2 h-2 bg-red-500 rounded-full animate-ping"></span> ${targetMatch.status}</div>
-                            <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-                                <div class="flex-1 text-center md:text-right"><span class="block text-5xl md:text-7xl font-display font-bold text-white leading-none">ORŁY</span></div>
-                                <div class="bg-black/30 border border-white/10 px-8 py-2 rounded-xl"><span class="text-6xl md:text-8xl font-display font-bold text-white tabular-nums tracking-widest">${targetMatch.score || '0:0'}</span></div>
-                                <div class="flex-1 text-center md:text-left"><span class="block text-5xl md:text-7xl font-display font-bold text-gray-500 leading-none uppercase">${targetMatch.opponent}</span></div>
+                            <div class="flex flex-col md:flex-row items-center justify-center w-full gap-8">
+                                <div class="flex-1 text-center text-5xl md:text-7xl font-display font-bold text-white leading-none uppercase">ORŁY</div>
+                                <div class="bg-black/40 border border-white/10 px-10 py-3 rounded-xl min-w-[180px] flex justify-center"><span class="text-6xl md:text-8xl font-display font-bold text-white tabular-nums tracking-widest">${targetMatch.score || '0:0'}</span></div>
+                                <div class="flex-1 text-center text-5xl md:text-7xl font-display font-bold text-gray-500 leading-none uppercase">${targetMatch.opponent}</div>
                             </div>
                         </div>
                     </div>`;
@@ -516,7 +509,7 @@
                 container.innerHTML = `
                     <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-10 w-full max-w-4xl flex flex-col items-center shadow-2xl">
                         <p class="text-gold-500 text-xs uppercase tracking-[0.3em] mb-6 font-bold flex items-center gap-2"><span class="w-1 h-1 bg-gold-500 rounded-full"></span> Najbliższe Spotkanie <span class="w-1 h-1 bg-gold-500 rounded-full"></span></p>
-                        <div class="flex items-center justify-center gap-8 md:gap-16 mb-8 w-full border-b border-white/5 pb-8">
+                        <div class="flex items-center justify-center w-full gap-8 mb-8 border-b border-white/5 pb-8">
                             <span class="text-4xl md:text-6xl font-display font-bold text-white">ORŁY</span>
                             <div class="w-12 h-[1px] bg-white/20"></div>
                             <span class="text-4xl md:text-6xl font-display font-bold text-gray-400 uppercase">${targetMatch.opponent}</span>
@@ -530,12 +523,12 @@
                 startTimer(new Date(`${targetMatch.date}T${targetMatch.time}:00`));
             } else if (mode === 'last') {
                 container.innerHTML = `
-                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-3xl text-center w-full max-w-4xl shadow-2xl">
+                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-3xl text-center w-full max-w-4xl shadow-2xl flex flex-col items-center">
                         <div class="text-gray-500 text-xs font-bold uppercase tracking-[0.3em] mb-8 flex justify-center gap-2 items-center"><i class="fas fa-history"></i> Ostatni Wynik</div>
-                        <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-                            <div class="flex-1 text-center md:text-right"><span class="block text-5xl md:text-7xl font-display font-bold text-white leading-none">ORŁY</span></div>
-                            <div class="text-6xl md:text-8xl font-display font-bold text-gold-500 tabular-nums tracking-widest">${targetMatch.score || '-'}</div>
-                            <div class="flex-1 text-center md:text-left"><span class="block text-5xl md:text-7xl font-display font-bold text-gray-500 leading-none uppercase">${targetMatch.opponent}</span></div>
+                        <div class="flex flex-col md:flex-row items-center justify-center w-full gap-8">
+                            <div class="flex-1 text-center text-5xl md:text-7xl font-display font-bold text-white leading-none uppercase">ORŁY</div>
+                            <div class="text-6xl md:text-8xl font-display font-bold text-gold-500 tabular-nums tracking-widest mx-4">${targetMatch.score || '-'}</div>
+                            <div class="flex-1 text-center text-5xl md:text-7xl font-display font-bold text-gray-500 leading-none uppercase">${targetMatch.opponent}</div>
                         </div>
                         <div class="mt-8 pt-6 border-t border-white/5 inline-block px-8"><span class="text-xs text-gray-600 uppercase tracking-widest font-mono">${targetMatch.date}</span></div>
                     </div>`;
@@ -594,7 +587,6 @@
             document.getElementById('stat-total-players').innerText = adminPlayersCache.length;
         };
 
-        // --- LIVE FLOW ---
         let liveId = null;
         window.loadLiveMatch = () => { 
             const id = document.getElementById('live-match-select').value; if(!id) return; liveId=id; 
@@ -616,7 +608,6 @@
         window.updateLiveScore = async (h,a) => { if(!liveId)return; let H=parseInt(document.getElementById('live-score-home').innerText)+h; let A=parseInt(document.getElementById('live-score-away').innerText)+a; if(H<0)H=0;if(A<0)A=0; document.getElementById('live-score-home').innerText=H; document.getElementById('live-score-away').innerText=A; await updateDoc(doc(db,"matches",liveId),{score:`${H} : ${A}`}); loadMatches(); };
         window.setLiveStatus = async (s) => { if(!liveId)return; await updateDoc(doc(db,"matches",liveId),{status:s}); renderAdminData(); loadMatches(); if(s==='Zakończony'){ exitLiveMatch(); } };
 
-        // --- ACTIONS ---
         window.deleteItem = async (c,id) => { if(confirm("Usunąć trwale?")) { await deleteDoc(doc(db,c,id)); renderAdminData(); loadMatches(); loadSquad(); } };
         window.openMatchModal = () => { document.getElementById('match-form').reset(); document.getElementById('match-id').value=''; document.getElementById('match-modal').classList.remove('hidden'); document.getElementById('match-modal').classList.add('flex'); };
         window.editMatch = (id) => { const m = adminMatchesCache.find(x=>x.id===id); if(!m)return; document.getElementById('match-id').value=m.id; document.getElementById('matchDate').value=m.date; document.getElementById('matchTime').value=m.time; document.getElementById('opponent').value=m.opponent; document.getElementById('location').value=m.location; document.getElementById('matchType').value=m.type; document.getElementById('matchStatus').value=m.status; document.getElementById('matchScore').value=m.score; document.getElementById('match-modal').classList.remove('hidden'); document.getElementById('match-modal').classList.add('flex'); };
