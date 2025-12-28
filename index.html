@@ -49,7 +49,7 @@
         .color-reveal:hover .bw-filter { filter: grayscale(0%) contrast(100%) brightness(100%); }
         
         .hero-bg { 
-            background-image: linear-gradient(to bottom, rgba(5,5,5,0.5), #050505), url('https://www.jasna31.pl/image/mdsmkfafqtsx/1920/1080/smart/original/'); 
+            background-image: linear-gradient(to bottom, rgba(5,5,5,0.4), #050505), url('https://www.jasna31.pl/image/mdsmkfafqtsx/1920/1080/smart/original/'); 
             background-size: cover; background-position: center; background-attachment: fixed; 
         }
         
@@ -144,7 +144,7 @@
                     </h1>
                     
                     <div id="hero-dynamic-content" class="w-full max-w-5xl mx-auto min-h-[250px] flex items-center justify-center mb-12" data-aos="fade-up" data-aos-delay="200">
-                        <div class="animate-pulse text-gray-500">Ładowanie danych...</div>
+                        <div class="animate-pulse text-gray-500 font-mono text-sm tracking-widest uppercase">Ładowanie statusu meczu...</div>
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-6 justify-center w-full" data-aos="fade-up" data-aos-delay="400">
@@ -384,29 +384,26 @@
         </div>
     </div>
 
-    <footer id="contact-footer" class="bg-[#080808] border-t border-white/5 py-16">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+    <footer id="contact-footer" class="bg-[#080808] border-t border-white/5 py-12">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
             
-            <div class="md:col-span-1">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-12 h-12 bg-white rounded-sm flex items-center justify-center">
-                        <img src="./logo.png" class="w-10 h-10 object-cover bw-filter">
-                    </div>
-                    <div>
-                        <h4 class="font-display text-2xl text-white leading-none">GLIWICKIE<br><span class="text-gold-500">ORŁY</span></h4>
-                    </div>
+            <div class="flex flex-col items-center md:items-start">
+                <div class="w-12 h-12 bg-white flex items-center justify-center rounded-sm mb-4">
+                    <img src="./logo.png" class="w-10 h-10 object-cover bw-filter">
                 </div>
-                <p class="text-gray-500 text-sm leading-relaxed mb-6">Oficjalny serwis klubu. Dołącz do nas i wspieraj lokalną piłkę.</p>
-                <div class="flex gap-4">
-                    <a href="https://www.facebook.com/KSGliwickieOrly" target="_blank" class="w-10 h-10 bg-white/5 rounded flex items-center justify-center text-gray-400 hover:bg-white hover:text-black transition-all"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.instagram.com/ks_gliwickie_orly/" target="_blank" class="w-10 h-10 bg-white/5 rounded flex items-center justify-center text-gray-400 hover:bg-white hover:text-black transition-all"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@ks_gliwickie_orly" target="_blank" class="w-10 h-10 bg-white/5 rounded flex items-center justify-center text-gray-400 hover:bg-white hover:text-black transition-all"><i class="fab fa-tiktok"></i></a>
+                <p class="text-gray-500 text-xs font-mono uppercase tracking-widest leading-relaxed">
+                    Oficjalny serwis klubu KS Gliwickie Orły.<br>Pasja, zaangażowanie, walka.
+                </p>
+                <div class="flex gap-4 mt-6">
+                    <a href="https://www.facebook.com/KSGliwickieOrly" target="_blank" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-facebook-f text-xl"></i></a>
+                    <a href="https://www.instagram.com/ks_gliwickie_orly/" target="_blank" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-instagram text-xl"></i></a>
+                    <a href="https://www.tiktok.com/@ks_gliwickie_orly" target="_blank" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-tiktok text-xl"></i></a>
                 </div>
             </div>
 
-            <div>
-                <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Menu</h5>
-                <ul class="space-y-3 text-sm text-gray-400">
+            <div class="flex flex-col items-center">
+                <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Nawigacja</h5>
+                <ul class="space-y-4 text-sm text-gray-400 font-mono">
                     <li><a href="#" onclick="changePage('home-page')" class="hover:text-gold-500 transition-colors">Start</a></li>
                     <li><a href="#" onclick="changePage('schedule-page')" class="hover:text-gold-500 transition-colors">Terminarz</a></li>
                     <li><a href="#" onclick="changePage('squad-page')" class="hover:text-gold-500 transition-colors">Kadra</a></li>
@@ -414,22 +411,20 @@
                 </ul>
             </div>
 
-            <div>
+            <div class="flex flex-col items-center md:items-end">
                 <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Kontakt</h5>
-                <ul class="space-y-3 text-sm text-gray-400">
-                    <li><i class="fas fa-map-marker-alt w-5"></i> ul. Jasna 31, Gliwice</li>
-                    <li><i class="fas fa-envelope w-5"></i> kontakt@gliwickieorly.pl</li>
-                    <li><i class="fas fa-phone w-5"></i> +48 123 456 789</li>
+                <ul class="space-y-4 text-sm text-gray-400 font-mono text-center md:text-right">
+                    <li>ul. Jasna 31, Gliwice</li>
+                    <li><a href="mailto:kontakt@gliwickieorly.pl" class="hover:text-white">kontakt@gliwickieorly.pl</a></li>
+                    <li><a href="tel:+48123456789" class="hover:text-white">+48 123 456 789</a></li>
                 </ul>
             </div>
-
-            <div>
-                <h5 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Strefa</h5>
-                <button onclick="changePage('admin-page')" class="text-sm text-gray-500 hover:text-white flex items-center gap-2 transition-colors">
-                    <i class="fas fa-lock"></i> Panel Administratora
-                </button>
-                <p class="mt-8 text-[10px] text-gray-600 uppercase">&copy; 2024 KS Gliwickie Orły.</p>
-            </div>
+        </div>
+        <div class="border-t border-white/5 mt-12 pt-8 text-center">
+            <p class="text-gray-600 text-[10px] uppercase tracking-widest flex items-center justify-center gap-2">
+                &copy; 2024 KS Gliwickie Orły 
+                <button onclick="changePage('admin-page')" class="opacity-20 hover:opacity-100 transition-opacity"><i class="fas fa-lock"></i></button>
+            </p>
         </div>
     </footer>
 
@@ -467,40 +462,24 @@
                     const d = m.date.split('-'); 
                     const isF = m.status === 'Zakończony'; const isL = ['1. Połowa', '2. Połowa', 'Trwa'].includes(m.status); const isB = m.status === 'Przerwa';
                     
-                    // KOLOROWANIE TERMINARZA
                     let containerClass = "bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 transition-all duration-300";
                     let badgeClass = "text-[10px] px-4 py-2 border rounded-full uppercase tracking-[0.2em] font-bold";
                     
-                    if (isL || isB) { // LIVE
-                        containerClass += " shadow-[0_0_30px_rgba(239,68,68,0.15)] border-red-500/30";
-                        badgeClass += " text-red-500 border-red-500 bg-red-900/10 animate-pulse";
-                    } else if (isF && m.score) { // ZAKOŃCZONY
-                        const parts = m.score.split(':');
-                        const h = parseInt(parts[0]); const a = parseInt(parts[1]);
-                        if(h > a) { containerClass += " shadow-[0_0_20px_rgba(34,197,94,0.1)] border-green-500/20"; badgeClass += " text-green-500 border-green-500"; } // WIN
-                        else if (h < a) { containerClass += " shadow-[0_0_20px_rgba(239,68,68,0.1)] border-red-500/20"; badgeClass += " text-red-500 border-red-500"; } // LOSE
-                        else { containerClass += " shadow-[0_0_20px_rgba(234,179,8,0.1)] border-yellow-500/20"; badgeClass += " text-yellow-500 border-yellow-500"; } // DRAW
-                    } else { // NADCHODZĄCY
-                        containerClass += " shadow-[0_0_20px_rgba(59,130,246,0.1)] border-blue-500/20";
-                        badgeClass += " text-blue-400 border-blue-500";
-                    }
+                    if (isL || isB) { containerClass += " shadow-[0_0_30px_rgba(239,68,68,0.15)] border-red-500/30"; badgeClass += " text-red-500 border-red-500 bg-red-900/10 animate-pulse"; } 
+                    else if (isF && m.score) { 
+                        const parts = m.score.split(':'); const h = parseInt(parts[0]); const a = parseInt(parts[1]);
+                        if(h > a) { containerClass += " shadow-[0_0_20px_rgba(34,197,94,0.1)] border-green-500/20"; badgeClass += " text-green-500 border-green-500"; } 
+                        else if (h < a) { containerClass += " shadow-[0_0_20px_rgba(239,68,68,0.1)] border-red-500/20"; badgeClass += " text-red-500 border-red-500"; } 
+                        else { containerClass += " shadow-[0_0_20px_rgba(234,179,8,0.1)] border-yellow-500/20"; badgeClass += " text-yellow-500 border-yellow-500"; } 
+                    } else { containerClass += " shadow-[0_0_20px_rgba(59,130,246,0.1)] border-blue-500/20"; badgeClass += " text-blue-400 border-blue-500"; }
 
                     const showScore = (isF || isL || isB) && m.score;
                     const score = showScore ? `<span class="text-5xl font-bold font-display text-white tracking-widest">${m.score}</span>` : `<span class="text-gray-600 font-display text-2xl tracking-widest">VS</span>`;
                     
                     container.innerHTML += `
                     <div class="${containerClass}">
-                        <div class="text-center md:text-left min-w-[140px]">
-                            <span class="block text-3xl font-bold font-display text-white leading-none">${d[2]}.${d[1]}</span>
-                            <span class="text-sm text-gray-500 font-mono mt-1 block">${m.time}</span>
-                            <span class="text-[10px] text-gray-600 uppercase tracking-widest font-bold mt-2 block border-t border-white/5 pt-2 mb-2">${m.type||'LIGA'}</span>
-                            <div class="flex items-center justify-center md:justify-start text-xs text-gray-500 gap-1"><i class="fas fa-map-marker-alt"></i> <span>${m.location}</span></div>
-                        </div>
-                        <div class="flex-1 flex items-center justify-center gap-12">
-                            <h3 class="text-3xl font-bold font-display text-right flex-1 text-white uppercase">ORŁY</h3>
-                            ${score}
-                            <h3 class="text-3xl font-bold font-display text-left flex-1 text-gray-400 uppercase">${m.opponent}</h3>
-                        </div>
+                        <div class="text-center md:text-left min-w-[140px]"><span class="block text-3xl font-bold font-display text-white leading-none">${d[2]}.${d[1]}</span><span class="text-sm text-gray-500 font-mono mt-1 block">${m.time}</span><span class="text-[10px] text-gray-600 uppercase tracking-widest font-bold mt-2 block border-t border-white/5 pt-2 mb-2">${m.type||'LIGA'}</span><div class="flex items-center justify-center md:justify-start text-xs text-gray-500 gap-1"><i class="fas fa-map-marker-alt"></i> <span>${m.location}</span></div></div>
+                        <div class="flex-1 flex items-center justify-center gap-12"><h3 class="text-3xl font-bold font-display text-right flex-1 text-white uppercase">ORŁY</h3>${score}<h3 class="text-3xl font-bold font-display text-left flex-1 text-gray-400 uppercase">${m.opponent}</h3></div>
                         <div class="${badgeClass}">${m.status}</div>
                     </div>`;
                 });
@@ -518,55 +497,47 @@
             else {
                 const upcomingMatches = matches.filter(m => new Date(`${m.date}T${m.time}:00`) > now && m.status !== 'Zakończony').sort((a,b) => new Date(`${a.date}T${a.time}:00`) - new Date(`${b.date}T${b.time}:00`));
                 if (upcomingMatches.length > 0) { targetMatch = upcomingMatches[0]; mode = 'next'; } 
-                else { targetMatch = matches[0]; mode = 'last'; } // Pierwszy na liście to ostatni (bo sort desc)
+                else { targetMatch = matches[0]; mode = 'last'; } 
             }
 
-            // NOWY WYGLĄD HERO PANELU
             if (mode === 'live') {
                 container.innerHTML = `
-                    <div class="relative w-full max-w-4xl p-[1px] bg-gradient-to-r from-red-500/50 via-red-900/20 to-red-500/50 rounded-3xl animate-pulse-slow">
-                        <div class="bg-[#0a0a0a] rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
-                            <div class="absolute inset-0 bg-red-600/5"></div>
-                            <div class="relative z-10">
-                                <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold uppercase tracking-[0.2em] mb-8 animate-pulse">
-                                    <span class="w-2 h-2 bg-red-500 rounded-full"></span> ${targetMatch.status}
-                                </div>
-                                <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-                                    <div class="flex-1 text-center md:text-right"><span class="block text-5xl md:text-7xl font-display font-bold text-white leading-none">ORŁY</span></div>
-                                    <div class="bg-black/50 border border-white/10 px-8 py-2 rounded-xl"><span class="text-6xl md:text-8xl font-display font-bold text-white tabular-nums tracking-widest">${targetMatch.score || '0:0'}</span></div>
-                                    <div class="flex-1 text-center md:text-left"><span class="block text-5xl md:text-7xl font-display font-bold text-gray-500 leading-none uppercase">${targetMatch.opponent}</span></div>
-                                </div>
+                    <div class="relative w-full max-w-4xl p-[1px] bg-gradient-to-r from-red-500/30 via-transparent to-red-500/30 rounded-3xl animate-pulse-slow">
+                        <div class="bg-white/5 backdrop-blur-xl rounded-3xl p-8 md:p-12 text-center border border-white/10 shadow-2xl">
+                            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold uppercase tracking-[0.2em] mb-8 animate-pulse"><span class="w-2 h-2 bg-red-500 rounded-full animate-ping"></span> ${targetMatch.status}</div>
+                            <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+                                <div class="flex-1 text-center md:text-right"><span class="block text-5xl md:text-7xl font-display font-bold text-white leading-none">ORŁY</span></div>
+                                <div class="bg-black/30 border border-white/10 px-8 py-2 rounded-xl"><span class="text-6xl md:text-8xl font-display font-bold text-white tabular-nums tracking-widest">${targetMatch.score || '0:0'}</span></div>
+                                <div class="flex-1 text-center md:text-left"><span class="block text-5xl md:text-7xl font-display font-bold text-gray-500 leading-none uppercase">${targetMatch.opponent}</span></div>
                             </div>
                         </div>
                     </div>`;
             } else if (mode === 'next') {
                 container.innerHTML = `
-                    <div class="flex flex-col items-center justify-center">
+                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-10 w-full max-w-4xl flex flex-col items-center shadow-2xl">
                         <p class="text-gold-500 text-xs uppercase tracking-[0.3em] mb-6 font-bold flex items-center gap-2"><span class="w-1 h-1 bg-gold-500 rounded-full"></span> Najbliższe Spotkanie <span class="w-1 h-1 bg-gold-500 rounded-full"></span></p>
-                        <div class="flex items-center justify-center gap-8 md:gap-16 mb-8">
+                        <div class="flex items-center justify-center gap-8 md:gap-16 mb-8 w-full border-b border-white/5 pb-8">
                             <span class="text-4xl md:text-6xl font-display font-bold text-white">ORŁY</span>
                             <div class="w-12 h-[1px] bg-white/20"></div>
                             <span class="text-4xl md:text-6xl font-display font-bold text-gray-400 uppercase">${targetMatch.opponent}</span>
                         </div>
-                        <div class="inline-flex items-center justify-center gap-6 md:gap-12 p-8 border border-white/10 bg-black/40 backdrop-blur-xl rounded-3xl shadow-2xl">
-                            <div class="text-center"><span class="block text-5xl md:text-7xl font-display font-bold text-white tabular-nums" id="days">00</span><span class="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Dni</span></div>
-                            <div class="text-center"><span class="block text-5xl md:text-7xl font-display font-bold text-white tabular-nums" id="hours">00</span><span class="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Godz</span></div>
-                            <div class="text-center"><span class="block text-5xl md:text-7xl font-display font-bold text-white tabular-nums" id="minutes">00</span><span class="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Min</span></div>
+                        <div class="flex gap-12">
+                            <div class="text-center"><span class="block text-5xl md:text-6xl font-display font-bold text-white tabular-nums" id="days">00</span><span class="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Dni</span></div>
+                            <div class="text-center"><span class="block text-5xl md:text-6xl font-display font-bold text-white tabular-nums" id="hours">00</span><span class="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Godz</span></div>
+                            <div class="text-center"><span class="block text-5xl md:text-6xl font-display font-bold text-white tabular-nums" id="minutes">00</span><span class="text-[10px] text-gray-500 uppercase tracking-[0.3em]">Min</span></div>
                         </div>
                     </div>`;
                 startTimer(new Date(`${targetMatch.date}T${targetMatch.time}:00`));
             } else if (mode === 'last') {
                 container.innerHTML = `
-                    <div class="w-full max-w-4xl p-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-3xl">
-                        <div class="bg-[#0a0a0a] rounded-3xl p-8 text-center relative">
-                            <p class="text-gray-500 text-xs uppercase tracking-[0.3em] mb-8">Ostatni Wynik</p>
-                            <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-                                <div class="flex-1 text-center md:text-right"><span class="block text-5xl md:text-7xl font-display font-bold text-white leading-none">ORŁY</span></div>
-                                <div class="text-6xl md:text-8xl font-display font-bold text-gold-500 tabular-nums tracking-widest">${targetMatch.score || '-'}</div>
-                                <div class="flex-1 text-center md:text-left"><span class="block text-5xl md:text-7xl font-display font-bold text-gray-500 leading-none uppercase">${targetMatch.opponent}</span></div>
-                            </div>
-                            <div class="mt-8 pt-6 border-t border-white/5 inline-block px-8"><span class="text-xs text-gray-600 uppercase tracking-widest font-mono">${targetMatch.date}</span></div>
+                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-3xl text-center w-full max-w-4xl shadow-2xl">
+                        <div class="text-gray-500 text-xs font-bold uppercase tracking-[0.3em] mb-8 flex justify-center gap-2 items-center"><i class="fas fa-history"></i> Ostatni Wynik</div>
+                        <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+                            <div class="flex-1 text-center md:text-right"><span class="block text-5xl md:text-7xl font-display font-bold text-white leading-none">ORŁY</span></div>
+                            <div class="text-6xl md:text-8xl font-display font-bold text-gold-500 tabular-nums tracking-widest">${targetMatch.score || '-'}</div>
+                            <div class="flex-1 text-center md:text-left"><span class="block text-5xl md:text-7xl font-display font-bold text-gray-500 leading-none uppercase">${targetMatch.opponent}</span></div>
                         </div>
+                        <div class="mt-8 pt-6 border-t border-white/5 inline-block px-8"><span class="text-xs text-gray-600 uppercase tracking-widest font-mono">${targetMatch.date}</span></div>
                     </div>`;
             }
         }
@@ -605,24 +576,20 @@
             const qM = query(collection(db, "matches"), orderBy("date", "desc"));
             const sM = await getDocs(qM);
             mList.innerHTML = ''; lSel.innerHTML = '<option value="">-- Kliknij, aby wybrać mecz --</option>'; adminMatchesCache = [];
-            
             sM.forEach(doc => {
                 const m = doc.data(); m.id = doc.id; adminMatchesCache.push(m);
                 if(m.status !== 'Zakończony') lSel.innerHTML += `<option value="${m.id}">${m.opponent} (${m.date})</option>`;
                 mList.innerHTML += `<tr><td><div class="font-bold text-white text-lg">${m.date}</div><div class="text-xs text-gray-500 font-mono">${m.time}</div></td><td class="text-white font-bold text-lg">${m.opponent}</td><td><span class="text-[10px] uppercase px-3 py-1 rounded-full bg-white/5 border border-white/10 font-bold tracking-widest">${m.status}</span></td><td class="font-display text-xl text-gold-500 tracking-widest">${m.score||'-'}</td><td class="text-right"><button onclick="editMatch('${m.id}')" class="text-gray-400 hover:text-white p-2 bg-white/5 rounded-lg mx-1 hover:bg-white/10 transition-all"><i class="fas fa-edit"></i></button><button onclick="deleteItem('matches','${m.id}')" class="text-red-500 hover:text-red-400 p-2 bg-red-900/10 rounded-lg mx-1 hover:bg-red-900/20 transition-all"><i class="fas fa-trash"></i></button></td></tr>`;
             });
-
             const pList = document.getElementById('admin-players-grid');
             const qP = query(collection(db, "players"));
             const sP = await getDocs(qP);
             pList.innerHTML = ''; adminPlayersCache = []; const pArr = [];
             sP.forEach(doc => { const p=doc.data(); p.id=doc.id; pArr.push(p); });
             pArr.sort((a,b)=>a.number-b.number); adminPlayersCache=pArr;
-            
             pArr.forEach(p => {
                 pList.innerHTML += `<div class="admin-player-card p-5 flex items-center gap-5 hover:bg-[#141414] transition-colors"><img src="${p.photoUrl}" class="w-16 h-16 rounded-xl object-cover bg-gray-800"><div><p class="text-gold-500 text-xs font-bold mb-1">#${p.number}</p><h4 class="font-display text-2xl leading-none text-white">${p.firstName}<br>${p.lastName}</h4><p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1 font-bold">${p.position}</p></div><div class="ml-auto flex flex-col gap-2"><button onclick="editPlayer('${p.id}')" class="text-gray-400 hover:text-white"><i class="fas fa-edit"></i></button><button onclick="deleteItem('players','${p.id}')" class="text-red-500 hover:text-red-300"><i class="fas fa-trash"></i></button></div></div>`;
             });
-
             document.getElementById('stat-total-matches').innerText = adminMatchesCache.length;
             document.getElementById('stat-total-players').innerText = adminPlayersCache.length;
         };
@@ -657,7 +624,6 @@
         window.editPlayer = (id) => { const p = adminPlayersCache.find(x=>x.id===id); if(!p)return; document.getElementById('player-id').value=p.id; document.getElementById('playerFirstName').value=p.firstName; document.getElementById('playerLastName').value=p.lastName; document.getElementById('playerNumber').value=p.number; document.getElementById('playerPosition').value=p.position; document.getElementById('playerPhoto').value=p.photoUrl; document.getElementById('player-modal').classList.remove('hidden'); document.getElementById('player-modal').classList.add('flex'); };
         window.closeModal = (id) => { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); };
 
-        // Forms
         document.getElementById('match-form').addEventListener('submit', async(e)=>{ e.preventDefault(); const id=document.getElementById('match-id').value; const d={ date:document.getElementById('matchDate').value, time:document.getElementById('matchTime').value, opponent:document.getElementById('opponent').value, location:document.getElementById('location').value, type:document.getElementById('matchType').value, status:document.getElementById('matchStatus').value, score:document.getElementById('matchScore').value }; if(id) await updateDoc(doc(db,"matches",id),d); else await addDoc(collection(db,"matches"),d); closeModal('match-modal'); renderAdminData(); loadMatches(); });
         document.getElementById('player-form').addEventListener('submit', async(e)=>{ e.preventDefault(); const id=document.getElementById('player-id').value; const d={ firstName:document.getElementById('playerFirstName').value, lastName:document.getElementById('playerLastName').value, number:parseInt(document.getElementById('playerNumber').value), position:document.getElementById('playerPosition').value, photoUrl:document.getElementById('playerPhoto').value }; if(id) await updateDoc(doc(db,"players",id),d); else await addDoc(collection(db,"players"),d); closeModal('player-modal'); renderAdminData(); loadSquad(); });
 
